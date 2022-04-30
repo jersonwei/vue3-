@@ -1,145 +1,105 @@
-<div align="center">
-	<img src="https://i.loli.net/2021/11/24/x5lLfuSnEawBAgi.png"/>
-	<h1>Soybean Admin</h1>
-</div>
-
-[![license](https://img.shields.io/badge/license-MIT-green.svg)](./LICENSE)
-
 ## 简介
 
-Soybean Admin  是一个基于 Vue3、Vite、TypeScript、Naive UI 的免费中后台模版，它使用了最新的前端技术栈，内置丰富的主题配置，有着极高的代码规范，基于mock实现的动态权限路由，开箱即用的中后台前端解决方案，也可用于学习参考。
+基于 Vue3、Vite、TS、Naive UI、Pinia 的项目，使用了最新的技术栈，代码规范已设置 Eslint+Prettier、动态权限路由
 
 ## 特性
 
-- **最新技术栈**：使用 Vue3/vite2 等前端前沿技术开发, 使用高效率的npm包管理器pnpm
-- **TypeScript**：应用程序级 JavaScript 的语言
-- **主题**：丰富可配置的主题、暗黑模式，基于原子css - unocss的动态主题颜色
-- **代码规范**：丰富的规范插件及极高的代码规范
-- **权限路由**：简易的路由配置、基于mock的动态路由能快速实现后端动态路由
-- **请求函数**：基于axios的完善的请求函数封装，提供Promise和hooks两种请求函数，加入请求结果数据转换的适配器
+- :使用 Vue3/Vite2 等前端前沿技术开发，使用 pnpm 作为包管理器
+- :使用 Ts 开发
+- : 基于 windicss
+- : 代码规范基于 Eslint+Prettier
+- : 封装请求
+- ：UI 使用 Naive UI
+- : Sass 使用
 
-## 预览
+## 方便开发
 
-- [soybean-admin](https://soybean.pro/)
+引入 unplugin-auto-import
+引入 unplugin-vue-components
+引入 unplugin-icons
+引入 dayjs
+引入 crypto-js 加密
+引入 colord
+引入 vite-plugin-purge-icons @iconify/json -D iconfont 组件库
+引入 qs 解析
+安装 @vueuse/core 方法库
+引入 ua-parser-js
+pnpm i clipboard 复制文字
+print-js 页面打印
+vditor MARKDOWN 编写需求
+wangEditer 富文本编辑器
+@antv/g2plot 图表
+xgplayer 视频播放插件/ 后期有直播需求
 
-## 文档
+## 接口封装
 
-- [项目文档](https://docs.soybean.pro)
+基于 axios 以及 nprogress 配置
 
-## 代码仓库
+# 浏览器支持
 
-- [github](https://github.com/honghuangdc/soybean-admin)
+支持现代浏览器，不支持 IE
+支持火狐，支持 360 之类的就行，经理说是我们指定别人用
 
-- [gitee](https://gitee.com/honghuangdc/soybean-admin)
+dependencies:
 
-## 项目示例图
+- @antv/g2plot 2.4.16
+- @iconify/vue 3.2.1
+- @types/rollup-plugin-visualizer 4.2.1
+- @vueuse/core 8.3.1
+- axios 0.26.1
+- clipboard 2.0.10
+- colord 2.9.2
+- crypto-js 4.1.1
+- dayjs 1.11.1
+- eslint 8.14.0
+- form-data 4.0.0
+- lodash-es 4.17.21
+- nprogress 0.2.0
+- pinia 2.0.13
+- print-js 1.6.0
+- qs 6.10.3
+- rollup-plugin-visualizer 5.6.0
+- sass 1.50.1
+- soybean-admin-layout 1.0.4
+- soybean-admin-tab 1.2.3
+- swiper 8.1.4
+- ua-parser-js 1.0.2
+- unplugin-auto-import 0.7.1
+- vditor 3.8.13
+- vue 3.2.33
+- vue-router 4.0.14
+- wangeditor 4.7.15
+- xgplayer 2.31.6
 
-![](https://s2.loli.net/2022/01/24/ovK6Oyqr7gIMu2n.png)
+devDependencies:
 
-![](https://s2.loli.net/2022/01/24/O8loxYhMySHwGfJ.png)
+- @iconify/json 2.1.32
+- @types/nprogress 0.2.0
+- @typescript-eslint/eslint-plugin 5.20.0
+- @typescript-eslint/parser 5.20.0
+- @vitejs/plugin-vue 2.3.1
+- eslint-config-prettier 8.5.0
+- eslint-plugin-prettier 4.0.0
+- eslint-plugin-vue 8.7.1
+- naive-ui 2.28.2
+- prettier 2.6.2
+- typescript 4.6.3
+- unplugin-icons 0.14.1
+- unplugin-vue-components 0.19.3
+- vfonts 0.0.3
+- vite 2.9.5
+- vite-plugin-html 3.2.0
+- vite-plugin-purge-icons 0.8.1
+- vite-plugin-windicss 1.8.4
+- vue-tsc 0.34.10
+- windicss 3.5.1
 
-![](https://s2.loli.net/2022/01/24/HKwpJ7Ab6j8fVvk.png)
+# Vue 3 + TypeScript + Vite
 
-![](https://s2.loli.net/2022/01/24/bqJRSDZHBv3jsif.png)
+This template should help get you started developing with Vue 3 and TypeScript in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
 
-![](https://s2.loli.net/2022/01/24/wXpHeau6UrSTWdF.png)
+## Recommended IDE Setup
 
-![](https://s2.loli.net/2022/02/16/pBwF2gaxXnKZe3D.png)
+- [VS Code](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=johnsoncodehk.volar)
 
-![](https://s2.loli.net/2022/02/16/pfuxVEPsTJIXw5n.png)
-
-## 开发计划
-
-- [ ] 引入ECharts替换AntV G2Plot
-- [ ] 最近功能的有关文档更新
-- [ ] 性能优化(优化递归函数)
-- [ ] 精简版(新分支thin)
-- [ ] 表单、表格示例
-- [ ] 添加锁屏组件、全局Iframe组件
-- [ ] 示例页面完善
-- [ ] 其他UI版本
-- [ ] element-plus版本
-- [ ] soybean-admin cli工具(选择不同UI)
-- [ ] 前端可视化创建路由页面
-- [ ] soybean-admin 后台服务java版: [soybean-admin-java](https://github.com/honghuangdc/soybean-admin-java)
-- [ ] soybean-admin 后台服务go版: [soybean-admin-go](https://github.com/honghuangdc/soybean-admin-go)
-- [ ] soybean-admin 后台服务nodejs版: [soybean-admin-nestjs](https://github.com/honghuangdc/soybean-admin-nestjs)
-
-## 安装使用
-
-- 克隆代码
-
-```bash
-git clone https://github.com/honghuangdc/soybean-admin.git
-```
-
-- 安装依赖
-
-```bash
-pnpm i
-```
-
-- 运行
-
-```bash
-pnpm dev
-```
-
-- 打包
-
-```bash
-pnpm build
-```
-
-::: warning 注意
-
-**本地环境需要安装 pnpm 6.x 、Node.js 14.x 和 Git**
-
-:::
-
-## 如何贡献
-
-非常欢迎您的加入！[提一个 Issue](https://github.com/honghuangdc/soybean-admin/issues/new) 或者提交一个 Pull Request。
-
-## Git 贡献提交规范
-
-项目已经内置angular提交规范，通过git cz 代替git commit 命令即可。
-
-git cz命令需要全局安装 commitizen
-
-```bash
-pnpm i -g commitizen
-```
-
-## 浏览器支持
-
-本地开发推荐使用`Chrome 90+` 浏览器
-
-支持现代浏览器, 不支持 IE
-
-| [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/archive/internet-explorer_9-11/internet-explorer_9-11_48x48.png" alt="IE" width="24px" height="24px"  />](http://godban.github.io/browsers-support-badges/)IE | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/edge/edge_48x48.png" alt=" Edge" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)Edge | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/firefox/firefox_48x48.png" alt="Firefox" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)Firefox | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/chrome/chrome_48x48.png" alt="Chrome" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)Chrome | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/safari/safari_48x48.png" alt="Safari" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)Safari |
-| :-: | :-: | :-: | :-: | :-: |
-| not support | last 2 versions | last 2 versions | last 2 versions | last 2 versions |
-
-## 开源作者
-
-[@Soybean](https://github.com/honghuangdc)
-
-## 交流
-
-`Soybean Admin` 是完全开源免费的项目，在帮助开发者更方便地进行中大型管理系统开发，同时也提供微信和QQ交流群，使用问题欢迎在群内提问。
-
-- 本人微信号：honghuangdc，欢迎来技术交流，业务咨询。
-
-- 微信交流群：
-  **微信群的人数已经满200个了，无法扫码，可以添加本人的微信再邀请进入**
-
-- QQ交流群 `711301266`
-
-  <div style="text-align:left">
-    <img src="https://i.loli.net/2021/11/24/1J6REWXiHomU2kM.jpg" style="width:200px" />
-  </div>
-
-## License
-
-[MIT © Soybean-2021](./LICENSE)
+## Type Support For `.vue` Imports in TS
