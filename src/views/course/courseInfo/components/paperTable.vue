@@ -2,8 +2,8 @@
  * @Author: ZHENG
  * @Date: 2022-05-21 16:00:56
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-24 18:49:11
- * @FilePath: \work\src\views\course\courseInfo\components\paperTable.vue
+ * @LastEditTime: 2022-05-24 19:20:57
+ * @FilePath: \20220524\src\views\course\courseInfo\components\paperTable.vue
  * @Description:
 -->
 <template>
@@ -111,7 +111,7 @@
     <n-modal
       v-model:show="showModal"
       preset="dialog"
-      style="width: 150px"
+      style="width: 750px"
       title="确认"
       positive-text="确认"
       negative-text="算了"
@@ -307,12 +307,12 @@ const editPaper = async () => {
     if (!radioList.value[i].questionScore) {
       return message.error('请先输入分数');
     }
-    console.log(radioList.value);
-    if (radioList.value.unitId) {
+    console.log('radioList', radioList.value);
+    if (radioList.value[i].unitId) {
       const params = {
         id: parseInt(radioList.value[i].id, 10),
         unitId: parseInt(props.id, 10),
-        questionId: radioList.value[i].id,
+        questionId: radioList.value[i].questionId,
         questionScore: radioList.value[i].questionScore,
         sort: i + 1,
         questionType: radioList.value[i].questionType
