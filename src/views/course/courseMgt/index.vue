@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-04-30 14:33:21
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-23 14:14:13
+ * @LastEditTime: 2022-05-24 09:31:54
  * @FilePath: \work\src\views\course\courseMgt\index.vue
  * @Description:
 -->
@@ -205,7 +205,7 @@ const delData = ref<number>(0); // 删除数据的ID
 const delText = ref(''); // 删除的文字
 // eslint-disable-next-line consistent-return
 const handleDelete = (record: Recordable) => {
-  if (record.statusName === '上架') {
+  if (record.status === '0') {
     return message.error('只有下架状态课程才能删除');
   }
   delText.value = record.courseName;

@@ -3,7 +3,7 @@
  * @Author: ZHENG
  * @Date: 2022-05-14 11:44:12
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-23 23:12:55
+ * @LastEditTime: 2022-05-24 18:00:01
  * @FilePath: \work\src\views\course\coursePreview\index.vue
  * @Description:
 -->
@@ -11,16 +11,11 @@
   <n-card style="height: 700px">
     <n-layout has-sider>
       <n-layout-sider style="width: 1000px" collapse-mode="width" :collapsed-width="1200" :width="1200">
-        <n-card content-style="padding: 0;">
+        <n-card content-style="padding: 0;" :title="courseData.unitName">
           <n-tabs type="line" size="large" :tabs-padding="20" pane-style="padding: 20px;">
-            <template v-for="(item, index) in courseData.files">
+            <template v-for="(item, index) in courseData?.files">
               <n-tab-pane v-if="item.type === 0" :key="index" name="教学文档">
-                <iframe
-                  :src="`https://view.xdocin.com/view?src=${item.url}`"
-                  width="100%"
-                  height="100%"
-                  style="height: 600px"
-                >
+                <iframe :src="item.url" width="100%" height="100%" style="height: 600px">
                   This browser does not support PDFs. Please download the PDF to view it:
                   <a href="/test.pdf">Download PDF</a>
                 </iframe>
@@ -33,12 +28,7 @@
                 </iframe> -->
               </n-tab-pane>
               <n-tab-pane v-if="item.type === 2" :key="index" name="PPT">
-                <iframe
-                  :src="`https://view.xdocin.com/view?src=${item.url}`"
-                  width="100%"
-                  height="100%"
-                  style="height: 600px"
-                >
+                <iframe :src="item.url" width="100%" height="100%" style="height: 600px">
                   This browser does not support PDFs. Please download the PDF to view it:
                   <a href="/test.pdf">Download PDF</a>
                 </iframe>
@@ -52,7 +42,7 @@
               </n-tab-pane>
             </template>
             <!-- v-if="courseData.haveQuestion" -->
-            <n-tab-pane name="课题预览">
+            <n-tab-pane v-if="showPaperData" name="课题预览">
               <TablePro
                 ref="actionPaperRef"
                 :columns="columns"
@@ -63,15 +53,30 @@
               >
               </TablePro
             ></n-tab-pane>
+            <n-tab-pane v-if="!showPaperData && !courseData?.files?.length" :bar-width="0">
+              <div style="display: flex; justify-content: center; align-items: center; height: 600px">
+                <n-icon size="36" class="cursor-pointer text-gray-400">
+                  <n-space style="width: 200px">
+                    <ExclamationCircleTwotone></ExclamationCircleTwotone>
+                    <div>暂无数据</div>
+                  </n-space>
+                </n-icon>
+              </div>
+            </n-tab-pane>
           </n-tabs>
         </n-card>
       </n-layout-sider>
       <n-layout>
-        <n-layout-content style="display: grid; place-items: center; top: 40%" content-style="padding: 24px;">
-          <n-space vertical>
-            <n-image width="100" src="http://124.70.85.180:8086/img/docker-empty.43357460.svg" />
-            <n-button type="info"> 开启云端实验 </n-button>
-          </n-space>
+        <n-layout-content content-style="padding: 24px;">
+          <div>
+            <n-space
+              vertical
+              style="width: 100%; height: 600px; display: flex; justify-content: center; align-items: center"
+            >
+              <n-image width="100" src="http://124.70.85.180:8086/img/docker-empty.43357460.svg" />
+              <n-button type="info"> 开启云端实验 </n-button>
+            </n-space>
+          </div>
         </n-layout-content>
       </n-layout>
     </n-layout>
@@ -123,25 +128,38 @@
   </n-card>
 </template>
 <script setup lang="ts">
-import { ref, reactive, h } from 'vue';
-import { useMessage } from 'naive-ui';
+import { ref, reactive, h, watchEffect } from 'vue';
+import { c, useMessage } from 'naive-ui';
+import { ExclamationCircleTwotone } from '@vicons/antd';
 import { useCourseStore } from '@/store';
 import { getUnitPracticeList } from '@/service';
 import { TablePro, TableAction } from '@/components/TablePro';
 import playerVideo from './compontent/index.vue';
 import wordPer from './compontent/wordPre.vue';
+import showPdf from './compontent/showPdf.vue';
 import { columns } from './columns';
 
 const { getFiles } = useCourseStore();
-const data = getFiles();
+
 const message = useMessage();
-
 const courseData = ref();
-courseData.value = data;
-console.log(courseData.value);
-
+watchEffect(async () => {
+  courseData.value = getFiles();
+  console.log(courseData.value);
+  const Param = {
+    unitId: courseData.value.unitId,
+    size: 15,
+    current: 1
+  };
+  const result = await getUnitPracticeList({ ...Param });
+  if (result?.data?.total === 0) {
+    showPaperData.value = false;
+  }
+});
+const showPaperData = ref(false);
 const loadPaperDataTable = async (res: any) => {
   if (!courseData.value.unitId) {
+    showPaperData.value = false;
     return;
   }
   const Param = {
@@ -151,8 +169,10 @@ const loadPaperDataTable = async (res: any) => {
   };
   const result = await getUnitPracticeList({ ...Param });
   console.log('getUnitPracticeList', result);
+
   return result.data;
 };
+
 const actionColumn = reactive({
   // Table操作列
   width: 20,
@@ -218,7 +238,7 @@ const handleShow = (record: Recordable) => {
 };
 </script>
 <style scoped>
-/* :deep(#md-dir) {
-  width: 15% !important;
-} */
+:deep(.n-layout--static-positioned) {
+  height: 100% !important;
+}
 </style>

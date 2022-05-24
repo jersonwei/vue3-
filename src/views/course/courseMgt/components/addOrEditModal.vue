@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-05-12 17:34:13
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-23 14:40:43
+ * @LastEditTime: 2022-05-24 13:49:50
  * @FilePath: \work\src\views\course\courseMgt\components\addOrEditModal.vue
  * @Description:
 -->
@@ -32,10 +32,17 @@
           <n-select v-model:value="formParams.courseCategory" :options="form.courseCategory" />
         </n-form-item>
         <n-form-item label="所属班级" path="classList">
-          <n-select v-model:value="classList" filterable multiple tag :options="form.majorId" />
+          <n-select v-model:value="formParams.classList" multiple :options="form.majorId" />
         </n-form-item>
         <n-form-item label="课程标签" path="labelList">
-          <n-select v-model:value="labelList" filterable multiple tag :options="form.label" @create="createLabel" />
+          <n-select
+            v-model:value="formParams.labelList"
+            filterable
+            multiple
+            tag
+            :options="form.label"
+            @create="createLabel"
+          />
         </n-form-item>
         <n-form-item label="课程介绍" path="note">
           <n-input v-model:value="formParams.note" type="textarea" placeholder="课程介绍" />
@@ -125,6 +132,7 @@ import { reactive, ref } from 'vue';
 import { UploadCustomRequestOptions, UploadFileInfo, useMessage } from 'naive-ui';
 import { MinusCircleOutlined } from '@vicons/antd';
 import { useDebounceFn } from '@vueuse/core';
+import { useAuthStore } from '@/store';
 import { addCourse, saveOrUpdateLabel, updateCourseInfo } from '@/service';
 import { fileTypeOfImage, fileTypeOfOutLine, getServiceEnv, deafultFormParams } from '@/utils';
 import { getCourseCategoryOptions, getClassListOptions, getLabelsOptions } from '../getOptions';
@@ -148,6 +156,8 @@ const formParams = reactive({
   robot: '',
   virtualRobot: '',
   virtualNumber: 0,
+  classList: [],
+  labelList: [],
   local: [],
   localName: [],
   uploadIMage: [],
@@ -163,22 +173,20 @@ const showModalFn = () => {
 
 const editID = ref();
 const serviceEnv = getServiceEnv();
-const labelList = ref([]);
-const classList = ref([]);
+// const labelList = ref([]);
+// const classList = ref([]);
 const editModalFn = record => {
   console.log(record);
   Form = new FormData();
   editID.value = record.id;
-  labelList.value = [];
-  classList.value = [];
-  const outLineIndexOf = record.courseOutline.indexOf('outline/');
-  const outLineName = record.courseOutline.slice(outLineIndexOf + 8);
+  formParams.labelList = [];
+  formParams.classList = [];
   const formData = {
     courseCategory: record.courseCategory,
     courseName: record.courseName,
-    label: record.labelId.split(','),
+    label: record?.labelId?.split(','),
     labelName: record.listLabelName,
-    majorId: record.eclassId.split(','),
+    majorId: record?.eclassId?.split(','),
     note: record.note,
     uploadIMage: [
       {
@@ -193,16 +201,18 @@ const editModalFn = record => {
     // virtualNumber: 0
     // virtualRobot: ""
   };
-  for (let i = 0; i < formData.label.length; i++) {
-    labelList.value.push(parseInt(formData.label[i], 10));
+  for (let i = 0; i < formData.label?.length; i++) {
+    formParams.labelList.push(parseInt(formData.label[i], 10));
   }
   console.log('formData.majorId', formData.majorId);
-  for (let i = 0; i < formData.majorId.length; i++) {
-    classList.value.push(parseInt(formData.majorId[i], 10));
+  for (let i = 0; i < formData.majorId?.length; i++) {
+    formParams.classList.push(parseInt(formData.majorId[i], 10));
   }
-  formData.label = labelList;
-  formData.majorId = classList;
+  formData.label = formParams.labelList;
+  formData.majorId = formParams.classList;
   if (record.courseOutline) {
+    const outLineIndexOf = record.courseOutline.indexOf('outline/');
+    const outLineName = record.courseOutline.slice(outLineIndexOf + 8);
     formData.uploadOutline = [{ name: outLineName, status: 'finished', url: `${serviceEnv}${record.courseOutline}` }];
   }
   // eslint-disable-next-line @typescript-eslint/no-use-before-define
@@ -222,10 +232,14 @@ const rules = {
     required: true,
     message: '请选择所属分类'
   },
-  majorId: {
+  classList: {
     required: true,
     message: '请选择所属班级'
   }
+  // labelList: {
+  //   required: true,
+  //   message: '请选择课程标签'
+  // }
 };
 
 const form = reactive({
@@ -298,6 +312,7 @@ const createLabel = useDebounceFn(async (label: string) => {
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const confirmForm = (e: { preventDefault: () => void }) => {
+  const auth = useAuthStore();
   // e.preventDefault();
   formBtnLoading.value = true;
   formRef.value.validate((errors: any) => {
@@ -308,22 +323,34 @@ const confirmForm = (e: { preventDefault: () => void }) => {
           // Form.append('outLine', (outLine[0] as File) || '');
           Form.append('courseName', formParams.courseName);
           Form.append('courseCategory', formParams.courseCategory);
-          Form.append('eclassId', formParams.majorId);
-          Form.append('note', formParams.note);
-          Form.append('labelId', labelList.value);
-          Form.append('lecturer', '12');
+          if (formParams.classList) {
+            Form.append('eclassId', formParams.classList);
+          }
+          if (formParams.note) {
+            Form.append('note', formParams.note);
+          }
+          if (formParams.labelList.length) {
+            Form.append('labelId', formParams.labelList);
+          }
+          // const { userId } = auth.userInfo;
+          // Form.append('lecturer', userId);
           const result = await addCourse(Form);
           if (!result.error) {
             message.success(`新建成功`);
           }
-        } else {
+        }
+        if (addOrEdit.value === false) {
           Form.append('id', editID.value);
           Form.append('courseName', formParams.courseName);
           Form.append('courseCategory', formParams.courseCategory);
-          Form.append('eclassId', formParams.majorId);
+          Form.append('eclassId', formParams.classList);
           Form.append('note', formParams.note);
-          Form.append('labelId', labelList.value);
-          Form.append('lecturer', '12');
+          if (formParams.labelList.length) {
+            Form.append('labelId', formParams.labelList);
+          }
+
+          // const { userId } = auth.userInfo;
+          // Form.append('lecturer', userId);
           const result = await updateCourseInfo(Form);
           console.log(result);
           if (!result.error) {

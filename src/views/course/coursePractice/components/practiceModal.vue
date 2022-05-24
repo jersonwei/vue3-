@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-05-12 17:34:13
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-23 22:30:13
+ * @LastEditTime: 2022-05-24 17:09:17
  * @FilePath: \work\src\views\course\coursePractice\components\practiceModal.vue
  * @Description:
 -->
@@ -362,6 +362,7 @@ const getPracticeType = () => {
       multiList.value.push(item);
     } else if (item.label === '不定项选择题') {
       if (typeof item.questionOption === 'string') {
+        console.log(item.questionOption);
         const questionOption = JSON.parse(item.questionOption).map(e => ({ value: getKey(e), label: e }));
         item.questionOption = questionOption;
         item.questionAnswer = item.questionAnswer.split(',');
@@ -374,7 +375,7 @@ const getPracticeType = () => {
         item.answerContent = JSON.parse(item.answerContent);
       }
 
-      eitemerciseList.value.push(item);
+      exerciseList.value.push(item);
     } else if (item.label === '简答题') {
       answerList.value.push(item);
     } else if (item.label === '实操题') {

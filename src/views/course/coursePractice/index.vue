@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-05-17 10:52:29
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-21 19:23:45
+ * @LastEditTime: 2022-05-24 17:05:21
  * @FilePath: \work\src\views\course\coursePractice\index.vue
  * @Description:
 -->
@@ -75,7 +75,8 @@ const options = ref([]);
 async function getOptions(depth = 3, iterator = 1, prefix = '') {
   if (iterator === 1) {
     const params = {
-      courseId: route.query.id
+      courseId: route.query.id,
+      classId: route.query.classId
     };
     const { data: result } = await getChapterList(params);
     console.log(result);
@@ -105,6 +106,8 @@ async function getChildren(option: CascaderOption) {
  */
 const unitId = ref();
 const getdefaultValue = async () => {
+  options.value = [];
+  unitId.value = '';
   await getOptions();
   await getChildren(options.value[0]);
   unitId.value = options.value[0].children[0].value;
@@ -114,10 +117,12 @@ const getdefaultValue = async () => {
   setFieldsValue(params);
 };
 watchEffect(() => {
-  courseName.value = route.query.courseName;
-  setTimeout(() => {
-    getdefaultValue();
-  }, 1000);
+  if (route.query.courseName && route.query.classId) {
+    courseName.value = route.query.courseName;
+    setTimeout(() => {
+      getdefaultValue();
+    }, 500);
+  }
 });
 const handleLoad = (option: CascaderOption) => {
   return new Promise<void>(resolve => {
@@ -137,7 +142,7 @@ const getUnitId = (Id: string) => {
   return parseInt(subUnitId, 10);
 };
 const formData = ref({});
-const handleSubmit = () => {
+const handleSubmit = (values: Recordable) => {
   formData.value = {
     unitId: getUnitId(values.unitId),
     stuName: values.stuName
@@ -147,18 +152,20 @@ const handleSubmit = () => {
 
 const loadDataTable = async (res: any) => {
   let Param = {};
-  if (!formData.value?.unitId) {
-    Param = {
-      unitId: getUnitId(unitId.value),
-      pageSize: res.size,
-      current: res.current
-    };
-  } else {
-    Param = {
-      pageSize: res.size,
-      current: res.current
-    };
-  }
+  // if (!formData.value?.unitId) {
+  Param = {
+    unitId: getUnitId(unitId.value),
+    classId: route.query.classId,
+    pageSize: res.size,
+    current: res.current
+  };
+  // } else {
+  //   Param = {
+  //     pageSize: res.size,
+  //     current: res.current
+  //   };
+  // }
+  console.log(formData.value);
   const result = await getStuList({ ...formData.value, ...Param });
   return result.data;
 };
@@ -168,8 +175,8 @@ const downloadOptions = [
     key: 'chapter'
   },
   {
-    label: '导出当前课程成绩',
-    key: 'course'
+    label: '导出当前课时成绩',
+    key: 'unit'
   }
 ];
 const handleSelect = async (key: string | number) => {
@@ -179,37 +186,41 @@ const handleSelect = async (key: string | number) => {
     const idIndex = AndId.indexOf('-');
     const chapterId = AndId.substring(0, idIndex); // 当前章节ID
     const params = {
-      classId: 1,
+      classId: route.query.classId,
       features: 'all'
     };
     const result = await unitpracticeanswersExport(chapterId, params);
     console.log(result);
-    download(result, '1.xls');
+    download(result, '章节成绩.xls');
   } else {
     const params = {
-      classId: 1,
+      classId: route.query.classId,
       features: 'one'
     };
-    unitpracticeanswersExport(unitId.value, params);
+    const result = await unitpracticeanswersExport(unitId.value, params);
+    download(result, '课时成绩.xls');
   }
 };
 
 const result = getServiceEnv();
 const columns = [
   {
-    title: 'id',
-    key: 'id',
-    width: 100
+    title: '序号',
+    key: 'tableId',
+    width: 80,
+    render(row, index) {
+      return h('h1', index + 1);
+    }
   },
   {
     title: '学号',
-    key: 'courseName',
-    width: 100
+    key: 'idCard',
+    width: 120
   },
   {
     title: '头像',
     key: 'avatar',
-    width: 160,
+    width: 80,
     render(row: { avatar: any }) {
       return h(NAvatar, {
         size: 48,

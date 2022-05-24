@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-05-12 14:54:50
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-23 22:17:21
+ * @LastEditTime: 2022-05-24 18:42:45
  * @FilePath: \work\src\views\course\courseDetail\index.vue
  * @Description:
 -->
@@ -39,17 +39,19 @@
         pane-style="padding-left: 4px; padding-right: 4px; box-sizing: border-box;"
       >
         <n-tab-pane name="signin" tab="章节列表">
-          <n-tree
-            block-line
-            cascade
-            :data="treeData"
-            key-field="unitId"
-            label-field="label"
-            :render-suffix="renderSuffix"
-            style="max-height: 750px; overflow: hidden"
-            :node-props="nodeProps"
-            default-expand-all
-          />
+          <n-scrollbar style="max-height: 500px">
+            <n-tree
+              block-line
+              cascade
+              :data="treeData"
+              key-field="unitId"
+              label-field="label"
+              :render-suffix="renderSuffix"
+              style="max-height: 750px; overflow: hidden"
+              :node-props="nodeProps"
+              default-expand-all
+            />
+          </n-scrollbar>
           <!-- <n-list>
             <n-list-item v-for="item in activity" :key="item.id">
               <template #prefix>
@@ -187,14 +189,16 @@ const renderSuffix = ({ option }: { option: TreeOption }) => {
   }
 };
 const nodeProps = ({ option }: { option: TreeOption }) => {
-  return {
-    onClick() {
-      message.info(`[Click] ${option.label}`);
-      console.log(option);
-      setFiles(option);
-      router.push({ name: 'course_coursePreview' });
-    }
-  };
+  if (option.type === 2) {
+    return {
+      onClick() {
+        message.info(`[Click] ${option.label}`);
+        console.log(option);
+        setFiles(option);
+        router.push({ name: 'course_coursePreview' });
+      }
+    };
+  }
 };
 
 watchEffect(async () => {
@@ -210,7 +214,9 @@ watchEffect(async () => {
   courseDetail.label = result.label;
   courseDetail.note = result.note;
   courseDetail.coverPic = `${http}${result.coverPic}`;
-  courseDetail.courseOutline = encodeURI(`https://view.xdocin.com/view?src=${http}${result.courseOutline}`);
+  courseDetail.courseOutline = `${http}${result.courseOutline}`;
+  // encodeURI
+  // https://view.xdocin.com/view?src=
   console.log(courseDetail.courseOutline);
 });
 const handleLoad = (option: CascaderOption) => {

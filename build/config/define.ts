@@ -2,8 +2,8 @@
  * @Author: ZHENG
  * @Date: 2022-04-30 08:41:04
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-16 14:37:26
- * @FilePath: \e-class-admin\build\config\define.ts
+ * @LastEditTime: 2022-05-24 15:20:40
+ * @FilePath: \work\build\config\define.ts
  * @Description:
  */
 import { format } from 'date-fns';

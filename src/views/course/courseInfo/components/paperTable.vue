@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-05-21 16:00:56
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-23 20:31:16
+ * @LastEditTime: 2022-05-24 18:49:11
  * @FilePath: \work\src\views\course\courseInfo\components\paperTable.vue
  * @Description:
 -->
@@ -10,7 +10,6 @@
   <n-card class="drag-box">
     <n-space>
       <n-button @click="showpaper">新增</n-button>
-      <n-button v-if="id != 0" @click="editPaper">提交</n-button>
     </n-space>
     <n-scrollbar style="max-height: 400px">
       <n-card v-if="radioList.length" title="单选题">
@@ -27,7 +26,7 @@
             <div class="items">
               <div class="title">
                 {{ element.id }}、{{ element.questionName }}
-                <n-input v-model:value="element.questionScore" :style="{ width: '33%' }" placeholder="基本的 Input" />
+                <n-input v-model:value="element.questionScore" :style="{ width: '33%' }" placeholder="分数" />
                 <n-button @click="delQu(radioList, index)">删除</n-button>
               </div>
             </div>
@@ -103,10 +102,16 @@
         </Draggable>
       </n-card>
     </n-scrollbar>
+    <!-- <n-space>
+      <n-button v-if="id != 0" @click="editPaper">提交</n-button>
+    </n-space> -->
+    <div style="display: flex; justify-content: flex-end">
+      <n-button v-if="id != 0" type="primary" @click="editPaper">提交</n-button>
+    </div>
     <n-modal
       v-model:show="showModal"
       preset="dialog"
-      style="width: 1050px"
+      style="width: 150px"
       title="确认"
       positive-text="确认"
       negative-text="算了"
@@ -130,7 +135,7 @@
           :columns="paperColumns"
           :request="loadDataTable"
           :row-key="row => row.id"
-          :scroll-x="1200"
+          :scroll-x="900"
           :default-checked-row-keys="defaultRow"
           @update:checked-row-keys="handleCheck"
         ></TablePro>
@@ -218,13 +223,16 @@ const loadPaperDataTable = async () => {
   };
   const { data: result } = await getUnitPracticeList({ ...Param });
   paperList.value = result.records;
-  for (let i = 0; i < paperList.value.length; i++) {
-    // checkedRowKeysRef.value.push(parseInt(paperList.value[i].questionId, 10));
-    // defaultRow.value.push(paperList.value[i].questionId);
-    if (paperList.value[i].questionTypeName === '单选题') {
-      radioList.value.push(paperList.value[i]);
+  if (paperList?.value?.length) {
+    for (let i = 0; i < paperList.value.length; i++) {
+      // checkedRowKeysRef.value.push(parseInt(paperList.value[i].questionId, 10));
+      // defaultRow.value.push(paperList.value[i].questionId);
+      if (paperList.value[i].questionTypeName === '单选题') {
+        radioList.value.push(paperList.value[i]);
+      }
     }
   }
+  console.log(paperList.value);
 };
 loadPaperDataTable();
 
@@ -256,12 +264,10 @@ const checkedRowKeysRef = ref([]);
 
 const handleCheck = (rowKeys: never[]) => {
   const pageData = actionRef.value.tableElRef.data;
-  // if (props.id === 0) {
   // 新增的选中
   pageData.forEach((element: { id: any; questionScore: any }) => {
     if (rowKeys[rowKeys.length - 1] === element.id) {
       console.log(element);
-      // paperList.value.push(element);
       if (element.questionTypeName === '单选题') {
         radioList.value.push(element);
       } else if (element.questionTypeName === '多选题') {
@@ -273,7 +279,6 @@ const handleCheck = (rowKeys: never[]) => {
       }
     }
   });
-  // }
 };
 
 const delQu = (List, index) => {
@@ -299,15 +304,30 @@ const editPaper = async () => {
     unitPractice: []
   };
   for (let i = 0; i < radioList.value.length; i++) {
-    const params = {
-      id: parseInt(radioList.value[i].id, 10),
-      unitId: parseInt(props.id, 10),
-      questionId: radioList.value[i].questionId,
-      questionScore: radioList.value[i].questionScore,
-      sort: i + 1,
-      questionType: radioList.value[i].questionType
-    };
-    unitPractice.value.unitPractice.push(params);
+    if (!radioList.value[i].questionScore) {
+      return message.error('请先输入分数');
+    }
+    console.log(radioList.value);
+    if (radioList.value.unitId) {
+      const params = {
+        id: parseInt(radioList.value[i].id, 10),
+        unitId: parseInt(props.id, 10),
+        questionId: radioList.value[i].id,
+        questionScore: radioList.value[i].questionScore,
+        sort: i + 1,
+        questionType: radioList.value[i].questionType
+      };
+      unitPractice.value.unitPractice.push(params);
+    } else {
+      const params = {
+        unitId: parseInt(props.id, 10),
+        questionId: radioList.value[i].id,
+        questionScore: radioList.value[i].questionScore,
+        sort: i + 1,
+        questionType: radioList.value[i].questionType
+      };
+      unitPractice.value.unitPractice.push(params);
+    }
   }
   const result = await editUnitPractice(unitPractice.value);
   emit('resetTable');

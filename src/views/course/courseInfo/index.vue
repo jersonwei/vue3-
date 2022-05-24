@@ -2,12 +2,12 @@
  * @Author: ZHENG
  * @Date: 2022-05-04 17:20:30
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-23 22:12:49
+ * @LastEditTime: 2022-05-24 14:42:29
  * @FilePath: \work\src\views\course\courseInfo\index.vue
  * @Description: 课程页面
 -->
 <template>
-  <n-card :bordered="false">
+  <n-card :bordered="false" :title="courseName">
     <n-space vertical :size="30">
       <n-button type="primary" @click="addChapter"> 新建章节 </n-button>
       <n-data-table
@@ -17,6 +17,7 @@
         flex-height
         :cascade="false"
         :data="data"
+        :default-expanded-row-keys="expandedRow"
       />
     </n-space>
 
@@ -41,7 +42,7 @@ import delUnitModal from './components/delUnitModal.vue';
 const courseStore = useCourseStore();
 // 展示Form
 const { coutesInfoId } = storeToRefs(courseStore);
-
+const courseName = ref();
 // 查询表格数据
 type RowData = {
   id: string;
@@ -52,6 +53,7 @@ const data: RowData[] = ref([]);
 const loadDataTable = async () => {
   // coutesInfoId.value
   const { data: result } = await getPreview({ id: coutesInfoId.value });
+  courseName.value = result.courseName;
   for (let i = 0; i < result.children.length; i++) {
     if (result.children[i].children.length) {
       for (let j = 0; j < result.children[i].children.length; j++) {
@@ -60,19 +62,24 @@ const loadDataTable = async () => {
       }
     }
   }
+  for (let i = 0; i < result?.children?.length; i++) {
+    // console.log(result.children[i].id);
+    expandedRow.value.push(result.children[i].id);
+  }
   data.value = result.children;
 };
 
 onMounted(() => {
   loadDataTable();
 });
-
+const expandedRow = ref([1]);
 const addOrEditChapterModalRef = ref();
 /**
  * @author: ZHENG
  * @description: 新增章节
  */
 const addChapter = () => {
+  console.log(expandedRow.value);
   addOrEditChapterModalRef.value.showAddModal();
 };
 /**
@@ -167,7 +174,7 @@ const columns = [
               onClick: handleUnitEdit.bind(null, record)
             },
             {
-              label: '配置课题',
+              label: '配置习题',
               // eslint-disable-next-line @typescript-eslint/no-use-before-define
               onClick: handleQuConfig.bind(null, record)
             }

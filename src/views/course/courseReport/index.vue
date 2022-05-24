@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-05-17 10:52:29
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-20 10:15:43
+ * @LastEditTime: 2022-05-24 16:19:02
  * @FilePath: \work\src\views\course\courseReport\index.vue
  * @Description:
 -->
@@ -28,7 +28,7 @@
       :row-key="row => row.id"
       :scroll-x="1090"
     >
-      <template #tableTitle>
+      <!-- <template #tableTitle>
         <n-button type="primary" @click="downloadReport">
           <template #icon>
             <n-icon>
@@ -37,7 +37,7 @@
           </template>
           导出成绩
         </n-button>
-      </template>
+      </template> -->
     </TablePro>
     <ReportModal ref="ReportRef" :report-data="reportData" @reset="reloadTable"></ReportModal>
   </n-card>
@@ -84,7 +84,7 @@ async function getOptions(depth = 3, iterator = 1, prefix = '') {
 
 async function getChildren(option: CascaderOption) {
   const params = {
-    chapterId: option.value
+    chapterId: option?.value
   };
   const { data: result } = await getUnitList(params);
   const newList = result.map((item: { unitId: any; unitName: any }) => {
@@ -101,18 +101,25 @@ async function getChildren(option: CascaderOption) {
 const unitId = ref();
 const getdefaultValue = async () => {
   await getOptions();
+
+  if (options.value[0].length === 0) {
+    return message.error('当前课程没有课时');
+  }
   await getChildren(options.value[0]);
   unitId.value = options.value[0].children[0].value;
+  console.log(options.value[0].children[0].value);
   const params = {
     unitId: unitId.value
   };
   setFieldsValue(params);
+  reloadTable();
 };
 watchEffect(() => {
   courseName.value = route.query.courseName;
+  unitId.value == '';
   setTimeout(() => {
     getdefaultValue();
-  }, 1000);
+  }, 500);
 });
 const handleLoad = (option: CascaderOption) => {
   return new Promise<void>(resolve => {

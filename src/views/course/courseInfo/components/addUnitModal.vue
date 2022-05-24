@@ -2,13 +2,18 @@
  * @Author: ZHENG
  * @Date: 2022-05-21 11:21:27
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-23 21:47:34
+ * @LastEditTime: 2022-05-24 14:29:26
  * @FilePath: \work\src\views\course\courseInfo\components\addUnitModal.vue
  * @Description:
 -->
 <!-- ${current === 1 ? '课时' : '试题关联'}` -->
 <template>
-  <n-modal v-model:show="showModal" style="width: 650px" preset="dialog" :title="`${addOrEdit ? '新增' : '修改'}课时`">
+  <n-modal
+    v-model:show="showModal"
+    style="width: 650px"
+    preset="dialog"
+    :title="`${addOrEdit ? '新增' : '修改'}${quType ? '习题' : '课时'}`"
+  >
     <n-space v-if="addOrEdit" vertical>
       <n-steps :current="current" :status="currentStatus">
         <n-step title="新增课时"> </n-step>
@@ -30,10 +35,12 @@
         </n-form-item>
         <n-form-item path="auth" style="margin-left: 100px">
           <n-space>
-            <n-button type="primary" :loading="subLoading" @click="formSubmit">提交</n-button>
             <n-button type="primary" :disabled="isNext" @click="Next">下一步</n-button>
           </n-space>
         </n-form-item>
+        <div style="display: flex; justify-content: flex-end">
+          <n-button type="primary" :loading="subLoading" @click="formSubmit">提交</n-button>
+        </div>
       </n-form>
     </template>
     <template v-if="addOrEdit && current === 2">
@@ -95,7 +102,7 @@
             v-model:file-list="formParams.studyManual"
             :max="1"
             :custom-request="options => customRequestOutline(options, 3)"
-            @before-upload="beforeOutLineUpload"
+            @before-upload="beforeOutLineUpload('word')"
           >
             <n-button>上传文件</n-button>
           </n-upload>
@@ -110,11 +117,13 @@
         </n-form-item>
         <n-form-item path="auth" style="margin-left: 100px">
           <n-space>
-            <n-button type="primary" :loading="subLoading" @click="formSubmit">提交</n-button>
             <n-button type="primary" @click="Back">上一步</n-button>
             <n-button type="primary" :disabled="isNext" @click="Next">下一步</n-button>
           </n-space>
         </n-form-item>
+        <div style="display: flex; justify-content: flex-end">
+          <n-button type="primary" :loading="subLoading" @click="formSubmit">提交</n-button>
+        </div>
       </n-form>
     </template>
     <template v-if="addOrEdit && current === 3">
@@ -123,10 +132,14 @@
       </n-space>
       <n-form-item path="auth" style="margin-left: 100px">
         <n-space>
-          <n-button type="primary" :loading="subLoading" @click="formSubmit">提交</n-button>
           <n-button type="primary" @click="Back">上一步</n-button>
         </n-space>
       </n-form-item>
+
+      <!-- <n-button type="primary" :loading="subLoading" @click="formSubmit">提交</n-button> -->
+      <div style="display: flex; justify-content: flex-end">
+        <n-button type="primary" :loading="subLoading" @click="formSubmit">提交</n-button>
+      </div>
     </template>
     <!-- 编辑 -->
     <template v-if="!addOrEdit">
@@ -201,12 +214,7 @@
             </n-upload>
           </n-form-item>
           <n-form-item label="开发环境必需" path="development">
-            <n-input
-              v-model:value="formParams.development"
-              :style="{ width: '33%' }"
-              type="textarea"
-              placeholder="请输入开发环境说明"
-            />
+            <n-input v-model:value="formParams.development" type="textarea" placeholder="请输入开发环境说明" />
           </n-form-item>
           <n-form-item label="开启实验" path="label">
             <n-checkbox v-model:checked="formParams.enableReport"> 是否开启实验 </n-checkbox>
@@ -222,126 +230,13 @@
         <paperTable :id="formParams.unitId" ref="paperTableRef" @resetTable="resetTable"></paperTable>
       </template>
     </template>
-
-    <!-- <template v-if="current === 1">
-      <n-form ref="formRef" :model="formParams" label-placement="left" :label-width="120" class="py-4">
-        <n-form-item label="课时标题" path="label">
-          <n-input v-model:value="formParams.label" placeholder="请输入标题" />
-        </n-form-item>
-        <n-form-item label="描述" path="label">
-          <n-input v-model:value="formParams.note" type="textarea" placeholder="请输入描述" />
-        </n-form-item>
-        <n-form-item label="教学内容文档" path="studyFile">
-          <n-upload
-            v-model:file-list="formParams.studyFile"
-            :max="1"
-            :custom-request="options => customRequestOutline(options, 0)"
-            @before-upload="beforeOutLineUpload"
-          >
-            <n-button>上传文件</n-button>
-          </n-upload>
-          <template #label>
-            教学内容文档
-            <n-tooltip trigger="hover">
-              <template #trigger>
-                <n-icon size="18" class="cursor-pointer text-gray-400">
-                  <QuestionCircleOutlined />
-                </n-icon>
-              </template>
-              pdf文件
-            </n-tooltip>
-          </template>
-        </n-form-item>
-        <n-form-item label="教学视频" path="studyVideo">
-          <n-upload
-            v-model:file-list="formParams.studyVideo"
-            :max="1"
-            :custom-request="options => customRequestOutline(options, 1)"
-            @before-upload="beforeVideoUpload"
-          >
-            <n-button>上传文件</n-button>
-          </n-upload>
-          <template #label>
-            教学视频
-            <n-tooltip trigger="hover">
-              <template #trigger>
-                <n-icon size="18" class="cursor-pointer text-gray-400">
-                  <QuestionCircleOutlined />
-                </n-icon>
-              </template>
-              MP4文件
-            </n-tooltip>
-          </template>
-        </n-form-item>
-        <n-form-item label="课件" path="studyPPT">
-          <n-upload
-            v-model:file-list="formParams.studyPPT"
-            :max="1"
-            :custom-request="options => customRequestOutline(options, 2)"
-            @before-upload="beforeOutLineUpload"
-          >
-            <n-button>上传文件</n-button>
-          </n-upload>
-        </n-form-item>
-        <n-form-item label="实验手册" path="studyManual">
-          <n-upload
-            v-model:file-list="formParams.studyManual"
-            :max="1"
-            :custom-request="options => customRequestOutline(options, 3)"
-            @before-upload="beforeOutLineUpload"
-          >
-            <n-button>上传文件</n-button>
-          </n-upload>
-        </n-form-item>
-        <n-form-item label="开发环境必需" path="development">
-          <n-input
-            v-model:value="formParams.development"
-            :style="{ width: '33%' }"
-            type="textarea"
-            placeholder="请输入开发环境说明"
-          />
-        </n-form-item>
-        <n-form-item label="开启实验" path="label">
-          <n-checkbox v-model:checked="formParams.enableReport"> 是否开启实验 </n-checkbox>
-        </n-form-item>
-        <n-form-item path="auth" style="margin-left: 100px">
-          <n-space>
-            <n-button type="primary" :loading="subLoading" @click="formSubmit">提交</n-button>
-          </n-space>
-        </n-form-item>
-      </n-form>
-    </template>
-    <template v-else>
-      <n-form ref="formRef" :model="formParams" label-placement="left" :label-width="120" class="py-4">
-        <TablePro
-          ref="actionPaperRef"
-          :columns="columns"
-          :request="loadPaperDataTable"
-          :row-key="row => row.id"
-          :action-column="actionColumn"
-          :scroll-x="1200"
-        >
-          <template #tableTitle>
-            <n-button type="primary" @click="showModal = true">
-              <template #icon>
-                <n-icon>
-                  <PlusOutlined />
-                </n-icon>
-              </template>
-              选择题目
-            </n-button>
-            <n-button type="primary" style="margin-left: 20px" @click="save"> 提交 </n-button>
-          </template>
-        </TablePro>
-      </n-form>
-    </template> -->
   </n-modal>
 </template>
 <script lang="ts" setup>
 import { computed, reactive, ref, nextTick, onMounted, watch } from 'vue';
-import { StepsProps, UploadCustomRequestOptions, useMessage } from 'naive-ui';
+import { StepsProps, UploadCustomRequestOptions, UploadFileInfo, useMessage } from 'naive-ui';
 import { saveOrUpdateUnit, unitAdd } from '@/service';
-import { deafultFormParams } from '@/utils';
+import { deafultFormParams, fileTypeOfOutLine, fileTypeOfVideo } from '@/utils';
 import { columns, paperColumns } from './columns';
 import paperTable from './paperTable.vue';
 
@@ -407,6 +302,7 @@ const customRequestOutline = ({ file }: UploadCustomRequestOptions, key: number)
  * @description: 新增章节
  */
 const showAddModal = record => {
+  quType.value = false;
   deafultFormParams(formParams);
   console.log(record);
   formParams.chapterId = record.id;
@@ -417,6 +313,7 @@ const showAddModal = record => {
   showModal.value = true;
 };
 const showEditUnitModal = form => {
+  quType.value = false;
   Object.assign(formParams, form);
   formParams.enableReport = form.enableReport === 1;
   formParams.studyFile = [];
@@ -482,10 +379,11 @@ const showEditUnitModal = form => {
   addOrEdit.value = false;
   showModal.value = true;
 };
-
+const quType = ref(true);
 const showEditUnitQuModal = form => {
   console.log(form);
   Object.assign(formParams, form);
+  quType.value = true;
   current.value = 2; // 配置题目
   addOrEdit.value = false;
   showModal.value = true;
@@ -502,7 +400,24 @@ const Next = () => {
 const Back = () => {
   current.value--;
 };
+// 上传图片直接判断是否为
+const beforeOutLineUpload = async (data: { file: UploadFileInfo; fileList: UploadFileInfo[] }): Promise<boolean> => {
+  const result = fileTypeOfOutLine(data);
+  if (result === false) {
+    message.error('只能上传ppt或pdf或MD格式的图片文件，请重新上传');
+    return false;
+  }
+  return true;
+};
 
+const beforeVideoUpload = async (data: { file: UploadFileInfo; fileList: UploadFileInfo[] }): Promise<boolean> => {
+  const result = fileTypeOfVideo(data);
+  if (result === false) {
+    message.error('只能上传mp4格式的视频文件，请重新上传');
+    return false;
+  }
+  return true;
+};
 const paperTableRef = ref();
 /**
  * @author: ZHENG
@@ -522,8 +437,7 @@ const formSubmit = async () => {
     Form.append('enableReport', formParams.enableReport ? 1 : 0);
     Form.append('development', formParams.development);
     Form.append('fileFlag', fileType);
-    console.log(paperTableRef.value.radioList.length);
-    if (paperTableRef.value.radioList.length) {
+    if (paperTableRef?.value?.radioList.length) {
       for (let i = 0; i < paperTableRef.value.radioList.length; i++) {
         // const params = {
         //   questionId: paperTableRef.value.radioList[i].id,
@@ -532,6 +446,9 @@ const formSubmit = async () => {
         //   sort: i + 1
         // };
         // unitPractice.value.push(params);
+        if (paperTableRef.value.radioList[i].questionScore) {
+          return message.error('请先录入分数');
+        }
         Form.append(`unitPractice[${i}].questionId`, paperTableRef.value.radioList[i].id);
         Form.append(`unitPractice[${i}].questionScore`, paperTableRef.value.radioList[i].questionScore);
         Form.append(`unitPractice[${i}].questionType`, paperTableRef.value.radioList[i].questionType);
@@ -552,26 +469,27 @@ const formSubmit = async () => {
     }
   } else if (addOrEdit.value === false) {
     const Form = new FormData();
+    console.log(formParams);
     fileList.forEach(file => Form.append('file', file));
     Form.append('details', formParams.note);
     Form.append('unitName', formParams.label);
     Form.append('chapterId', formParams.chapterId);
     Form.append('enableReport', formParams.enableReport ? 1 : 0);
-    Form.append('unitId', formParams.id);
+    Form.append('unitId', formParams.unitId);
     Form.append('development', formParams.development);
     Form.append('fileFlag', fileType);
-    if (paperTableRef.value.radioList.length) {
-      for (let i = 0; i < paperTableRef.value.radioList.length; i++) {
-        const params = {
-          questionId: paperTableRef.value.radioList[i].id,
-          questionScore: paperTableRef.value.radioList[i].questionScore,
-          questionType: paperTableRef.value.radioList[i].questionType,
-          sort: i + 1
-        };
-        unitPractice.value.push(params);
-      }
-    }
-    Form.append('unitPractice', unitPractice.value);
+    // if (paperTableRef?.value?.radioList.length) {
+    //   for (let i = 0; i < paperTableRef.value.radioList.length; i++) {
+    //     const params = {
+    //       questionId: paperTableRef.value.radioList[i].id,
+    //       questionScore: paperTableRef.value.radioList[i].questionScore,
+    //       questionType: paperTableRef.value.radioList[i].questionType,
+    //       sort: i + 1
+    //     };
+    //     unitPractice.value.push(params);
+    //   }
+    // }
+    // Form.append('unitPractice', unitPractice.value);
     const result = await saveOrUpdateUnit(Form);
     if (!result.error) {
       message.success('保存成功');

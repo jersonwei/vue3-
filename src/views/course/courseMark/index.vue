@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-04-30 14:33:21
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-20 08:46:54
+ * @LastEditTime: 2022-05-24 14:23:00
  * @FilePath: \work\src\views\course\courseMark\index.vue
  * @Description:
 -->
@@ -67,23 +67,30 @@ const actionColumn = reactive({
     });
   }
 });
-
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const loadDataTable = async (res: any) => {
   const params = {
     pageSize: res.size,
     current: res.current
   };
-  const result = await getCourseGradeVo({ ...params });
+  const result = await getCourseGradeVo({ ...formData.value, ...params });
   return result.data;
 };
-
 /**
  * @author: ZHENG
  * @description: 刷新
  */
 const reloadTable = () => {
   actionRef.value.reload();
+};
+const formData = ref({});
+const handleSubmit = (values: Recordable) => {
+  console.log(values);
+  formData.value = {
+    courseName: values.courseName
+  };
+  // console.log(formData);
+  reloadTable();
 };
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const handleReporte = (record: Recordable) => {
@@ -93,8 +100,11 @@ const handleReporte = (record: Recordable) => {
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const handlePractice = (record: Recordable) => {
-  // console.log('点击了测试', record);
-  routerPush({ name: 'course_coursePractice', query: { id: record.courseId, courseName: record.courseName } });
+  console.log('点击了测试', record);
+  routerPush({
+    name: 'course_coursePractice',
+    query: { id: record.courseId, courseName: record.courseName, classId: record.classId }
+  });
 };
 // , {}
 const [register] = useForm({

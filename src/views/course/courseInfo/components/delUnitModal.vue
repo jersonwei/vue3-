@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-05-13 18:02:53
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-23 15:54:54
+ * @LastEditTime: 2022-05-24 13:57:14
  * @FilePath: \work\src\views\course\courseInfo\components\delUnitModal.vue
  * @Description:
 -->
@@ -40,7 +40,7 @@ const delData = reactive({
 });
 const showDelModal = from => {
   delData.delText = from.label;
-  delData.delUnitId = from.id;
+  delData.delUnitId = from.unitId;
   showModal.value = true;
 };
 const emit = defineEmits(['reset']);

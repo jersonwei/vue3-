@@ -2,13 +2,13 @@
  * @Author: ZHENG
  * @Date: 2022-04-30 08:41:04
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-23 19:24:54
+ * @LastEditTime: 2022-05-24 16:40:51
  * @FilePath: \work\src\views\course\coursePreview\compontent\index.vue
  * @Description:
 -->
 <template>
   <div class="h-full">
-    <n-card title="视频播放器插件" class="h-full shadow-sm rounded-16px">
+    <n-card class="h-full shadow-sm rounded-16px">
       <div ref="domRef"></div>
     </n-card>
   </div>

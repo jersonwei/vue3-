@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-05-17 11:14:38
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-18 14:12:51
+ * @LastEditTime: 2022-05-24 11:06:57
  * @FilePath: \work\src\views\course\coursePractice\schemas.ts
  * @Description:
  */
@@ -15,11 +15,11 @@ export const schemas = [
     slot: 'unitIdSlot'
   },
   {
-    field: 'status',
+    field: 'stuName',
     component: 'NInput',
-    label: '学生',
+    label: '学生名称',
     componentProps: {
-      placeholder: '请选择学生'
+      placeholder: '请输入学生名称'
     }
   }
 ];

@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-05-17 14:44:33
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-21 18:38:58
+ * @LastEditTime: 2022-05-24 15:25:17
  * @FilePath: \work\src\views\course\courseReport\components\ReportModal.vue
  * @Description:
 -->
@@ -30,32 +30,35 @@
     :bordered="false"
     :segmented="segmented"
   >
-    <n-space justify="end">
-      <n-gradient-text v-if="reportData.testScore" :size="24" type="success">
-        {{ reportData.testScore }}分</n-gradient-text
-      >
-    </n-space>
-    <n-space justify="space-between">
-      <text> 学生学号：{{ reportData.stuId }} </text>
-      <text> 学生姓名：{{ reportData.stuName }} </text>
-      <text> 性别：男 </text>
-      <text> 指导老师：{{ reportData.createrName }} </text>
-      <text> 实验日期：{{ reportData.testReport.testDate }} </text>
-    </n-space>
-    <n-space vertical>
-      <n-card title="一、实验目的" size="small">
-        {{ reportData.testReport.testGoal }}
-      </n-card>
-      <n-card title="二、实验内容" size="small">
-        {{ reportData.testReport.testContent }}
-      </n-card>
-      <n-card title="三、实验步骤" size="small">
-        {{ reportData.testReport.testStep }}
-      </n-card>
-      <n-card title="四、实验名称" size="small"> {{ reportData.testReport.testQuestion }} </n-card>
-      <n-card title="五、思考题" size="small"> {{ reportData.testReport.testThink }} </n-card>
-      <n-card title="六、实验心得" size="small"> {{ reportData.testReport.testExperience }} </n-card>
-    </n-space>
+    <div class="report">
+      <n-space justify="end">
+        <!-- <n-gradient-text v-if="reportData.testScore" :size="24" type="error">
+          {{ reportData.testScore }}分</n-gradient-text
+        > -->
+        <text v-if="reportData?.testScore" style="color: red; font-size: 24px">{{ reportData.testScore }}分</text>
+      </n-space>
+      <n-space justify="space-between" style="padding: 20px 0">
+        <text> 学生学号：{{ reportData.stuId }} </text>
+        <text> 学生姓名：{{ reportData.stuName }} </text>
+        <text> 性别：男 </text>
+        <text> 指导老师：{{ reportData.createrName }} </text>
+        <text> 实验日期：{{ reportData.testReport.testDate }} </text>
+      </n-space>
+      <n-space vertical>
+        <n-card title="一、实验目的" size="small">
+          {{ reportData.testReport.testGoal }}
+        </n-card>
+        <n-card title="二、实验内容" size="small">
+          {{ reportData.testReport.testContent }}
+        </n-card>
+        <n-card title="三、实验步骤" size="small">
+          {{ reportData.testReport.testStep }}
+        </n-card>
+        <n-card title="四、实验名称" size="small"> {{ reportData.testReport.testQuestion }} </n-card>
+        <n-card title="五、思考题" size="small"> {{ reportData.testReport.testThink }} </n-card>
+        <n-card title="六、实验心得" size="small"> {{ reportData.testReport.testExperience }} </n-card>
+      </n-space>
+    </div>
     <template #footer>
       <template v-if="reportData.testScore">
         <n-space justify="center">
@@ -77,6 +80,7 @@
 import { ref, toRefs } from 'vue';
 import { useMessage } from 'naive-ui';
 import html2canvas from 'html2canvas';
+import { format } from 'date-fns';
 import { editTestReport } from '@/service';
 
 const message = useMessage();
@@ -174,7 +178,7 @@ const dataURLToBlob = dataurl => {
 };
 
 const downloadResult = name => {
-  const canvasID = document.querySelector('.custom-card');
+  const canvasID = document.querySelector('.report');
   // .body;
 
   // n-card__content

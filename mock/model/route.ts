@@ -94,7 +94,7 @@ export const routeModel: Record<Auth.RoleType, AuthRoute.Route[]> = {
           path: '/course/coursePreview',
           component: 'self',
           meta: {
-            title: '课程文件预览',
+            title: '课时预览',
             requiresAuth: true,
             hide: true,
             keepAlive: true
@@ -277,7 +277,7 @@ export const routeModel: Record<Auth.RoleType, AuthRoute.Route[]> = {
           path: '/course/coursePreview',
           component: 'self',
           meta: {
-            title: '课程文件预览',
+            title: '课时预览',
             requiresAuth: true,
             hide: true,
             keepAlive: true
@@ -418,7 +418,7 @@ export const routeModel: Record<Auth.RoleType, AuthRoute.Route[]> = {
           path: '/course/coursePreview',
           component: 'self',
           meta: {
-            title: '课程文件预览',
+            title: '课时预览',
             requiresAuth: true,
             hide: true,
             keepAlive: true

@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-05-12 17:48:09
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-23 19:32:47
+ * @LastEditTime: 2022-05-24 10:50:50
  * @FilePath: \work\src\views\course\courseMark\schemas.ts
  * @Description:
  */
@@ -28,7 +28,7 @@ export const schemas = [
   {
     field: 'courseName',
     // component: 'NSelect',
-    label: '课程'
+    label: '课程名称'
     // componentProps: {
     //   placeholder: '请选择课程名称',
     //   options: [

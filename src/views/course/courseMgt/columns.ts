@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-04-30 15:51:30
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-23 22:10:27
+ * @LastEditTime: 2022-05-24 11:18:10
  * @FilePath: \work\src\views\course\courseMgt\columns.ts
  * @Description:
  */
@@ -63,11 +63,15 @@ export const columns = [
     render(row: { listClassName: any[] }) {
       // return h('h1', JSON.stringify(row.listLabelName));
       // console.log(row.listLabelName);
-      const tags = row.listClassName.join(',');
+      if (row.listClassName?.length) {
+        const tags = row.listClassName?.join(',');
+        return tags;
+      }
+      return [];
+
       // const tags = row.listLabelName.map(tagKey => {
       //   return h('h1', tagKey);
       // });
-      return tags;
     }
   },
   {
@@ -77,11 +81,14 @@ export const columns = [
     render(row: { listLabelName: any[] }) {
       // return h('h1', JSON.stringify(row.listLabelName));
       // console.log(row.listLabelName);
-      const tags = row.listLabelName.join(',');
-      // const tags = row.listLabelName.map(tagKey => {
-      //   return h('h1', tagKey);
-      // });
-      return tags;
+      if (row.listLabelName?.length) {
+        const tags = row.listLabelName.join(',');
+        // const tags = row.listLabelName.map(tagKey => {
+        //   return h('h1', tagKey);
+        // });
+        return tags;
+      }
+      return [];
     }
   },
   {
@@ -115,7 +122,7 @@ export const columns = [
   },
   {
     title: '主讲老师',
-    key: 'lecturer',
+    key: 'lecturerName',
     width: 100
   },
   // {

@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-05-18 14:02:27
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-21 20:04:10
+ * @LastEditTime: 2022-05-24 11:02:18
  * @FilePath: \work\src\service\api\unitPracticeAnswers\unitPracticeAnswers.ts
  * @Description:
  */
@@ -42,14 +42,15 @@ export function download(url, name) {
     const blob = new Blob([res.data], { type: 'application/octet-stream,charset=UTF-8' });
     link.style.display = 'none';
     link.href = URL.createObjectURL(blob);
-    const temp = res.headers['content-disposition'];
-    const filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
-    const matches = filenameRegex.exec(temp);
-    // if (matches != null && matches[1]) {
+    // const temp = res.headers['content-disposition'];
+    // const filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
+    // const matches = filenameRegex.exec(temp);
+    // // if (matches != null && matches[1]) {
 
-    // }
-    const filename = matches[1].replace(/['"]/g, '');
-    link.download = filename; // 下载后文件名
+    // // }
+    // const filename = matches[1].replace(/['"]/g, '');
+    console.log(res.headers);
+    link.download = name; // 下载后文件名
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
