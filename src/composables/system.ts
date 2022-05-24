@@ -4,7 +4,7 @@
  * @LastEditors: ZHENG
  * @LastEditTime: 2022-05-23 11:29:36
  * @FilePath: \work\src\composables\system.ts
- * @Description: 
+ * @Description:
  */
 import UAParser from 'ua-parser-js';
 import { useAuthStore } from '@/store';

@@ -35,10 +35,15 @@
           <n-select v-model:value="formParams.majorId" :options="form.majorId" />
         </n-form-item>
         <n-form-item label="课程标签" path="label">
-          <n-select v-model:value="formParams.label" filterable multiple tag :options="form.label"
-					 @create="createLabel"
-					 @update-value="updateLabelData"
-					  />
+          <n-select
+            v-model:value="formParams.label"
+            filterable
+            multiple
+            tag
+            :options="form.label"
+            @create="createLabel"
+            @update-value="updateLabelData"
+          />
         </n-form-item>
         <n-form-item label="课程介绍" path="note">
           <n-input v-model:value="formParams.note" type="textarea" placeholder="课程介绍" />
@@ -149,10 +154,12 @@ const message = useMessage();
 let Form = new FormData();
 const emits = defineEmits(['reloadTable']);
 
-const updateLabelData = (value: Array | string | number | null, option: SelectBaseOption | null | SelectBaseOption[]) => {
-	console.log(value,option)
-}
-
+const updateLabelData = (
+  value: Array | string | number | null,
+  option: SelectBaseOption | null | SelectBaseOption[]
+) => {
+  console.log(value, option);
+};
 
 const editID = ref();
 const serviceEnv = getServiceEnv();
@@ -170,7 +177,7 @@ const editModalFn = record => {
     courseCategory: record.courseCategory,
     courseName: record.courseName,
     label: record.labelId.split(','),
-		labelName: record.listLabelName,
+    labelName: record.listLabelName,
     majorId: record.majorId,
     note: record.note,
     uploadIMage: [
@@ -186,10 +193,10 @@ const editModalFn = record => {
     // virtualNumber: 0
     // virtualRobot: ""
   };
-	console.log(formData.label)
-	for(let i = 0;i< formData.label;i++){
-		console.log(formData.label[i],formData.labelName[i])
-	}
+  console.log(formData.label);
+  for (let i = 0; i < formData.label; i++) {
+    console.log(formData.label[i], formData.labelName[i]);
+  }
   if (record.courseOutline) {
     formData.uploadOutline = [{ name: outLineName, status: 'finished', url: `${serviceEnv}${record.courseOutline}` }];
   }
@@ -230,7 +237,7 @@ const getList = async () => {
 
   const { data: labelResult } = await getLabels();
   const newLabelList = labelResult.map((item: { id: any; labelName: any }) => {
-    return { value: item.id, label: item.labelName};
+    return { value: item.id, label: item.labelName };
   });
   form.label = newLabelList;
 };
@@ -276,7 +283,7 @@ const formParams = reactive({
   majorId: '',
   note: '',
   label: '',
-	labelName:'',
+  labelName: '',
   robot: '',
   virtualRobot: '',
   virtualNumber: 0,

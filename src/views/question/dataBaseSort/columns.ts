@@ -37,7 +37,7 @@ export const columns = [
     key: 'majorName',
     width: 150
   },
-	{
+  {
     title: '所属课程',
     key: 'majorName',
     width: 150

@@ -35,7 +35,7 @@
           <n-input v-model:value="formParams.note" type="textarea" placeholder="课程介绍" />
         </n-form-item>
         <n-form-item label="题库状态" path="robot">
-         <n-switch :round="false" />
+          <n-switch :round="false" />
         </n-form-item>
       </n-form>
     </n-scrollbar>

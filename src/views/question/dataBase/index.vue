@@ -76,22 +76,22 @@ const actionColumn = reactive({
   key: 'action',
   fixed: 'right',
   render(record: Recordable<any>) {
-      return h(TableAction as any, {
-        style: 'button',
-        actions: [
-          {
-            label: '编辑',
+    return h(TableAction as any, {
+      style: 'button',
+      actions: [
+        {
+          label: '编辑',
 
-            // eslint-disable-next-line @typescript-eslint/no-use-before-define
-            onClick: handleEdit.bind(null, record)
-          },
-          {
-            label: '删除',
-            // eslint-disable-next-line @typescript-eslint/no-use-before-define
-            onClick: handleConfig.bind(null, record)
-          }
-        ]
-      });
+          // eslint-disable-next-line @typescript-eslint/no-use-before-define
+          onClick: handleEdit.bind(null, record)
+        },
+        {
+          label: '删除',
+          // eslint-disable-next-line @typescript-eslint/no-use-before-define
+          onClick: handleConfig.bind(null, record)
+        }
+      ]
+    });
   }
 });
 
