@@ -2,8 +2,13 @@
  * @Author: ZHENG
  * @Date: 2022-05-21 16:00:56
  * @LastEditors: ZHENG
+<<<<<<< HEAD
  * @LastEditTime: 2022-05-24 19:37:01
  * @FilePath: \work\src\views\course\courseInfo\components\paperTable.vue
+=======
+ * @LastEditTime: 2022-05-24 19:20:57
+ * @FilePath: \20220524\src\views\course\courseInfo\components\paperTable.vue
+>>>>>>> e981e2ee3b9dbcb357b24617bf3767eec74c2d5e
  * @Description:
 -->
 <template>
@@ -307,12 +312,12 @@ const editPaper = async () => {
     if (!radioList.value[i].questionScore) {
       return message.error('请先输入分数');
     }
-    console.log(radioList.value);
-    if (radioList.value.unitId) {
+    console.log('radioList', radioList.value);
+    if (radioList.value[i].unitId) {
       const params = {
         id: parseInt(radioList.value[i].id, 10),
         unitId: parseInt(props.id, 10),
-        questionId: radioList.value[i].id,
+        questionId: radioList.value[i].questionId,
         questionScore: radioList.value[i].questionScore,
         sort: i + 1,
         questionType: radioList.value[i].questionType

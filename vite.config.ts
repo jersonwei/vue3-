@@ -2,8 +2,8 @@
  * @Author: ZHENG
  * @Date: 2022-04-30 08:41:04
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-12 17:19:51
- * @FilePath: \e-class-admin\vite.config.ts
+ * @LastEditTime: 2022-05-24 19:01:46
+ * @FilePath: \20220524\vite.config.ts
  * @Description: vite配置
  */
 import { fileURLToPath } from 'url';
@@ -39,8 +39,7 @@ export default defineConfig(configEnv => {
     },
     server: {
       host: '0.0.0.0',
-      port: 3200,
-      open: true,
+      port: 3201,
       proxy: createViteProxy(isOpenProxy, envConfig)
     },
     build: {
