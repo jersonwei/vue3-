@@ -3,7 +3,7 @@
  * @Author: ZHENG
  * @Date: 2022-05-14 11:44:12
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-24 18:00:01
+ * @LastEditTime: 2022-05-24 19:58:18
  * @FilePath: \work\src\views\course\coursePreview\index.vue
  * @Description:
 -->
@@ -12,7 +12,13 @@
     <n-layout has-sider>
       <n-layout-sider style="width: 1000px" collapse-mode="width" :collapsed-width="1200" :width="1200">
         <n-card content-style="padding: 0;" :title="courseData.unitName">
-          <n-tabs type="line" size="large" :tabs-padding="20" pane-style="padding: 20px;">
+          <n-tabs
+            v-if="showPaperData || courseData?.files?.length"
+            type="line"
+            size="large"
+            :tabs-padding="20"
+            pane-style="padding: 20px;"
+          >
             <template v-for="(item, index) in courseData?.files">
               <n-tab-pane v-if="item.type === 0" :key="index" name="教学文档">
                 <iframe :src="item.url" width="100%" height="100%" style="height: 600px">
@@ -53,6 +59,8 @@
               >
               </TablePro
             ></n-tab-pane>
+          </n-tabs>
+          <n-tabs>
             <n-tab-pane v-if="!showPaperData && !courseData?.files?.length" :bar-width="0">
               <div style="display: flex; justify-content: center; align-items: center; height: 600px">
                 <n-icon size="36" class="cursor-pointer text-gray-400">

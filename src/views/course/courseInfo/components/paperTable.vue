@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-05-21 16:00:56
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-24 18:49:11
+ * @LastEditTime: 2022-05-24 19:37:01
  * @FilePath: \work\src\views\course\courseInfo\components\paperTable.vue
  * @Description:
 -->
@@ -111,7 +111,7 @@
     <n-modal
       v-model:show="showModal"
       preset="dialog"
-      style="width: 150px"
+      style="width: 750px"
       title="确认"
       positive-text="确认"
       negative-text="算了"
