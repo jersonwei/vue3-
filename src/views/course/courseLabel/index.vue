@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-04-30 14:33:21
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-18 08:46:49
+ * @LastEditTime: 2022-05-25 14:14:07
  * @FilePath: \work\src\views\course\courseLabel\index.vue
  * @Description:
 -->
@@ -33,7 +33,7 @@
       v-model:show="showModal"
       :mask-closable="false"
       preset="dialog"
-      title="新增"
+      :title="`${!editID ? '新增' : '修改'}`"
       positive-text="确认"
       negative-text="取消"
     >
@@ -126,6 +126,7 @@ const schemas: FormSchema[] = [
     component: 'NInput',
     label: '备注',
     componentProps: {
+      type: 'textarea',
       placeholder: '请输入标签备注',
       showButton: false
     }

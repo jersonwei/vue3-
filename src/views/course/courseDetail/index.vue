@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-05-12 14:54:50
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-25 13:45:59
+ * @LastEditTime: 2022-05-25 16:16:00
  * @FilePath: \work\src\views\course\courseDetail\index.vue
  * @Description:
 -->
@@ -215,7 +215,7 @@ watchEffect(async () => {
   courseDetail.note = result.note;
   courseDetail.coverPic = `${http}${result.coverPic}`;
   courseOutLine.value = result.courseOutline;
-  courseDetail.courseOutline = `${http}${result.courseOutline}`;
+  courseDetail.courseOutline = `https://view.xdocin.com/view?src=${http}${result.courseOutline}`;
   // encodeURI
   // https://view.xdocin.com/view?src=
   console.log(courseDetail.courseOutline);

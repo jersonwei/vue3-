@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-04-30 15:51:30
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-25 09:00:37
+ * @LastEditTime: 2022-05-25 17:36:24
  * @FilePath: \work\src\views\question\dataBaseSort\columns.ts
  * @Description:
  */
@@ -12,7 +12,7 @@ export const columns = [
   {
     title: '序号',
     key: 'tableId',
-    width: 50,
+    width: 100,
     render(row, index) {
       return h('h1', index + 1);
     }

@@ -2,26 +2,30 @@
  * @Author: ZHENG
  * @Date: 2022-04-30 14:33:21
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-25 17:07:45
- * @FilePath: \work\src\views\question\dataBase\index.vue
+ * @LastEditTime: 2022-05-25 16:34:38
+ * @FilePath: \work\src\views\examination\examinationList\index.vue
  * @Description:
 -->
 <template>
-  <n-card :bordered="false">
+  <n-card class="relative" :bordered="false">
     <FormPro @register="register" @submit="handleSubmit" @reset="reloadTable">
       <template #courseCategorySlot="{ model, field }">
-        <n-select v-model:value="model[field]" placeholder="请选择类别" :options="options" />
+        <n-select v-model:value="model[field]" placeholder="请选择所属类别" :options="courseCategoryOptions" />
       </template>
       <template #majorIdSlot="{ model, field }">
         <n-cascader
           v-model:value="model[field]"
-          placeholder="请选择专业"
+          clearable
+          placeholder="请选择所属专业"
           :options="cascaderOptions"
           :check-strategy="'all'"
           :show-path="true"
           remote
           :on-load="handleLoad"
         />
+      </template>
+      <template #statusSlot="{ model, field }">
+        <n-select v-model:value="model[field]" placeholder="请选择课程状态" :options="courseStatusOptions" />
       </template>
     </FormPro>
     <TablePro
@@ -30,23 +34,11 @@
       :request="loadDataTable"
       :row-key="row => row.id"
       :action-column="actionColumn"
-      :scroll-x="1200"
+      :scroll-x="2200"
     >
-      <template #tableTitle>
-        <n-button type="primary" @click="addTable">
-          <template #icon>
-            <n-icon>
-              <PlusOutlined />
-            </n-icon>
-          </template>
-          新建题库
-        </n-button>
-      </template>
     </TablePro>
-    <addModalVue ref="addModalRef" @reload-table="reloadTable"></addModalVue>
-    <editModalVue ref="editModalRef" @reload-table="reloadTable"></editModalVue>
+    <addOrEditModalVue ref="addOrEditModalRef" @reload-table="reloadTable"></addOrEditModalVue>
     <delModal ref="delModalRef" :del-data="delData" :del-text="delText" @reload-table="reloadTable"></delModal>
-    <updateCourse ref="updateModalRef" :update-data="updateData" @reload-table="reloadTable"></updateCourse>
   </n-card>
 </template>
 
@@ -56,22 +48,27 @@ import { CascaderOption, useMessage } from 'naive-ui';
 import { PlusOutlined } from '@vicons/antd';
 import { useCourseStore } from '@/store';
 import { useRouterPush } from '@/composables';
-import { searchCouserInfo, getcourseCategoryList, getClassList, getCollegeLegistt } from '@/service';
+import { searchCouserInfo } from '@/service';
+import { getUserInfo } from '@/utils';
 import { TablePro, TableAction } from '@/components/TablePro';
 import { FormPro, useForm } from '@/components/FormPro';
 import { columns } from './columns';
 import { schemas } from './schemas';
 import delModal from './components/delModal.vue';
-import addModalVue from './components/addModal.vue';
-import editModalVue from './components/editModal.vue';
-import updateCourse from './components/updateCourse.vue';
+import addOrEditModalVue from './components/addOrEditModal.vue';
+import { getCourseCategoryOptions, getCollegeLegistOptions, getStatusOptions, getChildren } from './getOptions';
+
+// 获取用户信息
+const { userRole } = getUserInfo();
+
+console.log(userRole);
 
 const courseStore = useCourseStore();
 const message = useMessage();
 const formData = ref({});
 const actionColumn = reactive({
   // Table操作列
-  width: 230,
+  width: 200,
   title: '操作',
   key: 'action',
   fixed: 'right',
@@ -80,21 +77,21 @@ const actionColumn = reactive({
       style: 'button',
       actions: [
         {
-          label: '管理题目',
-
+          label: '删除',
+          icon: 'ic:outline-delete-outline',
           // eslint-disable-next-line @typescript-eslint/no-use-before-define
-          onClick: handleEdit.bind(null, record)
+          onClick: handleDelete.bind(null, record)
         },
         {
           label: '编辑',
-
           // eslint-disable-next-line @typescript-eslint/no-use-before-define
           onClick: handleEdit.bind(null, record)
         },
+
         {
-          label: '删除',
+          label: '预览',
           // eslint-disable-next-line @typescript-eslint/no-use-before-define
-          onClick: handleConfig.bind(null, record)
+          onClick: handleDetail.bind(null, record)
         }
       ]
     });
@@ -102,34 +99,16 @@ const actionColumn = reactive({
 });
 
 // 院系和所属类别的下拉查询逻辑
-const options = ref([]);
+const courseCategoryOptions = ref([]);
 const cascaderOptions = ref([]);
-const getOptions = async () => {
-  const { data: result } = await getcourseCategoryList();
-  const newList = result.map((item: { id: any; categoryName: any }) => {
-    return { value: item.id, label: item.categoryName };
-  });
-  options.value = newList;
-  // 院系
-  const { data: collegeList } = await getCollegeLegistt();
-  const newcollegeList = collegeList.map((item: { id: any; collegeName: any }) => {
-    return { value: item.id, label: item.collegeName, depth: 1, isLeaf: false };
-  });
-  cascaderOptions.value = newcollegeList;
+const courseStatusOptions = ref([]);
+
+const getOption = async () => {
+  courseCategoryOptions.value = await getCourseCategoryOptions();
+  cascaderOptions.value = await getCollegeLegistOptions();
+  courseStatusOptions.value = await getStatusOptions();
 };
-getOptions();
-
-async function getChildren(option: CascaderOption) {
-  const { data: result } = await getClassList();
-  const newList = result.map(item => {
-    return { value: item.id, label: item.className, isLeaf: 1 };
-  });
-  for (let i = 0; i <= (option as { depth: number }).depth; ++i) {
-    option.children = newList;
-  }
-  return children;
-}
-
+getOption();
 const handleLoad = (option: CascaderOption) => {
   return new Promise<void>(resolve => {
     window.setTimeout(() => {
@@ -179,7 +158,7 @@ const delData = ref<number>(0); // 删除数据的ID
 const delText = ref(''); // 删除的文字
 // eslint-disable-next-line consistent-return
 const handleDelete = (record: Recordable) => {
-  if (record.statusName === '上架') {
+  if (record.status === '0') {
     return message.error('只有下架状态课程才能删除');
   }
   delText.value = record.courseName;
@@ -188,14 +167,12 @@ const handleDelete = (record: Recordable) => {
 };
 
 // 新建和编辑弹窗
-const addModalRef = ref();
-const editModalRef = ref();
+const addOrEditModalRef = ref();
 // 新建
 const addTable = () => {
-  addModalRef.value.showModalFn();
+  addOrEditModalRef.value.showModalFn();
 };
 
-const updateData = ref();
 /**
  * @author: ZHENG
  * @description: 编辑
@@ -203,12 +180,12 @@ const updateData = ref();
  * @return {*}
  */
 const handleEdit = (record: Recordable) => {
-  editModalRef.value.editModalFn(record);
+  addOrEditModalRef.value.editModalFn(record);
 };
 
 // 跳转详情页功能
 const actionRef = ref(); // 表格
-
+const updateData = ref();
 // 定时上架功能
 const updateModalRef = ref();
 const handUpdateStatus = (record: Recordable) => {
@@ -232,14 +209,14 @@ const handleDetail = (record: Recordable) => {
 
 /**
  * @author: ZHENG
- * @description: 跳转课程信息
+ * @description: 跳转课程信息\配置
  * @param {*} record
  * @return {*}
  */
 const handleConfig = (record: Recordable) => {
   courseStore.setCourseInfo(record.id);
   console.log(record.id);
-  routerPush({ name: 'course_courseInfo', query: { id: record.id } });
+  routerPush({ name: 'course_courseInfo' });
 };
 </script>
 <style scoped></style>

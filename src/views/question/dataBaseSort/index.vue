@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-04-30 14:33:21
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-25 12:00:16
+ * @LastEditTime: 2022-05-25 17:23:38
  * @FilePath: \work\src\views\question\dataBaseSort\index.vue
  * @Description:
 -->
@@ -150,13 +150,9 @@ const handleEdit = (record: Recordable) => {
 };
 // 删除逻辑
 const delModalRef = ref();
-const delData = ref<number>(0); // 删除数据的ID
-const delText = ref(''); // 删除的文字
 // eslint-disable-next-line consistent-return
 const handleDelete = (record: Recordable) => {
-  delText.value = record.categoryName;
-  delData.value = record.id;
-  delModalRef.value.showDelModal = true;
+  delModalRef.value.showDelModalFn(record);
 };
 </script>
 <style scoped></style>

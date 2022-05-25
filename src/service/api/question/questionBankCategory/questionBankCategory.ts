@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-05-25 08:32:18
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-25 11:57:13
+ * @LastEditTime: 2022-05-25 17:11:50
  * @FilePath: \work\src\service\api\question\questionBankCategory\questionBankCategory.ts
  * @Description:
  */
@@ -18,7 +18,7 @@ export function getQuestionBankCategoryList(params) {
 }
 // 新增题库分类
 export function addQuestionBankCategory(params) {
-  const res = request.get(`/questionBankCategory/add`, params); //
+  const res = request.post(`/questionBankCategory/add`, params); //
   return res;
 }
 

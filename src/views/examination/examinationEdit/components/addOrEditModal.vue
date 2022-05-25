@@ -2,8 +2,8 @@
  * @Author: ZHENG
  * @Date: 2022-05-12 17:34:13
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-23 08:43:56
- * @FilePath: \work\src\views\question\dataBase\components\addModal.vue
+ * @LastEditTime: 2022-05-25 16:26:25
+ * @FilePath: \work\src\views\examination\examinationSort\components\addOrEditModal.vue
  * @Description:
 -->
 <template>
@@ -14,7 +14,7 @@
     style="width: 650px"
     :show-icon="false"
     preset="dialog"
-    :title="`新建题库`"
+    :title="`${addOrEdit ? '新建' : '编辑'}分类`"
   >
     <n-scrollbar ref="scrollRef" style="max-height: 750px">
       <n-form
@@ -25,17 +25,17 @@
         :label-width="120"
         class="m-2 py-4"
       >
-        <n-form-item label="题库名称" path="courseName">
-          <n-input v-model:value="formParams.courseName" placeholder="请输入题库名称" />
+        <n-form-item label="分类名称" path="courseName">
+          <n-input v-model:value="formParams.courseName" placeholder="请输入课程名称" />
         </n-form-item>
-        <n-form-item label="所属类别" path="courseCategory">
+        <n-form-item label="所属课程" path="courseCategory">
           <n-select v-model:value="formParams.courseCategory" :options="form.courseCategory" />
         </n-form-item>
-        <n-form-item label="题库介绍" path="note">
-          <n-input v-model:value="formParams.note" type="textarea" placeholder="课程介绍" />
+        <n-form-item label="所属专业" path="classList">
+          <n-select v-model:value="formParams.classList" multiple :options="form.majorId" />
         </n-form-item>
-        <n-form-item label="题库状态" path="robot">
-          <n-switch :round="false" />
+        <n-form-item label="分类介绍" path="note">
+          <n-input v-model:value="formParams.note" type="textarea" placeholder="课程介绍" />
         </n-form-item>
       </n-form>
     </n-scrollbar>
@@ -51,13 +51,14 @@
 <script lang="ts" setup>
 import { reactive, ref } from 'vue';
 import { UploadCustomRequestOptions, UploadFileInfo, useMessage } from 'naive-ui';
-import { MinusCircleOutlined } from '@vicons/antd';
 import { useDebounceFn } from '@vueuse/core';
-import { addCourse, getcourseCategoryList, getClassList, getLabels, saveOrUpdateLabel } from '@/service';
+import { useAuthStore } from '@/store';
+import { addCourse, saveOrUpdateLabel, updateCourseInfo } from '@/service';
 import { fileTypeOfImage, fileTypeOfOutLine, getServiceEnv, deafultFormParams } from '@/utils';
 
 const showModal = ref(false);
-const showForm = ref<boolean | null>(null);
+const addOrEdit = ref(false); // true 新增，false修改
+const showForm = ref<boolean | null>(null); // 展示虚拟机页面
 const formBtnLoading = ref(false);
 const local = ref(0);
 const formRef = ref();
@@ -70,21 +71,68 @@ const formParams = reactive({
   courseCategory: '',
   majorId: '',
   note: '',
-  label: [],
   robot: '',
   virtualRobot: '',
   virtualNumber: 0,
-  local: [],
-  localName: [],
-  uploadIMage: [],
-  uploadOutline: []
 });
 
 const showModalFn = () => {
   deafultFormParams(formParams);
   Form = new FormData();
+  addOrEdit.value = true;
   showModal.value = true;
 };
+
+const editID = ref();
+const serviceEnv = getServiceEnv();
+// const labelList = ref([]);
+// const classList = ref([]);
+const editModalFn = record => {
+  console.log(record);
+  Form = new FormData();
+  editID.value = record.id;
+  formParams.labelList = [];
+  formParams.classList = [];
+  const formData = {
+    courseCategory: record.courseCategory,
+    courseName: record.courseName,
+    label: record?.labelId?.split(','),
+    labelName: record.listLabelName,
+    majorId: record?.eclassId?.split(','),
+    note: record.note,
+    uploadIMage: [
+      {
+        status: 'finished',
+        url: `${serviceEnv}${record.coverPic}`
+      }
+    ],
+    uploadOutline: []
+    // local: []
+    // localName: []
+    // robot: ""
+    // virtualNumber: 0
+    // virtualRobot: ""
+  };
+  for (let i = 0; i < formData.label?.length; i++) {
+    formParams.labelList.push(parseInt(formData.label[i], 10));
+  }
+  console.log('formData.majorId', formData.majorId);
+  for (let i = 0; i < formData.majorId?.length; i++) {
+    formParams.classList.push(parseInt(formData.majorId[i], 10));
+  }
+  formData.label = formParams.labelList;
+  formData.majorId = formParams.classList;
+  if (record.courseOutline) {
+    const outLineIndexOf = record.courseOutline.indexOf('outline/');
+    const outLineName = record.courseOutline.slice(outLineIndexOf + 8);
+    formData.uploadOutline = [{ name: outLineName, status: 'finished', url: `${serviceEnv}${record.courseOutline}` }];
+  }
+  // eslint-disable-next-line @typescript-eslint/no-use-before-define
+  Object.assign(formParams, formData);
+  addOrEdit.value = false;
+  showModal.value = true;
+};
+
 // 新增修改的Form
 const rules = {
   courseName: {
@@ -96,33 +144,15 @@ const rules = {
     required: true,
     message: '请选择所属分类'
   },
-  majorId: {
+  classList: {
     required: true,
     message: '请选择所属班级'
   }
+  // labelList: {
+  //   required: true,
+  //   message: '请选择课程标签'
+  // }
 };
-
-const getList = async () => {
-  const { data: result } = await getcourseCategoryList();
-  const newList = result.map(item => {
-    return { value: item.id, label: item.categoryName };
-  });
-  // eslint-disable-next-line @typescript-eslint/no-use-before-define
-  form.courseCategory = newList;
-  const { data: majorList } = await getClassList(1);
-  const newMajorList = majorList.map(item => {
-    return { value: item.id, label: item.className };
-  });
-  // eslint-disable-next-line @typescript-eslint/no-use-before-define
-  form.majorId = newMajorList;
-
-  const { data: labelResult } = await getLabels();
-  const newLabelList = labelResult.map((item: { id: any; labelName: any }) => {
-    return { value: item.id, label: item.labelName, depth: 1, isLeaf: false };
-  });
-  form.label = newLabelList;
-};
-getList();
 
 const form = reactive({
   courseCategory: [],
@@ -187,24 +217,52 @@ const createLabel = useDebounceFn(async (label: string) => {
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const confirmForm = (e: { preventDefault: () => void }) => {
+  const auth = useAuthStore();
   // e.preventDefault();
   formBtnLoading.value = true;
   formRef.value.validate((errors: any) => {
     if (!errors) {
       setTimeout(async () => {
-        // Form.append('file', (fileImage[0] as File) || '');
-        // Form.append('outLine', (outLine[0] as File) || '');
-        Form.append('courseName', formParams.courseName);
-        Form.append('courseCategory', formParams.courseCategory);
-        Form.append('eclassId', formParams.majorId);
-        Form.append('note', formParams.note);
-        Form.append('labelId', formParams.label);
-        Form.append('lecturer', '12');
-        const result = await addCourse(Form);
-        console.log(result);
-        if (!result.error) {
-          message.success(`新建成功`);
+        if (addOrEdit.value === true) {
+          // Form.append('file', (fileImage[0] as File) || '');
+          // Form.append('outLine', (outLine[0] as File) || '');
+          Form.append('courseName', formParams.courseName);
+          Form.append('courseCategory', formParams.courseCategory);
+          if (formParams.classList) {
+            Form.append('eclassId', formParams.classList);
+          }
+          if (formParams.note) {
+            Form.append('note', formParams.note);
+          }
+          if (formParams.labelList.length) {
+            Form.append('labelId', formParams.labelList);
+          }
+          // const { userId } = auth.userInfo;
+          // Form.append('lecturer', userId);
+          const result = await addCourse(Form);
+          if (!result.error) {
+            message.success(`新建成功`);
+          }
         }
+        if (addOrEdit.value === false) {
+          Form.append('id', editID.value);
+          Form.append('courseName', formParams.courseName);
+          Form.append('courseCategory', formParams.courseCategory);
+          Form.append('eclassId', formParams.classList);
+          Form.append('note', formParams.note);
+          if (formParams.labelList.length) {
+            Form.append('labelId', formParams.labelList);
+          }
+
+          // const { userId } = auth.userInfo;
+          // Form.append('lecturer', userId);
+          const result = await updateCourseInfo(Form);
+          console.log(result);
+          if (!result.error) {
+            message.success(`修改成功`);
+          }
+        }
+
         emits('reloadTable');
         showModal.value = false;
       });
@@ -247,5 +305,5 @@ const beforeOutLineUpload = async (data: { file: UploadFileInfo; fileList: Uploa
   return true;
 };
 
-defineExpose({ showModalFn });
+defineExpose({ showModalFn, editModalFn });
 </script>

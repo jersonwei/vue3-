@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-05-12 17:34:13
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-25 11:52:35
+ * @LastEditTime: 2022-05-25 17:31:19
  * @FilePath: \work\src\views\question\dataBaseSort\components\addOrEditModal.vue
  * @Description:
 -->
@@ -32,7 +32,7 @@
           <n-input v-model:value="formParams.categoryName" placeholder="请输入分类名称" />
         </n-form-item>
         <n-form-item label="分类备注" path="note">
-          <n-input v-model:value="formParams.note" placeholder="请输入分类名称" />
+          <n-input v-model:value="formParams.note" type="textarea" placeholder="请输入分类名称" />
         </n-form-item>
       </n-form>
     </n-scrollbar>
@@ -47,7 +47,7 @@
 <script lang="ts" setup>
 import { reactive, ref } from 'vue';
 import { useMessage } from 'naive-ui';
-import { addQuestionBankCategory } from '@/service';
+import { addQuestionBankCategory, editQuestionBankCategory } from '@/service';
 import { deafultFormParams } from '@/utils';
 
 const showModal = ref(false);
@@ -86,8 +86,8 @@ const showAddModalFn = (record: Recordable) => {
     formParams.categoryParentName = '无';
   } else {
     const { id, categoryName } = record;
-    formParams.categoryParent = id;
-    formParams.categoryParentName = categoryName;
+    formParams.categoryParent = id || '';
+    formParams.categoryParentName = categoryName || '无';
   }
   addOrEdit.value = true;
   showModal.value = true;
@@ -100,8 +100,8 @@ const showAddModalFn = (record: Recordable) => {
  */
 const showEditModalFn = (record: Recordable) => {
   const { id, categoryName, note, categoryParent, categoryParentName } = record;
-  formParams.categoryParent = categoryParent;
-  formParams.categoryParentName = categoryParentName;
+  formParams.categoryParent = categoryParent || '0';
+  formParams.categoryParentName = categoryParentName || '无';
   formParams.categoryName = categoryName;
   formParams.note = note;
   formParams.id = id;
@@ -137,6 +137,8 @@ const confirmForm = (e: { preventDefault: () => void }) => {
             note
           };
           console.log(params);
+          const result = await editQuestionBankCategory(params);
+          console.log(result);
         }
 
         emits('reloadTable');

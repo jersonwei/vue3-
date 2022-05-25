@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-05-17 10:52:29
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-25 11:36:38
+ * @LastEditTime: 2022-05-25 14:11:18
  * @FilePath: \work\src\views\course\courseReport\index.vue
  * @Description:
 -->
@@ -39,6 +39,7 @@
         </n-button>
       </template> -->
     </TablePro>
+    <n-data-table v-else :columns="columns" />
     <ReportModal ref="ReportRef" :report-data="reportData" @reset="reloadTable"></ReportModal>
   </n-card>
 </template>

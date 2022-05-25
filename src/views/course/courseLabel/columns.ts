@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-04-30 15:51:30
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-17 09:34:48
+ * @LastEditTime: 2022-05-25 14:12:24
  * @FilePath: \work\src\views\course\courseLabel\columns.ts
  * @Description:
  */
@@ -18,7 +18,7 @@ export const columns = [
     width: 100
   },
   {
-    title: '描述',
+    title: '备注',
     key: 'note',
     width: 160
   }

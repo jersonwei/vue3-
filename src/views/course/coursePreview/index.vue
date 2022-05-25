@@ -3,7 +3,7 @@
  * @Author: ZHENG
  * @Date: 2022-05-14 11:44:12
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-24 19:58:18
+ * @LastEditTime: 2022-05-25 15:52:10
  * @FilePath: \work\src\views\course\coursePreview\index.vue
  * @Description:
 -->
@@ -21,10 +21,11 @@
           >
             <template v-for="(item, index) in courseData?.files">
               <n-tab-pane v-if="item.type === 0" :key="index" name="教学文档">
-                <iframe :src="item.url" width="100%" height="100%" style="height: 600px">
-                  This browser does not support PDFs. Please download the PDF to view it:
+                <embed :src="item.url" width="100%" type="application/pdf" height="100%" style="height: 600px" />
+                <!-- This browser does not support PDFs. Please download the PDF to view it:
                   <a href="/test.pdf">Download PDF</a>
-                </iframe>
+
+                </embed> -->
               </n-tab-pane>
               <n-tab-pane v-if="item.type === 1" :key="index" name="教学视频">
                 <playerVideo :src="item.url"></playerVideo>

@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-04-30 15:51:30
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-23 08:36:46
+ * @LastEditTime: 2022-05-25 17:06:29
  * @FilePath: \work\src\views\question\dataBase\columns.ts
  * @Description:
  */
@@ -29,18 +29,13 @@ export const columns = [
   },
 
   {
-    title: '题库分类',
+    title: '所属分类',
     key: 'courseCategoryName',
     width: 100
   },
   {
     title: '所属院系',
     key: 'collegeName',
-    width: 150
-  },
-  {
-    title: '所属专业',
-    key: 'majorName',
     width: 150
   },
   {

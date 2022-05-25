@@ -460,11 +460,31 @@ export const routeModel: Record<Auth.RoleType, AuthRoute.Route[]> = {
       component: 'basic',
       children: [
         {
-          name: 'question_dataBase',
-          path: '/question/dataBase',
+          name: 'examination_examinationList',
+          path: '/examination/examinationList',
           component: 'self',
           meta: {
-            title: '题库列表',
+            title: '试卷列表',
+            requiresAuth: true,
+            icon: 'gg:calendar-today'
+          }
+        },
+        {
+          name: 'examination_examinationSort',
+          path: '/examination/examinationSort',
+          component: 'self',
+          meta: {
+            title: '试卷分类',
+            requiresAuth: true,
+            icon: 'gg:calendar-today'
+          }
+        },
+        {
+          name: 'examination_examinationEdit',
+          path: '/examination/examinationEdit',
+          component: 'self',
+          meta: {
+            title: '试卷创编',
             requiresAuth: true,
             icon: 'gg:calendar-today'
           }
@@ -514,16 +534,6 @@ export const routeModel: Record<Auth.RoleType, AuthRoute.Route[]> = {
           }
         },
         {
-          name: 'question_knowledgeSort',
-          path: '/question/knowledgeSort',
-          component: 'self',
-          meta: {
-            title: '知识点分类',
-            requiresAuth: true,
-            icon: 'gg:calendar-today'
-          }
-        },
-        {
           name: 'question_problemsList',
           path: '/question/problemsList',
           component: 'self',
@@ -535,7 +545,7 @@ export const routeModel: Record<Auth.RoleType, AuthRoute.Route[]> = {
         }
       ],
       meta: {
-        title: '题库管理',
+        title: '测评管理',
         icon: 'gg:calendar-today',
         order: 8
       }
