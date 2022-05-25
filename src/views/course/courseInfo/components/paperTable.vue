@@ -3,7 +3,7 @@
  * @Date: 2022-05-21 16:00:56
  * @LastEditors: ZHENG
 <<<<<<< HEAD
- * @LastEditTime: 2022-05-24 19:37:01
+ * @LastEditTime: 2022-05-25 11:27:59
  * @FilePath: \work\src\views\course\courseInfo\components\paperTable.vue
 =======
  * @LastEditTime: 2022-05-24 19:20:57
@@ -17,7 +17,7 @@
       <n-button @click="showpaper">新增</n-button>
     </n-space>
     <n-scrollbar style="max-height: 400px">
-      <n-card v-if="radioList.length" title="单选题">
+      <n-card v-if="radioList.length" style="width: 500px" title="单选题">
         <Draggable
           :list="radioList"
           :animation="100"
@@ -29,16 +29,14 @@
         >
           <template #item="{ element, index }">
             <div class="items">
-              <div class="title">
-                {{ element.id }}、{{ element.questionName }}
-                <n-input v-model:value="element.questionScore" :style="{ width: '33%' }" placeholder="分数" />
-                <n-button @click="delQu(radioList, index)">删除</n-button>
-              </div>
+              <div class="title">{{ element.id }}、{{ element.questionName }}</div>
+              <n-input v-model:value="element.questionScore" :style="{ width: '33%' }" placeholder="分数" />
+              <n-button @click="delQu(radioList, index)">删除</n-button>
             </div>
           </template>
         </Draggable>
       </n-card>
-      <n-card v-if="multiList.length" title="多选题">
+      <n-card v-if="multiList.length" style="width: 500px" title="多选题">
         <Draggable
           :list="multiList"
           :animation="100"
@@ -48,14 +46,16 @@
           ghost-class="ghost"
           @change="onMoveCallback"
         >
-          <template #item="{ element }">
+          <template #item="{ element, index }">
             <div class="items">
-              <div class="title">{{ element.id }}{{ element.questionName }}</div>
+              <div class="title">{{ element.id }}、{{ element.questionName }}</div>
+              <n-input v-model:value="element.questionScore" :style="{ width: '33%' }" placeholder="分数" />
+              <n-button @click="delQu(multiList, index)">删除</n-button>
             </div>
           </template>
         </Draggable>
       </n-card>
-      <n-card v-if="exerciseList.length" title="填空题">
+      <n-card v-if="exerciseList.length" style="width: 500px" title="填空题">
         <Draggable
           :list="exerciseList"
           :animation="100"
@@ -65,14 +65,16 @@
           ghost-class="ghost"
           @change="onMoveCallback"
         >
-          <template #item="{ element }">
+          <template #item="{ element, index }">
             <div class="items">
-              <div class="title">{{ element.id }}{{ element.questionName }}</div>
+              <div class="title">{{ (element.id, index) }}、{{ element.questionName }}</div>
+              <n-input v-model:value="element.questionScore" :style="{ width: '33%' }" placeholder="分数" />
+              <n-button @click="delQu(exerciseList, index)">删除</n-button>
             </div>
           </template>
         </Draggable>
       </n-card>
-      <n-card v-if="answerList.length" title="简答题">
+      <n-card v-if="answerList.length" style="width: 500px" title="简答题">
         <Draggable
           :list="answerList"
           :animation="100"
@@ -82,14 +84,16 @@
           ghost-class="ghost"
           @change="onMoveCallback"
         >
-          <template #item="{ element }">
+          <template #item="{ element, index }">
             <div class="items">
-              <div class="title">{{ element.id }}{{ element.questionName }}</div>
+              <div class="title">{{ element.id }}、{{ element.questionName }}</div>
+              <n-input v-model:value="element.questionScore" :style="{ width: '33%' }" placeholder="分数" />
+              <n-button @click="delQu(answerList, index)">删除</n-button>
             </div>
           </template>
         </Draggable>
       </n-card>
-      <n-card v-if="operateList.length" title="实操题">
+      <n-card v-if="operateList.length" style="width: 500px" title="实操题">
         <Draggable
           :list="operateList"
           :animation="100"
@@ -99,9 +103,11 @@
           ghost-class="ghost"
           @change="onMoveCallback"
         >
-          <template #item="{ element }">
+          <template #item="{ element, index }">
             <div class="items">
               <div class="title">{{ element.id }}{{ element.questionName }}</div>
+              <n-input v-model:value="element.questionScore" :style="{ width: '33%' }" placeholder="分数" />
+              <n-button @click="delQu(operateList, index)">删除</n-button>
             </div>
           </template>
         </Draggable>
@@ -116,10 +122,10 @@
     <n-modal
       v-model:show="showModal"
       preset="dialog"
+      :mask-closable="false"
       style="width: 750px"
       title="确认"
       positive-text="确认"
-      negative-text="算了"
       @positive-click="onPositiveClick"
     >
       <n-scrollbar ref="scrollRef" style="max-height: 750px">
@@ -140,7 +146,7 @@
           :columns="paperColumns"
           :request="loadDataTable"
           :row-key="row => row.id"
-          :scroll-x="900"
+          :scroll-x="300"
           :default-checked-row-keys="defaultRow"
           @update:checked-row-keys="handleCheck"
         ></TablePro>
@@ -198,11 +204,21 @@ const showFormParams = reactive({
 
 const showpaper = () => {
   defaultRow.value = [];
-  for (let i = 0; i < radioList.value.length; i++) {
-    console.log(radioList.value[i]);
-    defaultRow.value.push(radioList.value[i].id);
+  for (let i = 0; i < radioList?.value?.length; i++) {
+    defaultRow.value.push(radioList.value[i].questionId);
   }
-  console.log(defaultRow.value);
+  for (let i = 0; i < multiList?.value?.length; i++) {
+    defaultRow.value.push(multiList.value[i].questionId);
+  }
+  for (let i = 0; i < answerList?.value?.length; i++) {
+    defaultRow.value.push(answerList.value[i].questionId);
+  }
+  for (let i = 0; i < exerciseList?.value?.length; i++) {
+    defaultRow.value.push(exerciseList.value[i].questionId);
+  }
+  for (let i = 0; i < operateList?.value?.length; i++) {
+    defaultRow.value.push(operateList.value[i].questionId);
+  }
   showModal.value = true;
 };
 
@@ -212,12 +228,6 @@ const multiList = ref([]); // 多选题
 const answerList = ref([]); // 简答题
 const exerciseList = ref([]); // 填空题
 const operateList = ref([]); // 实操题
-
-// const tempradioList = ref([]); // 单选题
-// const tempmultiList = ref([]); // 多选题
-// const tempanswerList = ref([]); // 简答题
-// const tempexerciseList = ref([]); // 填空题
-// const operateList = ref([]); // 实操题
 
 const loadPaperDataTable = async () => {
   const Param = {
@@ -232,8 +242,17 @@ const loadPaperDataTable = async () => {
     for (let i = 0; i < paperList.value.length; i++) {
       // checkedRowKeysRef.value.push(parseInt(paperList.value[i].questionId, 10));
       // defaultRow.value.push(paperList.value[i].questionId);
+      console.log(paperList);
       if (paperList.value[i].questionTypeName === '单选题') {
         radioList.value.push(paperList.value[i]);
+      } else if (paperList.value[i].questionTypeName === '多选题') {
+        multiList.value.push(paperList.value[i]);
+      } else if (paperList.value[i].questionTypeName === '简答题') {
+        answerList.value.push(paperList.value[i]);
+      } else if (paperList.value[i].questionTypeName === '实操题') {
+        operateList.value.push(paperList.value[i]);
+      } else if (paperList.value[i].questionTypeName === '填空题') {
+        exerciseList.value.push(paperList.value[i]);
       }
     }
   }
@@ -265,7 +284,6 @@ const loadDataTable = async (res: any) => {
   return result.data;
 };
 const defaultRow = ref([]);
-const checkedRowKeysRef = ref([]);
 
 const handleCheck = (rowKeys: never[]) => {
   const pageData = actionRef.value.tableElRef.data;
@@ -281,6 +299,8 @@ const handleCheck = (rowKeys: never[]) => {
         answerList.value.push(element);
       } else if (element.questionTypeName === '实操题') {
         operateList.value.push(element);
+      } else if (element.questionTypeName === '填空题') {
+        exerciseList.value.push(element);
       }
     }
   });
@@ -290,19 +310,6 @@ const delQu = (List, index) => {
   List.splice(index, 1);
 };
 const unitPractice = ref([]);
-// const onPositiveClick = async () => {
-//   // const pageData = actionRef.value.tableElRef.data;
-//   // console.log(checkedRowKeysRef.value);
-//   for (let i = 0; i < radioList.value.length; i++) {
-//     console.log(radioList.value[i]);
-//   }
-//   console.log(unitPractice);
-//   // const params = {
-//   //   unitPractice
-//   // };
-//   // const { data: result } = await addUnitPractice(params);
-//   // console.log(result);
-// };
 const emit = defineEmits(['resetTable']);
 const editPaper = async () => {
   unitPractice.value = {
@@ -334,23 +341,116 @@ const editPaper = async () => {
       unitPractice.value.unitPractice.push(params);
     }
   }
+  for (let i = 0; i < multiList.value.length; i++) {
+    if (!multiList.value[i].questionScore) {
+      return message.error('请先输入分数');
+    }
+    console.log('multiList', multiList.value);
+    if (multiList.value[i].unitId) {
+      const params = {
+        id: parseInt(multiList.value[i].id, 10),
+        unitId: parseInt(props.id, 10),
+        questionId: multiList.value[i].questionId,
+        questionScore: multiList.value[i].questionScore,
+        sort: i + 1,
+        questionType: multiList.value[i].questionType
+      };
+      unitPractice.value.unitPractice.push(params);
+    } else {
+      const params = {
+        unitId: parseInt(props.id, 10),
+        questionId: multiList.value[i].id,
+        questionScore: multiList.value[i].questionScore,
+        sort: i + 1,
+        questionType: multiList.value[i].questionType
+      };
+      unitPractice.value.unitPractice.push(params);
+    }
+  }
+  for (let i = 0; i < answerList.value.length; i++) {
+    if (!answerList.value[i].questionScore) {
+      return message.error('请先输入分数');
+    }
+    console.log('answerList', answerList.value);
+    if (answerList.value[i].unitId) {
+      const params = {
+        id: parseInt(answerList.value[i].id, 10),
+        unitId: parseInt(props.id, 10),
+        questionId: answerList.value[i].questionId,
+        questionScore: answerList.value[i].questionScore,
+        sort: i + 1,
+        questionType: answerList.value[i].questionType
+      };
+      unitPractice.value.unitPractice.push(params);
+    } else {
+      const params = {
+        unitId: parseInt(props.id, 10),
+        questionId: answerList.value[i].id,
+        questionScore: answerList.value[i].questionScore,
+        sort: i + 1,
+        questionType: answerList.value[i].questionType
+      };
+      unitPractice.value.unitPractice.push(params);
+    }
+  }
+  for (let i = 0; i < operateList.value.length; i++) {
+    if (!operateList.value[i].questionScore) {
+      return message.error('请先输入分数');
+    }
+    console.log('operateList', operateList.value);
+    if (operateList.value[i].unitId) {
+      const params = {
+        id: parseInt(operateList.value[i].id, 10),
+        unitId: parseInt(props.id, 10),
+        questionId: operateList.value[i].questionId,
+        questionScore: operateList.value[i].questionScore,
+        sort: i + 1,
+        questionType: operateList.value[i].questionType
+      };
+      unitPractice.value.unitPractice.push(params);
+    } else {
+      const params = {
+        unitId: parseInt(props.id, 10),
+        questionId: operateList.value[i].id,
+        questionScore: operateList.value[i].questionScore,
+        sort: i + 1,
+        questionType: operateList.value[i].questionType
+      };
+      unitPractice.value.unitPractice.push(params);
+    }
+  }
+  for (let i = 0; i < exerciseList.value.length; i++) {
+    if (!exerciseList.value[i].questionScore) {
+      return message.error('请先输入分数');
+    }
+    console.log('exerciseList', exerciseList.value);
+    if (exerciseList.value[i].unitId) {
+      const params = {
+        id: parseInt(exerciseList.value[i].id, 10),
+        unitId: parseInt(props.id, 10),
+        questionId: exerciseList.value[i].questionId,
+        questionScore: exerciseList.value[i].questionScore,
+        sort: i + 1,
+        questionType: exerciseList.value[i].questionType
+      };
+      unitPractice.value.unitPractice.push(params);
+    } else {
+      const params = {
+        unitId: parseInt(props.id, 10),
+        questionId: exerciseList.value[i].id,
+        questionScore: exerciseList.value[i].questionScore,
+        sort: i + 1,
+        questionType: exerciseList.value[i].questionType
+      };
+      unitPractice.value.unitPractice.push(params);
+    }
+  }
+
   const result = await editUnitPractice(unitPractice.value);
   emit('resetTable');
   if (!result.error) {
     message.success('提交成功');
   }
-  // id
-  // integer
-  // unitId
-  // integer
-  // questionId
-  // integer
-  // questionScore
-  // integer
-  // 老师设置的习题分数
-  // sort
-  // integer
-  // questionType
 };
 defineExpose({ radioList, multiList, answerList, operateList });
 </script>

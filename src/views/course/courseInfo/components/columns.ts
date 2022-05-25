@@ -5,7 +5,7 @@ import { NInput } from 'naive-ui';
  * @Author: ZHENG
  * @Date: 2022-04-30 15:51:30
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-24 18:49:35
+ * @LastEditTime: 2022-05-25 10:38:29
  * @FilePath: \work\src\views\course\courseInfo\components\columns.ts
  * @Description:
  */
@@ -50,16 +50,16 @@ export const paperColumns = [
   {
     title: '试题类型',
     key: 'questionTypeName',
-    width: 200
+    width: 40
   },
   {
     title: '试题题干',
     key: 'questionName',
-    width: 200
+    width: 50
   },
   {
-    title: '知识点',
-    key: 'questionName',
+    title: '难易程度',
+    key: 'difficultLevelName',
     width: 50
   }
 ];

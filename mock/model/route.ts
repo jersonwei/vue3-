@@ -370,7 +370,8 @@ export const routeModel: Record<Auth.RoleType, AuthRoute.Route[]> = {
           meta: {
             title: '课程管理',
             requiresAuth: true,
-            icon: 'gg:calendar-today'
+            icon: 'gg:calendar-today',
+            keepAlive: true
           }
         },
         {

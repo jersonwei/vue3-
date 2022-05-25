@@ -2,22 +2,19 @@
  * @Author: ZHENG
  * @Date: 2022-04-30 15:51:30
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-24 11:18:10
+ * @LastEditTime: 2022-05-25 10:25:12
  * @FilePath: \work\src\views\course\courseMgt\columns.ts
  * @Description:
  */
 import { h } from 'vue';
-import { NAvatar, NTag, NSwitch, useMessage } from 'naive-ui';
+import { NTag, NSwitch } from 'naive-ui';
 import { updateCourseStatusByCourseId } from '@/service';
-import { getServiceEnv } from '@/utils';
 
-const message = useMessage();
-const result = getServiceEnv();
 export const columns = [
   {
     title: '序号',
     key: 'tableId',
-    width: 80,
+    width: 50,
     render(row, index) {
       return h('h1', index + 1);
     }
@@ -36,12 +33,12 @@ export const columns = [
   {
     title: '所属院系',
     key: 'collegeName',
-    width: 150
+    width: 100
   },
   {
     title: '所属专业',
     key: 'majorName',
-    width: 150
+    width: 120
   },
   // {
   //   title: '课程图片',
@@ -59,33 +56,22 @@ export const columns = [
   {
     title: '所属班级',
     key: 'listClassName',
-    width: 200,
+    width: 150,
     render(row: { listClassName: any[] }) {
-      // return h('h1', JSON.stringify(row.listLabelName));
-      // console.log(row.listLabelName);
       if (row.listClassName?.length) {
         const tags = row.listClassName?.join(',');
         return tags;
       }
       return [];
-
-      // const tags = row.listLabelName.map(tagKey => {
-      //   return h('h1', tagKey);
-      // });
     }
   },
   {
     title: '课程标签',
     key: 'listLabelName',
-    width: 200,
+    width: 150,
     render(row: { listLabelName: any[] }) {
-      // return h('h1', JSON.stringify(row.listLabelName));
-      // console.log(row.listLabelName);
       if (row.listLabelName?.length) {
         const tags = row.listLabelName.join(',');
-        // const tags = row.listLabelName.map(tagKey => {
-        //   return h('h1', tagKey);
-        // });
         return tags;
       }
       return [];
@@ -108,14 +94,14 @@ export const columns = [
     render(row: { status: number }) {
       return h(NSwitch, {
         value: row.status === 1,
-        onUpdateValue: value => {
+        onUpdateValue: async value => {
           row.status = row.status === 1 ? 0 : 1;
           const params = {
             CourseId: row.id,
             status: row.status
           };
           // eslint-disable-next-line @typescript-eslint/no-use-before-define
-          updateCourse(params);
+          const result = await updateCourse(params);
         }
       });
     }
@@ -123,7 +109,7 @@ export const columns = [
   {
     title: '主讲老师',
     key: 'lecturerName',
-    width: 100
+    width: 80
   },
   // {
   //   title: '课程描述',
@@ -133,12 +119,12 @@ export const columns = [
   {
     title: '创建人',
     key: 'createrName',
-    width: 100
+    width: 80
   },
   {
     title: '创建时间',
     key: 'createTime',
-    width: 200
+    width: 150
   }
 ];
 /**
@@ -149,8 +135,9 @@ export const columns = [
  */
 const updateCourse = async params => {
   const courseResult = await updateCourseStatusByCourseId(params);
-  console.log(courseResult, params.status);
   if (!courseResult.error) {
     window.$message?.success(`${params.status === 1 ? '上架' : '下架'}操作成功`);
+    return true;
   }
+  return false;
 };

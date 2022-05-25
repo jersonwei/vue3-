@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-05-21 11:21:27
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-24 14:29:26
+ * @LastEditTime: 2022-05-25 11:10:34
  * @FilePath: \work\src\views\course\courseInfo\components\addUnitModal.vue
  * @Description:
 -->
@@ -23,14 +23,14 @@
     </n-space>
     <!-- current ===1 新建课时第一步 -->
     <template v-if="addOrEdit && current === 1">
-      <n-form ref="formRef" :model="formParams" label-placement="left" :label-width="120" class="py-4">
+      <n-form ref="formRef" :rules="rules1" :model="formParams" label-placement="left" :label-width="120" class="py-4">
         <n-form-item label="课时标题" path="label">
-          <n-input v-model:value="formParams.label" placeholder="请输入标题" />
+          <n-input v-model:value="formParams.label" placeholder="请输入课时标题" />
         </n-form-item>
-        <n-form-item label="描述" path="label">
+        <n-form-item label="描述" path="note">
           <n-input v-model:value="formParams.note" type="textarea" placeholder="请输入描述" />
         </n-form-item>
-        <n-form-item label="开启实验" path="label">
+        <n-form-item label="开启实验" path="enableReport">
           <n-checkbox v-model:checked="formParams.enableReport"> 是否开启实验 </n-checkbox>
         </n-form-item>
         <n-form-item path="auth" style="margin-left: 100px">
@@ -233,11 +233,11 @@
   </n-modal>
 </template>
 <script lang="ts" setup>
-import { computed, reactive, ref, nextTick, onMounted, watch } from 'vue';
+import { computed, reactive, ref } from 'vue';
 import { StepsProps, UploadCustomRequestOptions, UploadFileInfo, useMessage } from 'naive-ui';
-import { saveOrUpdateUnit, unitAdd } from '@/service';
+import { saveOrUpdateUnit } from '@/service';
 import { deafultFormParams, fileTypeOfOutLine, fileTypeOfVideo } from '@/utils';
-import { columns, paperColumns } from './columns';
+// import { columns, paperColumns } from './columns';
 import paperTable from './paperTable.vue';
 
 const addOrEdit = ref(false);
@@ -289,6 +289,14 @@ const formParams = reactive({
   chapterId: 0,
   id: 0
 });
+
+const rules1 = {
+  label: {
+    required: true,
+    trigger: ['blur', 'input'],
+    message: '请输入课时标题'
+  }
+};
 
 const subLoading = ref(false);
 const fileList: File[] = reactive([]); // 文件
@@ -395,6 +403,9 @@ const isNext = computed(() => {
 });
 
 const Next = () => {
+  if (current.value === 1 && !formParams.label) {
+    return;
+  }
   current.value++;
 };
 const Back = () => {
@@ -437,32 +448,64 @@ const formSubmit = async () => {
     Form.append('enableReport', formParams.enableReport ? 1 : 0);
     Form.append('development', formParams.development);
     Form.append('fileFlag', fileType);
-    if (paperTableRef?.value?.radioList.length) {
+    console.log(paperTableRef?.value);
+    let index = 0;
+    // 单选的
+    if (paperTableRef?.value?.radioList?.length) {
       for (let i = 0; i < paperTableRef.value.radioList.length; i++) {
-        // const params = {
-        //   questionId: paperTableRef.value.radioList[i].id,
-        //   questionScore: paperTableRef.value.radioList[i].questionScore,
-        //   questionType: paperTableRef.value.radioList[i].questionType,
-        //   sort: i + 1
-        // };
-        // unitPractice.value.push(params);
-        if (paperTableRef.value.radioList[i].questionScore) {
+        console.log('单选', paperTableRef.value.radioList[i].questionScore);
+        if (!paperTableRef.value.radioList[i].questionScore) {
           return message.error('请先录入分数');
         }
-        Form.append(`unitPractice[${i}].questionId`, paperTableRef.value.radioList[i].id);
-        Form.append(`unitPractice[${i}].questionScore`, paperTableRef.value.radioList[i].questionScore);
-        Form.append(`unitPractice[${i}].questionType`, paperTableRef.value.radioList[i].questionType);
-        Form.append(`unitPractice[${i}].sort`, i + 1);
+        index++;
+        Form.append(`unitPractice[${index}].questionId`, paperTableRef.value.radioList[i].id);
+        Form.append(`unitPractice[${index}].questionScore`, paperTableRef.value.radioList[i].questionScore);
+        Form.append(`unitPractice[${index}].questionType`, paperTableRef.value.radioList[i].questionType);
+        Form.append(`unitPractice[${index}].sort`, i + 1);
       }
     }
-    console.log(unitPractice.value);
-
-    // unitPractice.value.forEach(practive => {
-    //   console.log(practive);
-    //   Form.append('unitPractice', practive);
-    // });
-    console.log(Form);
-
+    // 多选的
+    if (paperTableRef?.value?.multiList?.length) {
+      for (let i = 0; i < paperTableRef.value.multiList.length; i++) {
+        console.log('多少', paperTableRef.value.multiList[i].questionScore);
+        if (!paperTableRef.value.multiList[i].questionScore) {
+          return message.error('请先录入分数');
+        }
+        index++;
+        Form.append(`unitPractice[${index}].questionId`, paperTableRef.value.multiList[i].id);
+        Form.append(`unitPractice[${index}].questionScore`, paperTableRef.value.multiList[i].questionScore);
+        Form.append(`unitPractice[${index}].questionType`, paperTableRef.value.multiList[i].questionType);
+        Form.append(`unitPractice[${index}].sort`, i + 1);
+      }
+    }
+    // 实操题
+    if (paperTableRef?.value?.operateList?.length) {
+      for (let i = 0; i < paperTableRef.value.operateList.length; i++) {
+        console.log('实操', paperTableRef.value.operateList[i].questionScore);
+        if (!paperTableRef.value.operateList[i].questionScore) {
+          return message.error('请先录入分数');
+        }
+        index++;
+        Form.append(`unitPractice[${index}].questionId`, paperTableRef.value.operateList[i].id);
+        Form.append(`unitPractice[${index}].questionScore`, paperTableRef.value.operateList[i].questionScore);
+        Form.append(`unitPractice[${index}].questionType`, paperTableRef.value.operateList[i].questionType);
+        Form.append(`unitPractice[${index}].sort`, i + 1);
+      }
+    }
+    // 实操题
+    if (paperTableRef?.value?.answerList?.length) {
+      for (let i = 0; i < paperTableRef.value.answerList.length; i++) {
+        console.log('简答', paperTableRef.value.answerList[i].questionScore);
+        if (!paperTableRef.value.answerList[i].questionScore) {
+          return message.error('请先录入分数');
+        }
+        index++;
+        Form.append(`unitPractice[${index}].questionId`, paperTableRef.value.answerList[i].id);
+        Form.append(`unitPractice[${index}].questionScore`, paperTableRef.value.answerList[i].questionScore);
+        Form.append(`unitPractice[${index}].questionType`, paperTableRef.value.answerList[i].questionType);
+        Form.append(`unitPractice[${index}].sort`, i + 1);
+      }
+    }
     const result = await saveOrUpdateUnit(Form);
     if (!result.error) {
       message.success('保存成功');
@@ -496,7 +539,6 @@ const formSubmit = async () => {
     }
   }
   subLoading.value = false;
-
   showModal.value = false;
   emit('reset');
 };
