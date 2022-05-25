@@ -2,8 +2,8 @@
  * @Author: ZHENG
  * @Date: 2022-04-30 14:33:21
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-23 08:40:59
- * @FilePath: \work\src\views\question\dataBase\index.vue
+ * @LastEditTime: 2022-05-25 09:11:35
+ * @FilePath: \work\src\views\question\dataBaseSort\index.vue
  * @Description:
 -->
 <template>
@@ -30,7 +30,7 @@
       :request="loadDataTable"
       :row-key="row => row.id"
       :action-column="actionColumn"
-      :scroll-x="2200"
+      :scroll-x="1200"
     >
       <template #tableTitle>
         <n-button type="primary" @click="addTable">
@@ -39,7 +39,7 @@
               <PlusOutlined />
             </n-icon>
           </template>
-          新建题库
+          新建分类
         </n-button>
       </template>
     </TablePro>
@@ -52,11 +52,11 @@
 
 <script lang="ts" setup>
 import { h, reactive, ref } from 'vue';
-import { CascaderOption, useMessage } from 'naive-ui';
+import { useMessage } from 'naive-ui';
 import { PlusOutlined } from '@vicons/antd';
 import { useCourseStore } from '@/store';
 import { useRouterPush } from '@/composables';
-import { searchCouserInfo, getcourseCategoryList, getClassList, getCollegeLegistt } from '@/service';
+import { getQuestionBankCategoryList } from '@/service';
 import { TablePro, TableAction } from '@/components/TablePro';
 import { FormPro, useForm } from '@/components/FormPro';
 import { columns } from './columns';
@@ -71,16 +71,40 @@ const message = useMessage();
 const formData = ref({});
 const actionColumn = reactive({
   // Table操作列
-  width: 120,
+  width: 230,
   title: '操作',
   key: 'action',
   fixed: 'right',
   render(record: Recordable<any>) {
+    if (record.categoryParent > 0) {
+      return h(TableAction as any, {
+        style: 'button',
+        actions: [
+          {
+            label: '编辑',
+
+            // eslint-disable-next-line @typescript-eslint/no-use-before-define
+            onClick: handleEdit.bind(null, record)
+          },
+          {
+            label: '删除',
+            // eslint-disable-next-line @typescript-eslint/no-use-before-define
+            onClick: handleConfig.bind(null, record)
+          }
+        ]
+      });
+    }
     return h(TableAction as any, {
       style: 'button',
       actions: [
         {
           label: '编辑',
+
+          // eslint-disable-next-line @typescript-eslint/no-use-before-define
+          onClick: handleEdit.bind(null, record)
+        },
+        {
+          label: '新增',
 
           // eslint-disable-next-line @typescript-eslint/no-use-before-define
           onClick: handleEdit.bind(null, record)
@@ -94,50 +118,11 @@ const actionColumn = reactive({
     });
   }
 });
-
-// 院系和所属类别的下拉查询逻辑
-const options = ref([]);
-const cascaderOptions = ref([]);
-const getOptions = async () => {
-  const { data: result } = await getcourseCategoryList();
-  const newList = result.map((item: { id: any; categoryName: any }) => {
-    return { value: item.id, label: item.categoryName };
-  });
-  options.value = newList;
-  // 院系
-  const { data: collegeList } = await getCollegeLegistt();
-  const newcollegeList = collegeList.map((item: { id: any; collegeName: any }) => {
-    return { value: item.id, label: item.collegeName, depth: 1, isLeaf: false };
-  });
-  cascaderOptions.value = newcollegeList;
-};
-getOptions();
-
-async function getChildren(option: CascaderOption) {
-  const { data: result } = await getClassList();
-  const newList = result.map(item => {
-    return { value: item.id, label: item.className, isLeaf: 1 };
-  });
-  for (let i = 0; i <= (option as { depth: number }).depth; ++i) {
-    option.children = newList;
-  }
-  return children;
-}
-
-const handleLoad = (option: CascaderOption) => {
-  return new Promise<void>(resolve => {
-    window.setTimeout(() => {
-      cascaderOptions.value.children = getChildren(option);
-      resolve();
-    }, 1000);
-  });
-};
-
 // , {}
 const [register] = useForm({
-  // 查询FORM
   gridProps: { cols: '1 s:1 m:2 l:3 xl:4 2xl:4' },
   labelWidth: 80,
+  showAdvancedButton: false,
   schemas
 });
 /**
@@ -150,7 +135,7 @@ const loadDataTable = async (res: any) => {
     pageSize: res.size,
     current: res.current
   };
-  const result = await searchCouserInfo({ ...formData.value, ...Param });
+  const result = await getQuestionBankCategoryList({ ...formData.value, ...Param });
   return result.data;
 };
 /**

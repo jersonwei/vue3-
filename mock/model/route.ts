@@ -487,7 +487,8 @@ export const routeModel: Record<Auth.RoleType, AuthRoute.Route[]> = {
           meta: {
             title: '题库列表',
             requiresAuth: true,
-            icon: 'gg:calendar-today'
+            icon: 'gg:calendar-today',
+            keepAlive: true
           }
         },
         {
@@ -497,7 +498,8 @@ export const routeModel: Record<Auth.RoleType, AuthRoute.Route[]> = {
           meta: {
             title: '题库分类',
             requiresAuth: true,
-            icon: 'gg:calendar-today'
+            icon: 'gg:calendar-today',
+            keepAlive: true
           }
         },
         {

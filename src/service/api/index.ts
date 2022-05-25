@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-04-30 08:41:04
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-23 15:48:30
+ * @LastEditTime: 2022-05-25 08:35:11
  * @FilePath: \work\src\service\api\index.ts
  * @Description:
  */
@@ -24,3 +24,5 @@ export * from './testReport/testReport';
 export * from './unitPracticeAnswers/unitPracticeAnswers';
 
 export * from './courseMark/courseMark';
+
+export * from './question/index';

@@ -2,69 +2,45 @@
  * @Author: ZHENG
  * @Date: 2022-04-30 15:51:30
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-23 08:36:46
- * @FilePath: \work\src\views\question\dataBase\columns.ts
+ * @LastEditTime: 2022-05-25 09:00:37
+ * @FilePath: \work\src\views\question\dataBaseSort\columns.ts
  * @Description:
  */
 import { h } from 'vue';
-import { NAvatar, NTag, NSwitch, useMessage } from 'naive-ui';
-import { updateCourseStatusByCourseId } from '@/service';
-import { getServiceEnv } from '@/utils';
 
-const message = useMessage();
-const result = getServiceEnv();
 export const columns = [
   {
     title: '序号',
     key: 'tableId',
-    width: 80,
+    width: 50,
     render(row, index) {
       return h('h1', index + 1);
     }
   },
   {
     title: '分类名称',
-    key: 'courseName',
+    key: 'categoryName',
     width: 120
   },
   {
     title: '所属院系',
     key: 'collegeName',
-    width: 150
+    width: 80
   },
-  {
-    title: '所属专业',
-    key: 'majorName',
-    width: 150
-  },
-  {
-    title: '所属课程',
-    key: 'majorName',
-    width: 150
-  },
+  // {
+  //   title: '所属专业',
+  //   key: 'majorName',
+  //   width: 150
+  // },
+  // {
+  //   title: '所属课程',
+  //   key: 'majorName',
+  //   width: 150
+  // },
   {
     title: '题库数量',
-    key: 'unitNum',
-    width: 130
-  },
-  {
-    title: '题库状态',
-    key: 'statusName',
-    width: 100,
-    render(row: { status: number }) {
-      return h(NSwitch, {
-        value: row.status === 1,
-        onUpdateValue: value => {
-          row.status = row.status === 1 ? 0 : 1;
-          const params = {
-            CourseId: row.id,
-            status: row.status
-          };
-          // eslint-disable-next-line @typescript-eslint/no-use-before-define
-          updateCourse(params);
-        }
-      });
-    }
+    key: 'count',
+    width: 80
   },
   {
     title: '分类描述',
@@ -82,16 +58,3 @@ export const columns = [
     width: 200
   }
 ];
-/**
- * @author: ZHENG
- * @description: 上下架
- * @param {*} params
- * @return {*}
- */
-const updateCourse = async params => {
-  const courseResult = await updateCourseStatusByCourseId(params);
-  console.log(courseResult, params.status);
-  if (!courseResult.error) {
-    window.$message?.success(`${params.status === 1 ? '上架' : '下架'}操作成功`);
-  }
-};
