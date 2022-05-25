@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-04-30 15:51:30
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-25 17:06:29
+ * @LastEditTime: 2022-05-25 17:44:36
  * @FilePath: \work\src\views\question\dataBase\columns.ts
  * @Description:
  */
@@ -35,6 +35,11 @@ export const columns = [
   },
   {
     title: '所属院系',
+    key: 'collegeName',
+    width: 150
+  },
+  {
+    title: '绑定课程',
     key: 'collegeName',
     width: 150
   },

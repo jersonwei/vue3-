@@ -73,7 +73,7 @@ const formParams = reactive({
   note: '',
   robot: '',
   virtualRobot: '',
-  virtualNumber: 0,
+  virtualNumber: 0
 });
 
 const showModalFn = () => {

@@ -2,63 +2,44 @@
  * @Author: ZHENG
  * @Date: 2022-04-30 15:51:30
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-23 09:05:15
- * @FilePath: \work\src\views\question\Knowledge\columns.ts
+ * @LastEditTime: 2022-05-25 17:56:03
+ * @FilePath: \work\src\views\question\knowledge\columns.ts
  * @Description:
  */
 import { h } from 'vue';
-import { NAvatar, NTag, NSwitch, useMessage } from 'naive-ui';
-import { updateCourseStatusByCourseId } from '@/service';
-import { getServiceEnv } from '@/utils';
 
-const message = useMessage();
-const result = getServiceEnv();
 export const columns = [
   {
     title: '序号',
     key: 'tableId',
-    width: 80,
+    width: 100,
     render(row, index) {
       return h('h1', index + 1);
     }
   },
   {
-    title: '知识点名称',
-    key: 'courseName',
-    width: 120
-  },
-
-  {
-    title: '知识点分类',
-    key: 'courseCategoryName',
-    width: 100
-  },
-  {
-    title: '引用次数',
-    key: 'unitNum',
-    width: 130
-  },
-  {
-    title: '知识点状态',
-    key: 'statusName',
-    width: 100,
-    render(row: { status: number }) {
-      return h(NSwitch, {
-        value: row.status === 1,
-        onUpdateValue: value => {
-          row.status = row.status === 1 ? 0 : 1;
-          const params = {
-            CourseId: row.id,
-            status: row.status
-          };
-          // eslint-disable-next-line @typescript-eslint/no-use-before-define
-          updateCourse(params);
-        }
-      });
+    title: '分类名称',
+    key: 'categoryName',
+    width: 120,
+    render(row: { children: any; categoryName: any }, index) {
+      if (row.children?.length) {
+        return h('h1', `${row.categoryName}(${row.children.length})`);
+      }
+      return h('h1', `${row.categoryName}`);
     }
   },
   {
-    title: '知识点描述',
+    title: '所属院系',
+    key: 'collegeName',
+    width: 80
+  },
+  {
+    title: '题目数量',
+    key: 'count',
+    width: 80
+  },
+  {
+    title: '知识点备注',
     key: 'note',
     width: 130
   },
@@ -73,16 +54,3 @@ export const columns = [
     width: 200
   }
 ];
-/**
- * @author: ZHENG
- * @description: 上下架
- * @param {*} params
- * @return {*}
- */
-const updateCourse = async params => {
-  const courseResult = await updateCourseStatusByCourseId(params);
-  console.log(courseResult, params.status);
-  if (!courseResult.error) {
-    window.$message?.success(`${params.status === 1 ? '上架' : '下架'}操作成功`);
-  }
-};

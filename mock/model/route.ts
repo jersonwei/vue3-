@@ -506,7 +506,7 @@ export const routeModel: Record<Auth.RoleType, AuthRoute.Route[]> = {
           path: '/question/dataBase',
           component: 'self',
           meta: {
-            title: '题库列表',
+            title: '题库管理',
             requiresAuth: true,
             icon: 'gg:calendar-today',
             keepAlive: true
@@ -528,7 +528,7 @@ export const routeModel: Record<Auth.RoleType, AuthRoute.Route[]> = {
           path: '/question/knowledge',
           component: 'self',
           meta: {
-            title: '知识点列表',
+            title: '知识点管理',
             requiresAuth: true,
             icon: 'gg:calendar-today'
           }
