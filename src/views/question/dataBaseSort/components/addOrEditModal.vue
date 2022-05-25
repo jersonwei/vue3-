@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-05-12 17:34:13
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-25 10:11:17
+ * @LastEditTime: 2022-05-25 11:52:35
  * @FilePath: \work\src\views\question\dataBaseSort\components\addOrEditModal.vue
  * @Description:
 -->
@@ -129,6 +129,14 @@ const confirmForm = (e: { preventDefault: () => void }) => {
           }
         } else {
           // 修改
+          const { id, categoryName, categoryParent, note } = formParams;
+          const params = {
+            id,
+            categoryName,
+            categoryParent,
+            note
+          };
+          console.log(params);
         }
 
         emits('reloadTable');

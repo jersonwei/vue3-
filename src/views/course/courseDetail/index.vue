@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-05-12 14:54:50
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-24 18:42:45
+ * @LastEditTime: 2022-05-25 13:45:59
  * @FilePath: \work\src\views\course\courseDetail\index.vue
  * @Description:
 -->
@@ -62,7 +62,7 @@
             </n-list-item>
           </n-list> -->
         </n-tab-pane>
-        <n-tab-pane name="signup" tab="课程大纲">
+        <n-tab-pane v-if="courseOutLine" name="signup" tab="课程大纲">
           <!-- <pdf :pdf-url="`http://120.79.129.174:9000/hms/reportcfba6a96dbd24599bb1560ecc35f7994.pdf`"></pdf> -->
           <!-- <template v-for="item in pageNum" :key="item">
             <canvas :id="`pdf-canvas-${item}`" class="pdf-page" />
@@ -200,7 +200,7 @@ const nodeProps = ({ option }: { option: TreeOption }) => {
     };
   }
 };
-
+const courseOutLine = ref();
 watchEffect(async () => {
   // const id =getCourseInfo()
   const params = {
@@ -214,6 +214,7 @@ watchEffect(async () => {
   courseDetail.label = result.label;
   courseDetail.note = result.note;
   courseDetail.coverPic = `${http}${result.coverPic}`;
+  courseOutLine.value = result.courseOutline;
   courseDetail.courseOutline = `${http}${result.courseOutline}`;
   // encodeURI
   // https://view.xdocin.com/view?src=

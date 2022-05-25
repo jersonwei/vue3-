@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-05-17 10:52:29
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-24 17:05:21
+ * @LastEditTime: 2022-05-25 11:43:15
  * @FilePath: \work\src\views\course\coursePractice\index.vue
  * @Description:
 -->
@@ -114,6 +114,7 @@ const getdefaultValue = async () => {
   const params = {
     unitId: unitId.value
   };
+  console.log('setFieldsValue', params);
   setFieldsValue(params);
 };
 watchEffect(() => {

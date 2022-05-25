@@ -2,28 +2,13 @@
  * @Author: ZHENG
  * @Date: 2022-04-30 14:33:21
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-25 09:58:45
+ * @LastEditTime: 2022-05-25 12:00:16
  * @FilePath: \work\src\views\question\dataBaseSort\index.vue
  * @Description:
 -->
 <template>
   <n-card :bordered="false">
-    <FormPro @register="register" @submit="handleSubmit" @reset="reloadTable">
-      <template #courseCategorySlot="{ model, field }">
-        <n-select v-model:value="model[field]" placeholder="请选择类别" :options="options" />
-      </template>
-      <template #majorIdSlot="{ model, field }">
-        <n-cascader
-          v-model:value="model[field]"
-          placeholder="请选择专业"
-          :options="cascaderOptions"
-          :check-strategy="'all'"
-          :show-path="true"
-          remote
-          :on-load="handleLoad"
-        />
-      </template>
-    </FormPro>
+    <FormPro @register="register" @submit="handleSubmit" @reset="reloadTable"> </FormPro>
     <TablePro
       ref="actionRef"
       :columns="columns"
@@ -44,7 +29,7 @@
       </template>
     </TablePro>
     <addOrEditOrEditModal ref="addOrEditModalRef" @reload-table="reloadTable"></addOrEditOrEditModal>
-    <delModal ref="delModalRef" :del-data="delData" :del-text="delText" @reload-table="reloadTable"></delModal>
+    <delModal ref="delModalRef" @reload-table="reloadTable"></delModal>
   </n-card>
 </template>
 
@@ -81,7 +66,7 @@ const actionColumn = reactive({
           {
             label: '删除',
             // eslint-disable-next-line @typescript-eslint/no-use-before-define
-            onClick: handleConfig.bind(null, record)
+            onClick: handleDelete.bind(null, record)
           }
         ]
       });
@@ -104,7 +89,7 @@ const actionColumn = reactive({
         {
           label: '删除',
           // eslint-disable-next-line @typescript-eslint/no-use-before-define
-          onClick: handleConfig.bind(null, record)
+          onClick: handleDelete.bind(null, record)
         }
       ]
     });
@@ -145,10 +130,11 @@ const loadDataTable = async (res: any) => {
 
 // 新建和编辑弹窗
 const addOrEditModalRef = ref();
-// 新建
+// 新建弹窗
 const addTable = () => {
   addOrEditModalRef.value.showAddModalFn();
 };
+// 编辑弹窗
 const handleAdd = (record: Recordable) => {
   addOrEditModalRef.value.showAddModalFn(record);
 };
@@ -162,17 +148,13 @@ const handleAdd = (record: Recordable) => {
 const handleEdit = (record: Recordable) => {
   addOrEditModalRef.value.showEditModalFn(record);
 };
-const handleConfig = () => {};
 // 删除逻辑
 const delModalRef = ref();
 const delData = ref<number>(0); // 删除数据的ID
 const delText = ref(''); // 删除的文字
 // eslint-disable-next-line consistent-return
 const handleDelete = (record: Recordable) => {
-  if (record.statusName === '上架') {
-    return message.error('只有下架状态课程才能删除');
-  }
-  delText.value = record.courseName;
+  delText.value = record.categoryName;
   delData.value = record.id;
   delModalRef.value.showDelModal = true;
 };
