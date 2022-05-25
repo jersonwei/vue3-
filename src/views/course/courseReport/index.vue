@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-05-17 10:52:29
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-24 16:19:02
+ * @LastEditTime: 2022-05-25 11:36:38
  * @FilePath: \work\src\views\course\courseReport\index.vue
  * @Description:
 -->
@@ -147,6 +147,9 @@ const handleSubmit = (values: Recordable) => {
     unitId: getUnitId(values.unitId),
     stuName: values.stuName
   };
+  if (!formData.value.unitId) {
+    return;
+  }
   console.log(formData);
   reloadTable();
 };
@@ -166,6 +169,9 @@ const loadDataTable = async (res: any) => {
       pageSize: res.size,
       current: res.current
     };
+  }
+  if (!Param.courseId) {
+    return;
   }
 
   const result = await getTestReportList({ ...formData.value, ...Param });
