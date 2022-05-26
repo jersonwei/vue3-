@@ -44,6 +44,7 @@ specifiers:
   form-data: ^4.0.0
   html2canvas: ^1.4.1
   husky: ^7.0.4
+  js-base64: ^3.7.2
   lint-staged: ^12.4.1
   lodash-es: ^4.17.21
   mockjs: ^1.1.0
@@ -96,6 +97,7 @@ dependencies:
   echarts: 5.3.2
   form-data: 4.0.0
   html2canvas: 1.4.1
+  js-base64: 3.7.2
   lodash-es: 4.17.21
   naive-ui: 2.28.2_vue@3.2.33
   pdfjs-dist: 2.13.216
@@ -5140,6 +5142,10 @@ packages:
     resolution: {integrity: sha512-/n9mNxZj/HDSrincJ6RP+L+yXbpnB8FybySBa+IjIaoH9FIxBbrbRT5XUbe8R7zuVM2AQqNMNDDqz0bzx3znOQ==}
     hasBin: true
     dev: true
+
+  /js-base64/3.7.2:
+    resolution: {integrity: sha512-NnRs6dsyqUXejqk/yv2aiXlAvOs56sLkX6nUdeaNezI5LFFLlsZjOThmwnrcwh5ZZRwZlCMnVAY3CvhIhoVEKQ==}
+    dev: false
 
   /js-tokens/4.0.0:
     resolution: {integrity: sha512-RdJUflcE3cUzKiMqQgsCu06FPu9UdIJO0beYbPhHN4k6apgJtifcoCtT9bcxOpYBtpD2kCM6Sbzg4CausW/PKQ==}

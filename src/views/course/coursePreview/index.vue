@@ -3,12 +3,12 @@
  * @Author: ZHENG
  * @Date: 2022-05-14 11:44:12
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-25 15:52:10
+ * @LastEditTime: 2022-05-26 13:35:28
  * @FilePath: \work\src\views\course\coursePreview\index.vue
  * @Description:
 -->
 <template>
-  <n-card style="height: 700px">
+  <n-card style="height: 900px">
     <n-layout has-sider>
       <n-layout-sider style="width: 1000px" collapse-mode="width" :collapsed-width="1200" :width="1200">
         <n-card content-style="padding: 0;" :title="courseData.unitName">
@@ -22,11 +22,13 @@
             <template v-for="(item, index) in courseData?.files">
               <n-tab-pane v-if="item.type === 0" :key="index" name="教学文档">
                 <embed
-                  :src="`https://file.keking.cn/onlinePreview?url=aHR0cHM6Ly9maWxlLmtla2luZy5jbi9kZW1vL1NwcmluZyBTZWN1cml0eSBPQXV0aDIuMOiupOivgeaOiOadg192MS4xLnBkZg%3D%3D&officePreviewType=pdf`"
+                  :src="`http://81.71.130.130:8012/onlinePreview?url=${encodeURIComponent(
+                    Base64.encode(item.url)
+                  )}&officePreviewType=pdf&watermarkTxt=${encodeURIComponent('锐智教育')}`"
                   width="100%"
                   type="application/pdf"
                   height="100%"
-                  style="height: 600px"
+                  style="height: 700px"
                 />
                 <!-- This browser does not support PDFs. Please download the PDF to view it:
                   <a href="/test.pdf">Download PDF</a>
@@ -41,17 +43,35 @@
                 </iframe> -->
               </n-tab-pane>
               <n-tab-pane v-if="item.type === 2" :key="index" name="PPT">
-                <iframe :src="item.url" width="100%" height="100%" style="height: 600px">
-                  This browser does not support PDFs. Please download the PDF to view it:
-                  <a href="/test.pdf">Download PDF</a>
-                </iframe>
-              </n-tab-pane>
-              <n-tab-pane v-if="item.type === 3" :key="index" name="实验手册">
+                <embed
+                  :src="`http://81.71.130.130:8012/onlinePreview?url=${encodeURIComponent(
+                    Base64.encode(item.url)
+                  )}&officePreviewType=pdf&watermarkTxt=${encodeURIComponent('锐智教育')}`"
+                  width="100%"
+                  type="application/pdf"
+                  height="100%"
+                  style="height: 700px"
+                />
                 <!-- <iframe :src="item.url" width="100%" height="100%" style="height: 600px">
                   This browser does not support PDFs. Please download the PDF to view it:
                   <a href="/test.pdf">Download PDF</a>
                 </iframe> -->
-                <wordPer :src="item.url"></wordPer>
+              </n-tab-pane>
+              <n-tab-pane v-if="item.type === 3" :key="index" name="实验手册">
+                <embed
+                  :src="`http://81.71.130.130:8012/onlinePreview?url=${encodeURIComponent(
+                    Base64.encode(item.url)
+                  )}&officePreviewType=pdf&watermarkTxt=${encodeURIComponent('锐智教育')}`"
+                  width="100%"
+                  type="application/pdf"
+                  height="100%"
+                  style="height: 700px"
+                />
+                <!-- <iframe :src="item.url" width="100%" height="100%" style="height: 600px">
+                  This browser does not support PDFs. Please download the PDF to view it:
+                  <a href="/test.pdf">Download PDF</a>
+                </iframe> -->
+                <!-- <wordPer :src="item.url"></wordPer> -->
               </n-tab-pane>
             </template>
             <!-- v-if="courseData.haveQuestion" -->
@@ -146,6 +166,7 @@
 import { ref, reactive, h, watchEffect } from 'vue';
 import { c, useMessage } from 'naive-ui';
 import { ExclamationCircleTwotone } from '@vicons/antd';
+import { Base64 } from 'js-base64';
 import { useCourseStore } from '@/store';
 import { getUnitPracticeList } from '@/service';
 import { TablePro, TableAction } from '@/components/TablePro';

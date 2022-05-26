@@ -2,21 +2,21 @@
  * @Author: ZHENG
  * @Date: 2022-04-30 15:51:30
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-25 17:36:24
+ * @LastEditTime: 2022-05-26 11:23:36
  * @FilePath: \work\src\views\question\dataBaseSort\columns.ts
  * @Description:
  */
 import { h } from 'vue';
 
 export const columns = [
-  {
-    title: '序号',
-    key: 'tableId',
-    width: 100,
-    render(row, index) {
-      return h('h1', index + 1);
-    }
-  },
+  // {
+  //   title: '序号',
+  //   key: 'tableId',
+  //   width: 100,
+  //   render(row, index) {
+  //     return h('h1', index + 1);
+  //   }
+  // },
   {
     title: '分类名称',
     key: 'categoryName',
