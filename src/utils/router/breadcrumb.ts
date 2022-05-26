@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-05-16 15:06:21
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-18 08:37:47
+ * @LastEditTime: 2022-05-26 09:24:21
  * @FilePath: \work\src\utils\router\breadcrumb.ts
  * @Description:
  */
@@ -15,6 +15,7 @@
 export function getBreadcrumbByRouteKey(activeKey: string, menus: GlobalMenuOption[], rootPath: string) {
   // eslint-disable-next-line @typescript-eslint/no-use-before-define
   const breadcrumbMenu = getBreadcrumbMenu(activeKey, menus);
+  console.log(breadcrumbMenu, menus);
   // eslint-disable-next-line @typescript-eslint/no-use-before-define
   const breadcrumb = breadcrumbMenu.map(item => transformBreadcrumbMenuToBreadcrumb(item, rootPath));
   return breadcrumb;
@@ -27,6 +28,7 @@ export function getBreadcrumbByRouteKey(activeKey: string, menus: GlobalMenuOpti
  */
 function getBreadcrumbMenu(activeKey: string, menus: GlobalMenuOption[]) {
   const breadcrumbMenu: GlobalMenuOption[] = [];
+  console.log('menu', menus);
   menus.some(menu => {
     const flag = activeKey.includes(menu.routeName);
     if (flag) {

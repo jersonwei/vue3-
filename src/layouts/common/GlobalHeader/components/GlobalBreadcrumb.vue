@@ -1,3 +1,11 @@
+<!--
+ * @Author: ZHENG
+ * @Date: 2022-05-16 15:06:21
+ * @LastEditors: ZHENG
+ * @LastEditTime: 2022-05-26 09:25:01
+ * @FilePath: \work\src\layouts\common\GlobalHeader\components\GlobalBreadcrumb.vue
+ * @Description:
+-->
 <template>
   <n-breadcrumb class="px-12px">
     <template v-for="breadcrumb in breadcrumbs" :key="breadcrumb.key">
@@ -41,7 +49,7 @@ const { routerPush } = useRouterPush();
 const breadcrumbs = computed(() =>
   getBreadcrumbByRouteKey(route.name as string, routeStore.menus as GlobalMenuOption[], routePath('root'))
 );
-
+console.log(routeStore.menus);
 function dropdownSelect(key: string) {
   routerPush({ name: key });
 }

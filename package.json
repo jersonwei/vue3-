@@ -40,6 +40,7 @@
     "naive-ui": "^2.28.2",
     "pdfjs-dist": "^2.13.216",
     "pinia": "^2.0.13",
+    "pinia-plugin-persist": "^1.0.0",
     "print-js": "^1.6.0",
     "qs": "^6.10.3",
     "sortablejs": "^1.15.0",

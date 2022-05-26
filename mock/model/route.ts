@@ -81,7 +81,7 @@ export const routeModel: Record<Auth.RoleType, AuthRoute.Route[]> = {
         {
           name: 'course_courseDetail',
           path: '/course/courseDetail',
-          component: 'self',
+          component: 'blank',
           meta: {
             title: '课程预览',
             requiresAuth: true,

@@ -21,7 +21,13 @@
           >
             <template v-for="(item, index) in courseData?.files">
               <n-tab-pane v-if="item.type === 0" :key="index" name="教学文档">
-                <embed :src="item.url" width="100%" type="application/pdf" height="100%" style="height: 600px" />
+                <embed
+                  :src="`https://file.keking.cn/onlinePreview?url=aHR0cHM6Ly9maWxlLmtla2luZy5jbi9kZW1vL1NwcmluZyBTZWN1cml0eSBPQXV0aDIuMOiupOivgeaOiOadg192MS4xLnBkZg%3D%3D&officePreviewType=pdf`"
+                  width="100%"
+                  type="application/pdf"
+                  height="100%"
+                  style="height: 600px"
+                />
                 <!-- This browser does not support PDFs. Please download the PDF to view it:
                   <a href="/test.pdf">Download PDF</a>
 
