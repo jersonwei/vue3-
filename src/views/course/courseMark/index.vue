@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-04-30 14:33:21
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-24 14:23:00
+ * @LastEditTime: 2022-05-26 14:29:35
  * @FilePath: \work\src\views\course\courseMark\index.vue
  * @Description:
 -->
@@ -111,6 +111,7 @@ const [register] = useForm({
   // 查询FORM
   gridProps: { cols: '1 s:1 m:2 l:3 xl:4 2xl:4' },
   labelWidth: 80,
+  showAdvancedButton: false,
   schemas
 });
 </script>

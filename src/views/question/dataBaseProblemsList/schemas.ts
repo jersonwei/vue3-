@@ -2,8 +2,8 @@
  * @Author: ZHENG
  * @Date: 2022-05-12 17:48:09
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-23 09:28:13
- * @FilePath: \work\src\views\question\problemsList\schemas.ts
+ * @LastEditTime: 2022-05-26 14:25:57
+ * @FilePath: \work\src\views\question\dataBaseProblemsList\schemas.ts
  * @Description:
  */
 
@@ -18,7 +18,7 @@ export const schemas = [
   },
   {
     field: 'courseCategory',
-    label: '题目分类',
+    label: '题目类型',
     slot: 'courseCategorySlot'
   },
   {

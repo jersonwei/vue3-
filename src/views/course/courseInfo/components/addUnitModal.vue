@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-05-21 11:21:27
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-25 11:10:34
+ * @LastEditTime: 2022-05-26 15:57:20
  * @FilePath: \work\src\views\course\courseInfo\components\addUnitModal.vue
  * @Description:
 -->
@@ -455,6 +455,7 @@ const formSubmit = async () => {
       for (let i = 0; i < paperTableRef.value.radioList.length; i++) {
         console.log('单选', paperTableRef.value.radioList[i].questionScore);
         if (!paperTableRef.value.radioList[i].questionScore) {
+          subLoading.value = false;
           return message.error('请先录入分数');
         }
         index++;
@@ -469,6 +470,7 @@ const formSubmit = async () => {
       for (let i = 0; i < paperTableRef.value.multiList.length; i++) {
         console.log('多少', paperTableRef.value.multiList[i].questionScore);
         if (!paperTableRef.value.multiList[i].questionScore) {
+          subLoading.value = false;
           return message.error('请先录入分数');
         }
         index++;
@@ -483,6 +485,7 @@ const formSubmit = async () => {
       for (let i = 0; i < paperTableRef.value.operateList.length; i++) {
         console.log('实操', paperTableRef.value.operateList[i].questionScore);
         if (!paperTableRef.value.operateList[i].questionScore) {
+          subLoading.value = false;
           return message.error('请先录入分数');
         }
         index++;
@@ -497,6 +500,7 @@ const formSubmit = async () => {
       for (let i = 0; i < paperTableRef.value.answerList.length; i++) {
         console.log('简答', paperTableRef.value.answerList[i].questionScore);
         if (!paperTableRef.value.answerList[i].questionScore) {
+          subLoading.value = false;
           return message.error('请先录入分数');
         }
         index++;

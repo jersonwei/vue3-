@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-05-04 17:20:30
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-24 14:42:29
+ * @LastEditTime: 2022-05-26 14:35:31
  * @FilePath: \work\src\views\course\courseInfo\index.vue
  * @Description: 课程页面
 -->
@@ -28,7 +28,7 @@
   </n-card>
 </template>
 <script lang="ts" setup>
-import { ref, h, onMounted } from 'vue';
+import { ref, h, onMounted, watchEffect } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useCourseStore } from '@/store';
 import { getPreview } from '@/service';
@@ -69,9 +69,10 @@ const loadDataTable = async () => {
   data.value = result.children;
 };
 
-onMounted(() => {
+watchEffect(() => {
   loadDataTable();
 });
+
 const expandedRow = ref([1]);
 const addOrEditChapterModalRef = ref();
 /**

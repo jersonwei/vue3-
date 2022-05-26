@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-05-17 10:52:29
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-25 14:11:18
+ * @LastEditTime: 2022-05-26 14:47:45
  * @FilePath: \work\src\views\course\courseReport\index.vue
  * @Description:
 -->
@@ -47,7 +47,7 @@
 <script lang="ts" setup>
 import { ref, h, watchEffect } from 'vue';
 import { useRoute } from 'vue-router';
-import { CascaderOption, NButton } from 'naive-ui';
+import { CascaderOption, NButton, useMessage } from 'naive-ui';
 import { VerticalAlignBottomOutlined } from '@vicons/antd';
 import { getChapterList, getUnitList, getTestReportList } from '@/service';
 import { FormPro, useForm } from '@/components/FormPro';
@@ -55,14 +55,16 @@ import { TablePro } from '@/components/TablePro';
 import { schemas } from './schemas';
 import ReportModal from './components/ReportModal.vue';
 
+const message = useMessage();
 const actionRef = ref(); // 表格, {}
 const route = useRoute(); // 前一个页面会带过来，课程ID和课程名
 const courseName = ref('');
 
-const [register, { setFieldsValue }] = useForm({
+const [register, { setFieldsValue, getFieldsValue }] = useForm({
   // 查询FORM
   gridProps: { cols: '1 s:1 m:2 l:3 xl:4 2xl:4' },
   labelWidth: 80,
+  showAdvancedButton: false,
   schemas
 });
 
@@ -88,6 +90,7 @@ async function getChildren(option: CascaderOption) {
     chapterId: option?.value
   };
   const { data: result } = await getUnitList(params);
+  console.log(result);
   const newList = result.map((item: { unitId: any; unitName: any }) => {
     return { value: `${option.label}-${item.unitId}`, label: item.unitName, isLeaf: 1 };
   });
@@ -103,12 +106,11 @@ const unitId = ref();
 const getdefaultValue = async () => {
   await getOptions();
 
-  if (options.value[0].length === 0) {
-    return message.error('当前课程没有课时');
+  if (!options?.value[0]) {
+    return; // message.error('当前课程没有课时');
   }
   await getChildren(options.value[0]);
   unitId.value = options.value[0].children[0].value;
-  console.log(options.value[0].children[0].value);
   const params = {
     unitId: unitId.value
   };
@@ -118,6 +120,10 @@ const getdefaultValue = async () => {
 watchEffect(() => {
   courseName.value = route.query.courseName;
   unitId.value == '';
+  const params = {
+    unitId: ''
+  };
+  setFieldsValue(params);
   setTimeout(() => {
     getdefaultValue();
   }, 500);

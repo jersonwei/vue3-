@@ -2,13 +2,12 @@
  * @Author: ZHENG
  * @Date: 2022-05-25 14:22:35
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-25 14:37:31
+ * @LastEditTime: 2022-05-26 14:20:52
  * @FilePath: \work\src\views\course\coursePreview\compontent\pdf.vue
  * @Description:
 -->
 <template>
   <div>
-    {{ 123 }}
     <input v-model="show" type="checkbox" />
     <select v-model="src" style="width: 30em">
       <option v-for="item in pdfList" :value="item" v-text="item"></option>

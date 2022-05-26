@@ -381,6 +381,7 @@ export const routeModel: Record<Auth.RoleType, AuthRoute.Route[]> = {
           meta: {
             title: '课程成绩',
             requiresAuth: true,
+            keepAlive: true,
             icon: 'ic:baseline-web-asset-off'
           }
         },
@@ -391,6 +392,7 @@ export const routeModel: Record<Auth.RoleType, AuthRoute.Route[]> = {
           meta: {
             title: '课程标签管理',
             requiresAuth: true,
+            keepAlive: true,
             icon: 'ic:baseline-wifi-off'
           }
         },
@@ -400,6 +402,7 @@ export const routeModel: Record<Auth.RoleType, AuthRoute.Route[]> = {
           component: 'self',
           meta: {
             title: '课程配置',
+            keepAlive: true,
             hide: true
           }
         },

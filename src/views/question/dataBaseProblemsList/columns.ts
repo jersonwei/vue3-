@@ -2,8 +2,8 @@
  * @Author: ZHENG
  * @Date: 2022-04-30 15:51:30
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-23 09:23:47
- * @FilePath: \work\src\views\question\problemsList\columns.ts
+ * @LastEditTime: 2022-05-26 15:32:00
+ * @FilePath: \work\src\views\question\dataBaseProblemsList\columns.ts
  * @Description:
  */
 import { h } from 'vue';
@@ -14,14 +14,14 @@ import { getServiceEnv } from '@/utils';
 const message = useMessage();
 const result = getServiceEnv();
 export const columns = [
-  {
-    title: '序号',
-    key: 'tableId',
-    width: 80,
-    render(row, index) {
-      return h('h1', index + 1);
-    }
-  },
+  // {
+  //   title: '序号',
+  //   key: 'tableId',
+  //   width: 80,
+  //   render(row, index) {
+  //     return h('h1', index + 1);
+  //   }
+  // },
   {
     title: '题目名称',
     key: 'courseName',
@@ -40,24 +40,7 @@ export const columns = [
   {
     title: '难易度',
     key: 'courseCategoryName',
-    width: 100,
-    render(row: { listLabelName: any[] }) {
-      const tags = row.listLabelName.map(tagKey => {
-        return h(
-          NTag,
-          {
-            style: {
-              marginRight: '6px'
-            },
-            type: 'info'
-          },
-          {
-            default: () => tagKey
-          }
-        );
-      });
-      return tags;
-    }
+    width: 100
   },
   {
     title: '知识点',

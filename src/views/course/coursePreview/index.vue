@@ -3,7 +3,7 @@
  * @Author: ZHENG
  * @Date: 2022-05-14 11:44:12
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-26 13:35:28
+ * @LastEditTime: 2022-05-26 15:53:26
  * @FilePath: \work\src\views\course\coursePreview\index.vue
  * @Description:
 -->
@@ -24,7 +24,7 @@
                 <embed
                   :src="`http://81.71.130.130:8012/onlinePreview?url=${encodeURIComponent(
                     Base64.encode(item.url)
-                  )}&officePreviewType=pdf&watermarkTxt=${encodeURIComponent('锐智教育')}`"
+                  )}&officePreviewType=pdf`"
                   width="100%"
                   type="application/pdf"
                   height="100%"
@@ -46,7 +46,7 @@
                 <embed
                   :src="`http://81.71.130.130:8012/onlinePreview?url=${encodeURIComponent(
                     Base64.encode(item.url)
-                  )}&officePreviewType=pdf&watermarkTxt=${encodeURIComponent('锐智教育')}`"
+                  )}&officePreviewType=pdf`"
                   width="100%"
                   type="application/pdf"
                   height="100%"
@@ -61,7 +61,7 @@
                 <embed
                   :src="`http://81.71.130.130:8012/onlinePreview?url=${encodeURIComponent(
                     Base64.encode(item.url)
-                  )}&officePreviewType=pdf&watermarkTxt=${encodeURIComponent('锐智教育')}`"
+                  )}&officePreviewType=pdf`"
                   width="100%"
                   type="application/pdf"
                   height="100%"
