@@ -3,7 +3,7 @@
  * @Author: ZHENG
  * @Date: 2022-05-14 11:44:12
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-26 15:53:26
+ * @LastEditTime: 2022-05-26 18:06:14
  * @FilePath: \work\src\views\course\coursePreview\index.vue
  * @Description:
 -->
@@ -22,7 +22,7 @@
             <template v-for="(item, index) in courseData?.files">
               <n-tab-pane v-if="item.type === 0" :key="index" name="教学文档">
                 <embed
-                  :src="`http://81.71.130.130:8012/onlinePreview?url=${encodeURIComponent(
+                  :src="`http://120.79.129.174:8012/onlinePreview?url=${encodeURIComponent(
                     Base64.encode(item.url)
                   )}&officePreviewType=pdf`"
                   width="100%"
@@ -44,7 +44,7 @@
               </n-tab-pane>
               <n-tab-pane v-if="item.type === 2" :key="index" name="PPT">
                 <embed
-                  :src="`http://81.71.130.130:8012/onlinePreview?url=${encodeURIComponent(
+                  :src="`http://120.79.129.174:8012/onlinePreview?url=${encodeURIComponent(
                     Base64.encode(item.url)
                   )}&officePreviewType=pdf`"
                   width="100%"
@@ -59,7 +59,7 @@
               </n-tab-pane>
               <n-tab-pane v-if="item.type === 3" :key="index" name="实验手册">
                 <embed
-                  :src="`http://81.71.130.130:8012/onlinePreview?url=${encodeURIComponent(
+                  :src="`http://120.79.129.174:8012/onlinePreview?url=${encodeURIComponent(
                     Base64.encode(item.url)
                   )}&officePreviewType=pdf`"
                   width="100%"
@@ -164,7 +164,7 @@
 </template>
 <script setup lang="ts">
 import { ref, reactive, h, watchEffect } from 'vue';
-import { c, useMessage } from 'naive-ui';
+import { useMessage } from 'naive-ui';
 import { ExclamationCircleTwotone } from '@vicons/antd';
 import { Base64 } from 'js-base64';
 import { useCourseStore } from '@/store';

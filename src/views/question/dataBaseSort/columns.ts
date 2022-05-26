@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-04-30 15:51:30
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-26 11:23:36
+ * @LastEditTime: 2022-05-26 16:09:47
  * @FilePath: \work\src\views\question\dataBaseSort\columns.ts
  * @Description:
  */
@@ -20,7 +20,13 @@ export const columns = [
   {
     title: '分类名称',
     key: 'categoryName',
-    width: 120
+    width: 120,
+    render(row: { children: any; categoryName: any }, index) {
+      if (row.children?.length) {
+        return h('h1', `${row.categoryName}(${row.children.length})`);
+      }
+      return h('h1', `${row.categoryName}`);
+    }
   },
   {
     title: '所属院系',

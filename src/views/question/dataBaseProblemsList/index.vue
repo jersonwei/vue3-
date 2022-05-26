@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-04-30 14:33:21
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-26 15:30:59
+ * @LastEditTime: 2022-05-26 16:14:03
  * @FilePath: \work\src\views\question\dataBaseProblemsList\index.vue
  * @Description:
 -->
@@ -135,7 +135,8 @@ import {
   getcourseCategoryList,
   getClassList,
   getCollegeLegistt,
-  getQuestionBankCategoryList
+  getQuestionBankCategoryList,
+  getPaperList
 } from '@/service';
 import { TablePro, TableAction } from '@/components/TablePro';
 import { FormPro, useForm } from '@/components/FormPro';
@@ -252,7 +253,8 @@ const loadDataTable = async (res: any) => {
     pageSize: res.size,
     current: res.current
   };
-  const result = await searchCouserInfo({ ...formData.value, ...Param });
+
+  const result = await getPaperList({ ...formData.value, ...Param });
   return result.data;
 };
 /**

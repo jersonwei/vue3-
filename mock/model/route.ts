@@ -545,6 +545,16 @@ export const routeModel: Record<Auth.RoleType, AuthRoute.Route[]> = {
             requiresAuth: true,
             icon: 'gg:calendar-today'
           }
+        },
+        {
+          name: 'question_dataBaseProblems',
+          path: '/question/dataBaseProblems',
+          component: 'self',
+          meta: {
+            title: '添加题目',
+            requiresAuth: true,
+            icon: 'gg:calendar-today'
+          }
         }
       ],
       meta: {
