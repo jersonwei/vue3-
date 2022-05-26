@@ -1,5 +1,13 @@
 <!--
  * @Author: ZHENG
+ * @Date: 2022-05-26 08:38:12
+ * @LastEditors: ZHENG
+ * @LastEditTime: 2022-05-26 08:57:18
+ * @FilePath: \work\src\views\question\knowledge\components\addOrEditPointModal.vue
+ * @Description:
+-->
+<!--
+ * @Author: ZHENG
  * @Date: 2022-05-12 17:34:13
  * @LastEditors: ZHENG
  * @LastEditTime: 2022-05-26 08:34:16
@@ -14,7 +22,7 @@
     style="width: 550px"
     :show-icon="false"
     preset="dialog"
-    :title="`${addOrEdit ? '新增' : '修改'}题库`"
+    :title="`${addOrEdit ? '新增' : '修改'}知识点`"
   >
     <n-scrollbar ref="scrollRef" style="max-height: 750px">
       <n-form
@@ -25,11 +33,14 @@
         :label-width="120"
         class="m-2 py-4"
       >
-        <n-form-item label="分类名称" path="categoryName">
-          <n-input v-model:value="formParams.categoryName" placeholder="请输入分类名称" />
+        <n-form-item label="所属分类" path="categoryName">
+          <n-input v-model:value="formParams.categoryName" disabled placeholder="请输入分类名称" />
         </n-form-item>
-        <n-form-item label="分类备注" path="note">
-          <n-input v-model:value="formParams.note" type="textarea" placeholder="请输入分类名称" />
+        <n-form-item label="知识点名称" path="pointName">
+          <n-input v-model:value="formParams.pointName" placeholder="请输入知识点名称" />
+        </n-form-item>
+        <n-form-item label="知识点备注" path="note">
+          <n-input v-model:value="formParams.note" type="textarea" placeholder="请输入知识点备注" />
         </n-form-item>
       </n-form>
     </n-scrollbar>
@@ -56,7 +67,7 @@ const addOrEdit = ref(false);
 
 // 新增修改的Form
 const rules = {
-  categoryName: {
+  pointName: {
     required: true,
     trigger: ['blur', 'input'],
     message: '请输入名称'
@@ -65,7 +76,9 @@ const rules = {
 const emits = defineEmits(['reloadTable']);
 const formParams = reactive({
   id: 0,
+  categoryId: '',
   categoryName: '',
+  pointName: '',
   note: ''
 });
 /**
@@ -75,7 +88,11 @@ const formParams = reactive({
  * @return {*}
  */
 const showAddModalFn = (record: Recordable) => {
+  console.log(record);
   deafultFormParams(formParams);
+  const { id, categoryName } = record;
+  formParams.categoryId = id;
+  formParams.categoryName = categoryName;
   addOrEdit.value = true;
   showModal.value = true;
 };
@@ -86,8 +103,10 @@ const showAddModalFn = (record: Recordable) => {
  * @return {*}
  */
 const showEditModalFn = (record: Recordable) => {
-  const { id, categoryName, note } = record;
-  formParams.categoryName = categoryName;
+  console.log(record);
+  const { id, categoryParentName, categoryName, note } = record;
+  formParams.categoryName = categoryParentName;
+  formParams.pointName = categoryName;
   formParams.note = note;
   formParams.id = id;
   addOrEdit.value = false;

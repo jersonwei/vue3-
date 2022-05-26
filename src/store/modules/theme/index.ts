@@ -128,7 +128,8 @@ export const useThemeStore = defineStore('theme-store', {
     },
     /** 设置切换页面时是否过渡动画 */
     setPageIsAnimate(animate: boolean) {
-      this.page.animate = animate;
+      this.page.animate = false;
+      // animate;
     },
     /** 设置页面过渡动画类型 */
     setPageAnimateMode(mode: EnumType.ThemeAnimateMode) {

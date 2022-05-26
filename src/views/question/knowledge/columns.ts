@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-04-30 15:51:30
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-25 17:56:03
+ * @LastEditTime: 2022-05-26 08:57:39
  * @FilePath: \work\src\views\question\knowledge\columns.ts
  * @Description:
  */
@@ -18,9 +18,9 @@ export const columns = [
     }
   },
   {
-    title: '分类名称',
+    title: '分类名称/知识点名称',
     key: 'categoryName',
-    width: 120,
+    width: 150,
     render(row: { children: any; categoryName: any }, index) {
       if (row.children?.length) {
         return h('h1', `${row.categoryName}(${row.children.length})`);

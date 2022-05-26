@@ -2,8 +2,8 @@
  * @Author: ZHENG
  * @Date: 2022-05-12 17:34:13
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-25 17:31:59
- * @FilePath: \work\src\views\question\dataBaseSort\components\delModal.vue
+ * @LastEditTime: 2022-05-26 08:55:48
+ * @FilePath: \work\src\views\question\knowledge\components\delModal.vue
  * @Description:
 -->
 <template>
@@ -13,7 +13,7 @@
     preset="dialog"
     type="error"
     title="确认"
-    :content="`确认删除题库分类${delData?.categoryName}`"
+    :content="`确认删除${delType ? '知识点分类' : '知识点'}${delData?.categoryName}`"
     positive-text="确认"
     negative-text="算了"
     @positive-click="onPositiveClick"
@@ -27,12 +27,19 @@ import { deleteQuestionBankCategory } from '@/service';
 const message = useMessage();
 const showDelModal = ref(false);
 const delData = ref();
+const delType = ref();
 
 const emits = defineEmits(['reloadTable']);
 
-const showDelModalFn = (record: Recordable) => {
+const showDelModalFn = (record: Recordable, type: string) => {
   delData.value = record;
   showDelModal.value = true;
+  console.log(delType.value);
+  if (type === '1') {
+    delType.value = true;
+  } else {
+    delType.value = false;
+  }
 };
 
 defineExpose({ showDelModalFn });

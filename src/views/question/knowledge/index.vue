@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-04-30 14:33:21
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-25 17:51:53
+ * @LastEditTime: 2022-05-26 08:54:01
  * @FilePath: \work\src\views\question\knowledge\index.vue
  * @Description:
 -->
@@ -30,6 +30,7 @@
     </TablePro>
     <addOrEditOrEditModal ref="addOrEditModalRef" @reload-table="reloadTable"></addOrEditOrEditModal>
     <delModal ref="delModalRef" @reload-table="reloadTable"></delModal>
+    <addOrEditPointModal ref="addOrEditPointModalRef" @reload-table="reloadTable"></addOrEditPointModal>
   </n-card>
 </template>
 
@@ -44,8 +45,8 @@ import { columns } from './columns';
 import { schemas } from './schemas';
 import delModal from './components/delModal.vue';
 import addOrEditOrEditModal from './components/addOrEditModal.vue';
+import addOrEditPointModal from './components/addOrEditPointModal.vue';
 
-const message = useMessage();
 const actionColumn = reactive({
   // Table操作列
   width: 230,
@@ -61,12 +62,12 @@ const actionColumn = reactive({
             label: '编辑',
 
             // eslint-disable-next-line @typescript-eslint/no-use-before-define
-            onClick: handleEdit.bind(null, record)
+            onClick: handleEditKnowledge.bind(null, record)
           },
           {
             label: '删除',
             // eslint-disable-next-line @typescript-eslint/no-use-before-define
-            onClick: handleDelete.bind(null, record)
+            onClick: handleDelete.bind(null, record, '2')
           }
         ]
       });
@@ -84,12 +85,12 @@ const actionColumn = reactive({
           label: '新增知识点',
 
           // eslint-disable-next-line @typescript-eslint/no-use-before-define
-          onClick: handleAdd.bind(null, record)
+          onClick: handleAddKnowledge.bind(null, record)
         },
         {
           label: '删除',
           // eslint-disable-next-line @typescript-eslint/no-use-before-define
-          onClick: handleDelete.bind(null, record)
+          onClick: handleDelete.bind(null, record, '1')
         }
       ]
     });
@@ -130,15 +131,10 @@ const loadDataTable = async (res: any) => {
 
 // 新建和编辑弹窗
 const addOrEditModalRef = ref();
-// 新建弹窗
+// 新建分类弹窗
 const addTable = () => {
   addOrEditModalRef.value.showAddModalFn();
 };
-// 编辑弹窗
-const handleAdd = (record: Recordable) => {
-  addOrEditModalRef.value.showAddModalFn(record);
-};
-
 /**
  * @author: ZHENG
  * @description: 编辑
@@ -148,11 +144,22 @@ const handleAdd = (record: Recordable) => {
 const handleEdit = (record: Recordable) => {
   addOrEditModalRef.value.showEditModalFn(record);
 };
+
+// 新增知识点
+const addOrEditPointModalRef = ref();
+// 新增知识点弹窗
+const handleAddKnowledge = (record: Recordable) => {
+  addOrEditPointModalRef.value.showAddModalFn(record);
+};
+const handleEditKnowledge = (record: Recordable) => {
+  addOrEditPointModalRef.value.showEditModalFn(record);
+};
 // 删除逻辑
 const delModalRef = ref();
 // eslint-disable-next-line consistent-return
-const handleDelete = (record: Recordable) => {
-  delModalRef.value.showDelModalFn(record);
+const handleDelete = (record: Recordable, type: string) => {
+  console.log(record, type);
+  delModalRef.value.showDelModalFn(record, type);
 };
 </script>
 <style scoped></style>

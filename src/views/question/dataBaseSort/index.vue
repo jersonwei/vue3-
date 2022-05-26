@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-04-30 14:33:21
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-25 17:23:38
+ * @LastEditTime: 2022-05-26 09:00:35
  * @FilePath: \work\src\views\question\dataBaseSort\index.vue
  * @Description:
 -->
@@ -152,6 +152,10 @@ const handleEdit = (record: Recordable) => {
 const delModalRef = ref();
 // eslint-disable-next-line consistent-return
 const handleDelete = (record: Recordable) => {
+  console.log(record);
+  if (record.children) {
+    return message.warning('该节点仍有下级节点,不允许删除');
+  }
   delModalRef.value.showDelModalFn(record);
 };
 </script>
