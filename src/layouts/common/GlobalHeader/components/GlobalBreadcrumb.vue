@@ -2,13 +2,14 @@
  * @Author: ZHENG
  * @Date: 2022-05-16 15:06:21
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-26 09:25:01
+ * @LastEditTime: 2022-05-26 14:01:23
  * @FilePath: \work\src\layouts\common\GlobalHeader\components\GlobalBreadcrumb.vue
  * @Description:
 -->
 <template>
   <n-breadcrumb class="px-12px">
     <template v-for="breadcrumb in breadcrumbs" :key="breadcrumb.key">
+      {{ 123 }}
       <n-breadcrumb-item>
         <n-dropdown v-if="breadcrumb.hasChildren" :options="breadcrumb.children" @select="dropdownSelect">
           <span>

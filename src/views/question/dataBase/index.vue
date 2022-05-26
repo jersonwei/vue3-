@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-04-30 14:33:21
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-25 18:00:47
+ * @LastEditTime: 2022-05-26 13:53:35
  * @FilePath: \work\src\views\question\dataBase\index.vue
  * @Description:
 -->
@@ -76,7 +76,7 @@ const actionColumn = reactive({
       style: 'button',
       actions: [
         {
-          label: '管理题目',
+          label: '题目管理',
 
           // eslint-disable-next-line @typescript-eslint/no-use-before-define
           onClick: handleEdit.bind(null, record)
