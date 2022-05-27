@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-04-30 08:41:04
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-27 17:41:29
+ * @LastEditTime: 2022-05-27 18:13:46
  * @FilePath: \work\.env-config.ts
  * @Description:
  */
@@ -12,7 +12,7 @@ type ServiceEnv = Record<EnvType, EnvConfig>;
 /** 环境配置 */
 const serviceEnvConfig: ServiceEnv = {
   dev: {
-    url: 'http://192.168.3.7:8081',
+    url: 'http://120.79.129.174:8081',
     proxy: '/api'
   },
   test: {
@@ -20,7 +20,7 @@ const serviceEnvConfig: ServiceEnv = {
     proxy: '/api'
   },
   prod: {
-    url: 'http://120.79.129.174:8081',
+    url: 'http://192.168.3.7:8081',
     proxy: '/api'
   }
 };

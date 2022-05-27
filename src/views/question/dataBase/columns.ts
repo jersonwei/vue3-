@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-04-30 15:51:30
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-27 17:50:31
+ * @LastEditTime: 2022-05-27 18:12:34
  * @FilePath: \work\src\views\question\dataBase\columns.ts
  * @Description:
  */
@@ -30,7 +30,7 @@ export const columns = [
 
   {
     title: '所属分类',
-    key: 'courseCategoryName',
+    key: 'bankName',
     width: 100
   },
   {
