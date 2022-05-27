@@ -2,17 +2,17 @@
  * @Author: ZHENG
  * @Date: 2022-04-30 14:33:21
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-26 16:14:03
+ * @LastEditTime: 2022-05-27 13:44:39
  * @FilePath: \work\src\views\question\dataBaseProblemsList\index.vue
  * @Description:
 -->
 <template>
-  <n-grid class="mt-4" cols="1 s:1 m:1 l:3 xl:3 2xl:3" responsive="screen" :x-gap="12">
-    <n-gi span="1">
-      <n-card :segmented="{ content: 'hard' }" :bordered="false" size="small">
-        <template #header>
-          <n-space>
-            <!-- <n-dropdown trigger="hover" :options="addMenuOptions" @select="selectAddMenu">
+  <n-card>
+    <n-grid class="mt-4" cols="12" responsive="screen" :x-gap="12">
+      <n-gi span="2">
+        <n-card :bordered="false" size="small">
+          <template #header>
+            <n-space>
               <n-button type="info" ghost icon-placement="right">
                 <template #icon>
                   <div class="flex items-center">
@@ -23,104 +23,95 @@
                 </template>
                 添加题库
               </n-button>
-            </n-dropdown> -->
-            <!-- <n-button type="info" ghost icon-placement="left" @click="packHandle">
-              全部{{ expandedKeys.length ? '收起' : '展开' }}
-              <template #icon>
-                <div class="flex items-center">
-                  <n-icon size="14">
-                    <AlignLeftOutlined />
-                  </n-icon>
-                </div>
-              </template>
-            </n-button> -->
-          </n-space>
-        </template>
-        <div class="w-full menu">
-          <n-input v-model:value="pattern" type="input" placeholder="输入菜单名称搜索">
-            <template #suffix>
-              <n-icon size="18" class="cursor-pointer">
-                <SearchOutlined />
-              </n-icon>
-            </template>
-          </n-input>
-          <div class="py-3 menu-list">
-            <template v-if="loading">
-              <div class="flex items-center justify-center py-4">
-                <n-spin size="medium" />
-              </div>
-            </template>
-            <template v-else>
-              <n-tree
-                block-line
-                :virtual-scroll="true"
-                key-field="id"
-                label-field="label"
-                :pattern="pattern"
-                :data="treeData"
-                style="max-height: 650px; overflow: hidden"
-              />
-            </template>
-          </div>
-        </div>
-      </n-card>
-    </n-gi>
-    <n-gi span="2">
-      <n-card :bordered="false">
-        <FormPro @register="register" @submit="handleSubmit" @reset="reloadTable">
-          <template #courseCategorySlot="{ model, field }">
-            <n-select v-model:value="model[field]" placeholder="请选择类别" :options="options" />
-          </template>
-          <template #majorIdSlot="{ model, field }">
-            <n-cascader
-              v-model:value="model[field]"
-              placeholder="请选择专业"
-              :options="cascaderOptions"
-              :check-strategy="'all'"
-              :show-path="true"
-              remote
-              :on-load="handleLoad"
-            />
-          </template>
-        </FormPro>
-        <TablePro
-          ref="actionRef"
-          :columns="columns"
-          :request="loadDataTable"
-          :row-key="row => row.id"
-          :action-column="actionColumn"
-          key-field="id"
-          label-field="label"
-          :scroll-x="2200"
-        >
-          <template #tableTitle>
-            <n-space>
-              <n-button type="primary" @click="addTable">
-                <template #icon>
-                  <n-icon>
-                    <PlusOutlined />
-                  </n-icon>
-                </template>
-                新建题目
-              </n-button>
-              <n-button type="primary" @click="addTable">
-                <template #icon>
-                  <n-icon>
-                    <PlusOutlined />
-                  </n-icon>
-                </template>
-                导入
-              </n-button>
             </n-space>
           </template>
-        </TablePro>
-        <addModalVue ref="addModalRef" @reload-table="reloadTable"></addModalVue>
-        <editModalVue ref="editModalRef" @reload-table="reloadTable"></editModalVue>
-        <delModal ref="delModalRef" :del-data="delData" :del-text="delText" @reload-table="reloadTable"></delModal>
-        <updateCourse ref="updateModalRef" :update-data="updateData" @reload-table="reloadTable"></updateCourse>
-      </n-card>
-    </n-gi>
-  </n-grid>
+          <div class="w-full menu">
+            <n-input v-model:value="pattern" placeholder="输入菜单名称搜索">
+              <template #suffix>
+                <n-icon size="18" class="cursor-pointer">
+                  <SearchOutlined />
+                </n-icon>
+              </template>
+            </n-input>
+            <div class="py-3 menu-list">
+              <template v-if="loading">
+                <div class="flex items-center justify-center py-4">
+                  <n-spin size="medium" />
+                </div>
+              </template>
+              <template v-else>
+                <n-tree
+                  :show-irrelevant-nodes="false"
+                  block-line
+                  :virtual-scroll="true"
+                  key-field="id"
+                  label-field="label"
+                  :pattern="pattern"
+                  :data="treeData"
+                  style="height: 600px; overflow: hidden"
+                />
+              </template>
+            </div>
+          </div>
+        </n-card>
+      </n-gi>
+      <n-gi span="10">
+        <n-card :bordered="false">
+          <FormPro @register="register" @submit="handleSubmit" @reset="reloadTable">
+            <template #courseCategorySlot="{ model, field }">
+              <n-select v-model:value="model[field]" placeholder="请选择类别" :options="options" />
+            </template>
+            <template #majorIdSlot="{ model, field }">
+              <n-cascader
+                v-model:value="model[field]"
+                placeholder="请选择专业"
+                :options="cascaderOptions"
+                :check-strategy="'all'"
+                :show-path="true"
+                remote
+                :on-load="handleLoad"
+              />
+            </template>
+          </FormPro>
+          <TablePro
+            ref="actionRef"
+            :columns="columns"
+            :request="loadDataTable"
+            :row-key="row => row.id"
+            :action-column="actionColumn"
+            key-field="id"
+            label-field="label"
+            :scroll-x="2200"
+          >
+            <template #tableTitle>
+              <n-space>
+                <n-button type="primary" @click="addTable">
+                  <template #icon>
+                    <n-icon>
+                      <PlusOutlined />
+                    </n-icon>
+                  </template>
+                  新建题目
+                </n-button>
+                <n-button type="primary" @click="addTable">
+                  <template #icon>
+                    <n-icon>
+                      <PlusOutlined />
+                    </n-icon>
+                  </template>
+                  导入
+                </n-button>
+              </n-space>
+            </template>
+          </TablePro>
+          <addModalVue ref="addModalRef" @reload-table="reloadTable"></addModalVue>
+          <editModalVue ref="editModalRef" @reload-table="reloadTable"></editModalVue>
+          <delModal ref="delModalRef" :del-data="delData" :del-text="delText" @reload-table="reloadTable"></delModal>
+          <updateCourse ref="updateModalRef" :update-data="updateData" @reload-table="reloadTable"></updateCourse>
+        </n-card>
+      </n-gi>
+    </n-grid>
+  </n-card>
 </template>
 
 <script lang="ts" setup>

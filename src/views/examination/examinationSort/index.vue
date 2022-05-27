@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-04-30 14:33:21
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-25 16:24:14
+ * @LastEditTime: 2022-05-27 17:39:14
  * @FilePath: \work\src\views\examination\examinationSort\index.vue
  * @Description:
 -->
@@ -35,11 +35,9 @@
 
 <script lang="ts" setup>
 import { h, reactive, ref } from 'vue';
-import { CascaderOption, useMessage } from 'naive-ui';
+import { useMessage } from 'naive-ui';
 import { PlusOutlined } from '@vicons/antd';
-import { useCourseStore } from '@/store';
-import { useRouterPush } from '@/composables';
-import { searchCouserInfo } from '@/service';
+import { getExampaperclassificationList } from '@/service';
 import { getUserInfo } from '@/utils';
 import { TablePro, TableAction } from '@/components/TablePro';
 import { FormPro, useForm } from '@/components/FormPro';
@@ -51,9 +49,6 @@ import addOrEditModalVue from './components/addOrEditModal.vue';
 // 获取用户信息
 const { userRole } = getUserInfo();
 
-console.log(userRole);
-
-const courseStore = useCourseStore();
 const message = useMessage();
 const formData = ref({});
 const actionColumn = reactive({
@@ -97,7 +92,7 @@ const loadDataTable = async (res: any) => {
     pageSize: res.size,
     current: res.current
   };
-  const result = await searchCouserInfo({ ...formData.value, ...Param });
+  const result = await getExampaperclassificationList({ ...formData.value, ...Param });
   return result.data;
 };
 /**
@@ -148,37 +143,5 @@ const handleEdit = (record: Recordable) => {
 // 跳转详情页功能
 const actionRef = ref(); // 表格
 const updateData = ref();
-// 定时上架功能
-const updateModalRef = ref();
-const handUpdateStatus = (record: Recordable) => {
-  updateData.value = record;
-  console.log(updateData.value);
-  updateModalRef.value.showUpdateModal = true;
-};
-
-const { routerPush } = useRouterPush();
-
-/**
- * @author: ZHENG
- * @description: 跳转课程预览
- * @param {*} record
- * @return {*}
- */
-const handleDetail = (record: Recordable) => {
-  courseStore.setCourseInfo(record.id);
-  routerPush({ name: 'course_courseDetail', query: { id: record.id } });
-};
-
-/**
- * @author: ZHENG
- * @description: 跳转课程信息\配置
- * @param {*} record
- * @return {*}
- */
-const handleConfig = (record: Recordable) => {
-  courseStore.setCourseInfo(record.id);
-  console.log(record.id);
-  routerPush({ name: 'course_courseInfo' });
-};
 </script>
 <style scoped></style>

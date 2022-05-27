@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-04-30 15:51:30
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-26 16:09:47
+ * @LastEditTime: 2022-05-27 13:30:29
  * @FilePath: \work\src\views\question\dataBaseSort\columns.ts
  * @Description:
  */
@@ -48,11 +48,11 @@ export const columns = [
     key: 'count',
     width: 80
   },
-  {
-    title: '分类描述',
-    key: 'note',
-    width: 130
-  },
+  // {
+  //   title: '分类描述',
+  //   key: 'note',
+  //   width: 130
+  // },
   {
     title: '创建人',
     key: 'createrName',

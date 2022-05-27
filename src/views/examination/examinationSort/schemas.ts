@@ -2,14 +2,14 @@
  * @Author: ZHENG
  * @Date: 2022-05-12 17:48:09
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-25 16:23:47
+ * @LastEditTime: 2022-05-27 17:08:24
  * @FilePath: \work\src\views\examination\examinationSort\schemas.ts
  * @Description:
  */
 
 export const schemas = [
   {
-    field: 'courseName',
+    field: 'categoryName',
     component: 'NInput',
     label: '分类名称',
     componentProps: {

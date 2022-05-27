@@ -2,8 +2,8 @@
  * @Author: ZHENG
  * @Date: 2022-04-30 15:51:30
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-27 17:50:31
- * @FilePath: \work\src\views\question\dataBase\columns.ts
+ * @LastEditTime: 2022-05-26 16:19:16
+ * @FilePath: \work\src\views\question\dataBaseProblemsList\columns.ts
  * @Description:
  */
 import { h } from 'vue';
@@ -23,33 +23,54 @@ export const columns = [
   //   }
   // },
   {
-    title: '题库名称',
-    key: 'courseName',
+    title: '题目名称',
+    key: 'questionName',
     width: 120
   },
-
   {
-    title: '所属分类',
+    title: '题目分类',
+    key: 'listBankRelatedName',
+    width: 100,
+    render(row: { listBankRelatedName: any[] }) {
+      if (row.listBankRelatedName?.length) {
+        const tags = row.listBankRelatedName?.join(',');
+        return tags;
+      }
+      return [];
+    }
+  },
+  {
+    title: '题目类型',
+    key: 'questionTypeName',
+    width: 100
+  },
+  {
+    title: '所属题库',
     key: 'courseCategoryName',
     width: 100
   },
   {
-    title: '所属院系',
-    key: 'collegeName',
-    width: 150
+    title: '难易度',
+    key: 'difficultLevelName',
+    width: 100
   },
   {
-    title: '绑定课程',
-    key: 'courseName',
-    width: 150
+    title: '知识点',
+    key: 'courseCategoryName',
+    width: 100
   },
   {
-    title: '题目数',
-    key: 'questionCount',
+    title: '被引用次数',
+    key: 'unitNum',
     width: 130
   },
   {
-    title: '题库状态',
+    title: '作答次数',
+    key: 'unitNum',
+    width: 130
+  },
+  {
+    title: '状态',
     key: 'statusName',
     width: 100,
     render(row: { status: number }) {
@@ -67,11 +88,11 @@ export const columns = [
       });
     }
   },
-  // {
-  //   title: '题库描述',
-  //   key: 'bankDescribe',
-  //   width: 130
-  // },
+  {
+    title: '题目描述',
+    key: 'note',
+    width: 130
+  },
   {
     title: '创建人',
     key: 'createrName',

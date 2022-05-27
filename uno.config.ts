@@ -1,3 +1,11 @@
+/*
+ * @Author: ZHENG
+ * @Date: 2022-04-30 08:41:04
+ * @LastEditors: ZHENG
+ * @LastEditTime: 2022-05-27 16:45:41
+ * @FilePath: \work\uno.config.ts
+ * @Description:
+ */
 import { defineConfig, presetMini } from 'unocss';
 
 export default defineConfig({

@@ -458,69 +458,27 @@ export const routeModel: Record<Auth.RoleType, AuthRoute.Route[]> = {
       }
     },
     {
-      name: 'examination',
-      path: '/examination',
-      component: 'basic',
-      children: [
-        {
-          name: 'examination_examinationList',
-          path: '/examination/examinationList',
-          component: 'self',
-          meta: {
-            title: '试卷列表',
-            requiresAuth: true,
-            icon: 'gg:calendar-today'
-          }
-        },
-        {
-          name: 'examination_examinationSort',
-          path: '/examination/examinationSort',
-          component: 'self',
-          meta: {
-            title: '试卷分类',
-            requiresAuth: true,
-            icon: 'gg:calendar-today'
-          }
-        },
-        {
-          name: 'examination_examinationEdit',
-          path: '/examination/examinationEdit',
-          component: 'self',
-          meta: {
-            title: '试卷创编',
-            requiresAuth: true,
-            icon: 'gg:calendar-today'
-          }
-        }
-      ],
-      meta: {
-        title: '试卷管理',
-        icon: 'gg:calendar-today',
-        order: 8
-      }
-    },
-    {
       name: 'question',
       path: '/question',
       component: 'basic',
       children: [
-        {
-          name: 'question_dataBase',
-          path: '/question/dataBase',
-          component: 'self',
-          meta: {
-            title: '题库管理',
-            requiresAuth: true,
-            icon: 'gg:calendar-today',
-            keepAlive: true
-          }
-        },
         {
           name: 'question_dataBaseSort',
           path: '/question/dataBaseSort',
           component: 'self',
           meta: {
             title: '题库分类',
+            requiresAuth: true,
+            icon: 'gg:calendar-today',
+            keepAlive: true
+          }
+        },
+        {
+          name: 'question_dataBase',
+          path: '/question/dataBase',
+          component: 'self',
+          meta: {
+            title: '题库管理',
             requiresAuth: true,
             icon: 'gg:calendar-today',
             keepAlive: true
@@ -547,11 +505,51 @@ export const routeModel: Record<Auth.RoleType, AuthRoute.Route[]> = {
           }
         },
         {
+          name: 'question_problemsInfo',
+          path: '/question/problemsInfo',
+          component: 'self',
+          meta: {
+            title: '题目详情',
+            requiresAuth: true,
+            icon: 'gg:calendar-today'
+          }
+        },
+        {
           name: 'question_dataBaseProblems',
           path: '/question/dataBaseProblems',
           component: 'self',
           meta: {
             title: '添加题目',
+            requiresAuth: true,
+            icon: 'gg:calendar-today'
+          }
+        },
+        {
+          name: 'examination_examinationList',
+          path: '/examination/examinationList',
+          component: 'self',
+          meta: {
+            title: '试卷列表',
+            requiresAuth: true,
+            icon: 'gg:calendar-today'
+          }
+        },
+        {
+          name: 'examination_examinationSort',
+          path: '/examination/examinationSort',
+          component: 'self',
+          meta: {
+            title: '试卷分类',
+            requiresAuth: true,
+            icon: 'gg:calendar-today'
+          }
+        },
+        {
+          name: 'examination_examinationEdit',
+          path: '/examination/examinationEdit',
+          component: 'self',
+          meta: {
+            title: '试卷创编',
             requiresAuth: true,
             icon: 'gg:calendar-today'
           }

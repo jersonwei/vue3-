@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-04-30 14:33:21
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-26 13:53:35
+ * @LastEditTime: 2022-05-27 17:46:03
  * @FilePath: \work\src\views\question\dataBase\index.vue
  * @Description:
 -->
@@ -54,7 +54,7 @@ import { CascaderOption, useMessage } from 'naive-ui';
 import { PlusOutlined } from '@vicons/antd';
 import { useCourseStore } from '@/store';
 import { useRouterPush } from '@/composables';
-import { searchCouserInfo } from '@/service';
+import { getQuestionBankList } from '@/service';
 import { TablePro, TableAction } from '@/components/TablePro';
 import { FormPro, useForm } from '@/components/FormPro';
 import { columns } from './columns';
@@ -115,7 +115,7 @@ const loadDataTable = async (res: any) => {
     pageSize: res.size,
     current: res.current
   };
-  const result = await searchCouserInfo({ ...formData.value, ...Param });
+  const result = await getQuestionBankList({ ...formData.value, ...Param });
   return result.data;
 };
 /**

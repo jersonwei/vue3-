@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-04-30 15:51:30
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-26 13:51:38
+ * @LastEditTime: 2022-05-27 13:32:56
  * @FilePath: \work\src\views\question\knowledge\columns.ts
  * @Description:
  */
@@ -38,11 +38,11 @@ export const columns = [
     key: 'count',
     width: 80
   },
-  {
-    title: '知识点备注',
-    key: 'note',
-    width: 130
-  },
+  // {
+  //   title: '知识点备注',
+  //   key: 'note',
+  //   width: 130
+  // },
   {
     title: '创建人',
     key: 'createrName',

@@ -1,3 +1,11 @@
+/*
+ * @Author: ZHENG
+ * @Date: 2022-05-16 15:06:21
+ * @LastEditors: ZHENG
+ * @LastEditTime: 2022-05-27 10:34:39
+ * @FilePath: \work\src\utils\router\tab.ts
+ * @Description: 
+ */
 import { EnumStorageKey } from '@/enum';
 import { setLocal, getLocal } from '../storage';
 
