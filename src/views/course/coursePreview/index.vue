@@ -3,7 +3,7 @@
  * @Author: ZHENG
  * @Date: 2022-05-14 11:44:12
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-28 20:50:34
+ * @LastEditTime: 2022-05-28 22:06:33
  * @FilePath: \work\src\views\course\coursePreview\index.vue
  * @Description:
 -->
@@ -18,6 +18,7 @@
             size="large"
             :tabs-padding="20"
             pane-style="padding: 20px;"
+            @on-update:value="updateTabs"
           >
             <template v-for="(item, index) in courseData?.files">
               <n-tab-pane v-if="item.type === 0" :key="index" name="教学文档">
@@ -207,7 +208,9 @@ watchEffect(async () => {
   }
 });
 const showPaperData = ref(false);
+const tabsRef = ref(1);
 const loadPaperDataTable = async (res: any) => {
+  console.log(courseData.value.unitId);
   if (!courseData.value.unitId) {
     showPaperData.value = false;
     return;
@@ -217,10 +220,18 @@ const loadPaperDataTable = async (res: any) => {
     pageSize: res.size,
     current: res.current
   };
-  const result = await getUnitPracticeList({ ...Param });
+  const { data: result } = await getUnitPracticeList({ ...Param });
   console.log('getUnitPracticeList', result);
+  if (result.total != 0) {
+    showPaperData.value = true;
+  }
+  return result;
+};
+loadPaperDataTable({ pageSize: 10, current: 1 });
 
-  return result.data;
+const updateTabs = value => {
+  console.log(value);
+  console.log(document.getElementById('#viewThumbnail'));
 };
 
 const actionColumn = reactive({
