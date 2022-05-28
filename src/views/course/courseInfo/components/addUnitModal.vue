@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-05-21 11:21:27
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-26 15:57:20
+ * @LastEditTime: 2022-05-28 10:43:17
  * @FilePath: \work\src\views\course\courseInfo\components\addUnitModal.vue
  * @Description:
 -->
@@ -442,7 +442,7 @@ const formSubmit = async () => {
   if (addOrEdit.value === true) {
     const Form = new FormData();
     fileList.forEach(file => Form.append('file', file));
-    Form.append('details', formParams.note);
+    Form.append('note', formParams.note);
     Form.append('unitName', formParams.label);
     Form.append('chapterId', formParams.chapterId);
     Form.append('enableReport', formParams.enableReport ? 1 : 0);
@@ -518,7 +518,7 @@ const formSubmit = async () => {
     const Form = new FormData();
     console.log(formParams);
     fileList.forEach(file => Form.append('file', file));
-    Form.append('details', formParams.note);
+    Form.append('note', formParams.note);
     Form.append('unitName', formParams.label);
     Form.append('chapterId', formParams.chapterId);
     Form.append('enableReport', formParams.enableReport ? 1 : 0);

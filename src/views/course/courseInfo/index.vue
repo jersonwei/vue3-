@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-05-04 17:20:30
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-26 14:35:31
+ * @LastEditTime: 2022-05-28 09:57:47
  * @FilePath: \work\src\views\course\courseInfo\index.vue
  * @Description: 课程页面
 -->
@@ -150,7 +150,7 @@ const columns = [
   //   className: 'age'
   // },
   {
-    title: '备注',
+    title: '描述',
     key: 'note',
     width: 120
   },

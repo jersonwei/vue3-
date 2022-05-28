@@ -2,35 +2,23 @@
  * @Author: ZHENG
  * @Date: 2022-04-30 15:51:30
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-27 18:12:34
+ * @LastEditTime: 2022-05-28 09:22:19
  * @FilePath: \work\src\views\question\dataBase\columns.ts
  * @Description:
  */
 import { h } from 'vue';
-import { NAvatar, NTag, NSwitch, useMessage } from 'naive-ui';
-import { updateCourseStatusByCourseId } from '@/service';
-import { getServiceEnv } from '@/utils';
+import { NSwitch } from 'naive-ui';
+import { editQuestionBankStatus } from '@/service';
 
-const message = useMessage();
-const result = getServiceEnv();
 export const columns = [
-  // {
-  //   title: '序号',
-  //   key: 'tableId',
-  //   width: 80,
-  //   render(row, index) {
-  //     return h('h1', index + 1);
-  //   }
-  // },
   {
     title: '题库名称',
-    key: 'courseName',
+    key: 'bankName',
     width: 120
   },
-
   {
     title: '所属分类',
-    key: 'bankName',
+    key: 'categoryName',
     width: 100
   },
   {
@@ -57,21 +45,17 @@ export const columns = [
         value: row.status === 1,
         onUpdateValue: value => {
           row.status = row.status === 1 ? 0 : 1;
+          console.log(row);
           const params = {
-            CourseId: row.id,
+            id: row.id,
             status: row.status
           };
           // eslint-disable-next-line @typescript-eslint/no-use-before-define
-          updateCourse(params);
+          updateBankStatus(params);
         }
       });
     }
   },
-  // {
-  //   title: '题库描述',
-  //   key: 'bankDescribe',
-  //   width: 130
-  // },
   {
     title: '创建人',
     key: 'createrName',
@@ -89,10 +73,10 @@ export const columns = [
  * @param {*} params
  * @return {*}
  */
-const updateCourse = async params => {
-  const courseResult = await updateCourseStatusByCourseId(params);
-  console.log(courseResult, params.status);
-  if (!courseResult.error) {
-    window.$message?.success(`${params.status === 1 ? '上架' : '下架'}操作成功`);
+const updateBankStatus = async params => {
+  const bankResult = await editQuestionBankStatus(params);
+  console.log(bankResult, params.status);
+  if (!bankResult.error) {
+    window.$message?.success(`${params.status === 1 ? '启用' : '禁用'}操作成功`);
   }
 };

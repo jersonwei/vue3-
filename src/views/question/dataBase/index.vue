@@ -2,22 +2,20 @@
  * @Author: ZHENG
  * @Date: 2022-04-30 14:33:21
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-27 17:46:03
+ * @LastEditTime: 2022-05-28 09:12:38
  * @FilePath: \work\src\views\question\dataBase\index.vue
  * @Description:
 -->
 <template>
   <n-card :bordered="false">
     <FormPro @register="register" @submit="handleSubmit" @reset="reloadTable">
-      <template #courseCategorySlot="{ model, field }">
-        <n-select v-model:value="model[field]" placeholder="请选择类别" :options="options" />
-      </template>
-      <template #majorIdSlot="{ model, field }">
+      <template #categoryNameSlot="{ model, field }">
         <n-cascader
           v-model:value="model[field]"
-          placeholder="请选择专业"
-          :options="cascaderOptions"
-          :check-strategy="'all'"
+          clearable
+          placeholder="请选择题库分类"
+          :options="categoryNameOptions"
+          :check-strategy="'child'"
           :show-path="true"
           remote
           :on-load="handleLoad"
@@ -59,6 +57,7 @@ import { TablePro, TableAction } from '@/components/TablePro';
 import { FormPro, useForm } from '@/components/FormPro';
 import { columns } from './columns';
 import { schemas } from './schemas';
+import { getCategoryName, getChildren } from './getOptions';
 import delModal from './components/delModal.vue';
 import addOrEditModalVue from './components/addOrEditModal.vue';
 
@@ -130,6 +129,20 @@ const reloadTable = () => {
 const handleSubmit = (values: Recordable) => {
   formData.value = values;
   reloadTable();
+};
+
+const categoryNameOptions = ref();
+const getOption = async () => {
+  categoryNameOptions.value = await getCategoryName();
+};
+getOption();
+const handleLoad = (option: CascaderOption) => {
+  return new Promise<void>(resolve => {
+    window.setTimeout(() => {
+      categoryNameOptions.value.children = getChildren(option);
+      resolve();
+    }, 1000);
+  });
 };
 
 // 删除逻辑

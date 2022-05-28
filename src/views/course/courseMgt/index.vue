@@ -10,7 +10,7 @@
   <n-card class="relative" :bordered="false">
     <FormPro @register="register" @submit="handleSubmit" @reset="reloadTable">
       <template #courseCategorySlot="{ model, field }">
-        <n-select v-model:value="model[field]" placeholder="请选择所属类别" :options="courseCategoryOptions" />
+        <n-select v-model:value="model[field]"  placeholder="请选择所属类别" :options="courseCategoryOptions" />
       </template>
       <template #majorIdSlot="{ model, field }">
         <n-cascader

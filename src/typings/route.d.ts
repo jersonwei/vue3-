@@ -32,7 +32,7 @@ declare namespace AuthRoute {
     | 'question_knowledgeSort'
     | 'question_dataBaseProblems'
     | 'question_dataBaseProblemsList'
-		| 'question_problemsInfo'
+    | 'question_problemsInfo'
     | 'examination'
     | 'examination_examinationList'
     | 'examination_examinationSort'

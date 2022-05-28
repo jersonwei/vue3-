@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-05-12 17:34:13
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-25 18:02:58
+ * @LastEditTime: 2022-05-28 14:01:49
  * @FilePath: \work\src\views\question\dataBase\components\addOrEditModal.vue
  * @Description:
 -->
@@ -29,13 +29,22 @@
           <n-input v-model:value="formParams.courseName" placeholder="请输入题库名称" />
         </n-form-item>
         <n-form-item label="所属类别" path="courseCategory">
-          <n-input v-model:value="formParams.courseCategory" />
+          <n-cascader
+            v-model:value="formParams.courseCategory"
+            clearable
+            placeholder="请选择题库分类"
+            :options="categoryNameOptions"
+            :check-strategy="'child'"
+            :show-path="true"
+            remote
+            :on-load="handleLoad"
+          />
+        </n-form-item>
+        <n-form-item label="绑定课程" path="courseName">
+          <n-select v-model:value="formParams.courseName" :options="teacherCourseList" placeholder="请绑定课程" />
         </n-form-item>
         <n-form-item label="题库介绍" path="note">
           <n-input v-model:value="formParams.note" type="textarea" placeholder="课程介绍" />
-        </n-form-item>
-        <n-form-item label="绑定题目" path="courseCategory1">
-          <n-input v-model:value="formParams.courseCategory" />
         </n-form-item>
       </n-form>
     </n-scrollbar>
@@ -49,9 +58,10 @@
 </template>
 <script lang="ts" setup>
 import { reactive, ref } from 'vue';
-import { useMessage } from 'naive-ui';
+import { CascaderOption, useMessage } from 'naive-ui';
 import { addQuestionBankCategory, editQuestionBankCategory } from '@/service';
 import { deafultFormParams } from '@/utils';
+import { getCategoryName, getChildren, getTeacherCourseList } from '../getOptions';
 
 const showModal = ref(false);
 const showForm = ref<boolean | null>(null);
@@ -73,9 +83,26 @@ const formParams = reactive({
   id: 0,
   categoryParent: '',
   categoryParentName: '',
+  courseCategory: '',
   categoryName: '',
+  courseName: '',
   note: ''
 });
+const categoryNameOptions = ref();
+const teacherCourseList = ref();
+const getOption = async () => {
+  categoryNameOptions.value = await getCategoryName();
+  teacherCourseList.value = await getTeacherCourseList();
+};
+getOption();
+const handleLoad = (option: CascaderOption) => {
+  return new Promise<void>(resolve => {
+    window.setTimeout(() => {
+      categoryNameOptions.value.children = getChildren(option);
+      resolve();
+    }, 1000);
+  });
+};
 /**
  * @author: ZHENG
  * @description: 新增的弹窗,在这里会修改数据

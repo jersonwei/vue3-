@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-05-12 14:54:50
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-25 16:16:00
+ * @LastEditTime: 2022-05-28 09:52:11
  * @FilePath: \work\src\views\course\courseDetail\index.vue
  * @Description:
 -->
@@ -14,19 +14,13 @@
           <div style="font-size: 24px">{{ courseDetail.label }}</div>
           <div style="font-size: 18px">
             课程介绍:
-            <span style="font-size: 15px">{{ courseDetail.note }}</span>
+            <span style="font-size: 15px">{{ courseDetail.note || '' }}</span>
           </div>
         </n-space>
         <div>
           <n-image width="100" :src="courseDetail.coverPic" preview-disabled />
         </div>
       </n-space>
-      <!-- <n-thing>
-        <template #header> {{ courseDetail.label }} </template>
-        <template #header-extra> <n-image width="120" :src="courseDetail.coverPic" preview-disabled /> </template>
-        <template #description> 课程介绍 </template>
-        {{ courseDetail.note }}
-      </n-thing> -->
     </n-card>
     <!-- 明细 -->
     <n-card :bordered="false" size="small" class="shadow-sm rounded-16px">
@@ -215,7 +209,7 @@ watchEffect(async () => {
   courseDetail.note = result.note;
   courseDetail.coverPic = `${http}${result.coverPic}`;
   courseOutLine.value = result.courseOutline;
-  courseDetail.courseOutline = `https://view.xdocin.com/view?src=${http}${result.courseOutline}`;
+  courseDetail.courseOutline = `http://120.79.129.174:8012/onlinePreview?url=${http}${result.courseOutline}`;
   // encodeURI
   // https://view.xdocin.com/view?src=
   console.log(courseDetail.courseOutline);

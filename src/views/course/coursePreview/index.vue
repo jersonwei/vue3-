@@ -103,11 +103,8 @@
       </n-layout-sider>
       <n-layout>
         <n-layout-content content-style="padding: 24px;">
-          <div>
-            <n-space
-              vertical
-              style="width: 100%; height: 600px; display: flex; justify-content: center; align-items: center"
-            >
+          <div style="width: 100%; height: 600px; display: flex; justify-content: center; align-items: center">
+            <n-space vertical>
               <n-image width="100" src="http://124.70.85.180:8086/img/docker-empty.43357460.svg" />
               <n-button type="info"> 开启云端实验 </n-button>
             </n-space>

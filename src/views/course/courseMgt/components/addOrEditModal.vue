@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-05-12 17:34:13
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-24 13:49:50
+ * @LastEditTime: 2022-05-28 09:48:25
  * @FilePath: \work\src\views\course\courseMgt\components\addOrEditModal.vue
  * @Description:
 -->
@@ -29,15 +29,16 @@
           <n-input v-model:value="formParams.courseName" placeholder="请输入课程名称" />
         </n-form-item>
         <n-form-item label="所属类别" path="courseCategory">
-          <n-select v-model:value="formParams.courseCategory" :options="form.courseCategory" />
+          <n-select v-model:value="formParams.courseCategory" clearable :options="form.courseCategory" />
         </n-form-item>
         <n-form-item label="所属班级" path="classList">
-          <n-select v-model:value="formParams.classList" multiple :options="form.majorId" />
+          <n-select v-model:value="formParams.classList" clearable multiple :options="form.majorId" />
         </n-form-item>
         <n-form-item label="课程标签" path="labelList">
           <n-select
             v-model:value="formParams.labelList"
             filterable
+            clearable
             multiple
             tag
             :options="form.label"
