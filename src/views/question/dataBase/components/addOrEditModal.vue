@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-05-12 17:34:13
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-28 14:58:54
+ * @LastEditTime: 2022-05-28 15:33:14
  * @FilePath: \work\src\views\question\dataBase\components\addOrEditModal.vue
  * @Description:
 -->
@@ -25,10 +25,10 @@
         :label-width="120"
         class="m-2 py-4"
       >
-        <n-form-item label="题库名称" path="courseName">
+        <n-form-item label="题库名称" path="bankName">
           <n-input v-model:value="formParams.bankName" placeholder="请输入题库名称" />
         </n-form-item>
-        <n-form-item label="所属类别" path="courseCategory">
+        <n-form-item label="题库分类" path="bankType">
           <n-cascader
             v-model:value="formParams.bankType"
             clearable
@@ -41,7 +41,7 @@
             :on-load="handleLoad"
           />
         </n-form-item>
-        <n-form-item label="绑定课程" path="courseName">
+        <n-form-item label="绑定课程" path="courseId">
           <n-select v-model:value="formParams.courseId" :options="teacherCourseList" placeholder="请绑定课程" />
         </n-form-item>
         <n-form-item label="题库介绍" path="note">
@@ -76,7 +76,17 @@ const rules = {
   bankName: {
     required: true,
     trigger: ['blur', 'input'],
-    message: '请输入名称'
+    message: '请输入题库名称'
+  },
+  bankType: {
+    required: true,
+    trigger: ['blur', 'input'],
+    message: '请选择题库分类'
+  },
+  courseId: {
+    required: true,
+    trigger: ['blur', 'input'],
+    message: '请选择绑定课程'
   }
 };
 const emits = defineEmits(['reloadTable']);

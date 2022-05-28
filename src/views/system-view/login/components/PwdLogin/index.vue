@@ -2,17 +2,25 @@
  * @Author: ZHENG
  * @Date: 2022-04-25 20:43:55
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-23 21:09:20
+ * @LastEditTime: 2022-05-28 16:06:01
  * @FilePath: \work\src\views\system-view\login\components\PwdLogin\index.vue
  * @Description:
 -->
 <template>
   <n-form ref="formRef" :model="model" :rules="rules" size="large" :show-label="false">
     <n-form-item label="账号" path="account">
-      <n-input v-model:value="model.account" placeholder="请输入账号（工号）" />
+      <n-input v-model:value="model.account" placeholder="请输入账号（工号）">
+        <template #prefix>
+          <n-icon><UserOutlined /></n-icon>
+        </template>
+      </n-input>
     </n-form-item>
     <n-form-item path="pwd">
-      <n-input v-model:value="model.pwd" type="password" show-password-on="click" placeholder="请输入密码" />
+      <n-input v-model:value="model.pwd" type="password" show-password-on="click" placeholder="请输入密码">
+        <template #prefix>
+          <n-icon><LockTwotone /></n-icon>
+        </template>
+      </n-input>
     </n-form-item>
     <n-form-item path="code">
       <div class="flex-y-center w-full">
@@ -60,6 +68,7 @@
 <script setup lang="ts">
 import { reactive, ref } from 'vue';
 import type { FormInst, FormRules } from 'naive-ui';
+import { UserOutlined, LockTwotone } from '@vicons/antd';
 import { EnumLoginModule } from '@/enum';
 import { useAuthStore } from '@/store';
 import { useRouterPush } from '@/composables';

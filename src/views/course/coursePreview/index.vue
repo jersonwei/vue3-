@@ -3,7 +3,7 @@
  * @Author: ZHENG
  * @Date: 2022-05-14 11:44:12
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-26 18:06:14
+ * @LastEditTime: 2022-05-28 19:10:56
  * @FilePath: \work\src\views\course\coursePreview\index.vue
  * @Description:
 -->
@@ -21,19 +21,13 @@
           >
             <template v-for="(item, index) in courseData?.files">
               <n-tab-pane v-if="item.type === 0" :key="index" name="教学文档">
-                <embed
-                  :src="`http://120.79.129.174:8012/onlinePreview?url=${encodeURIComponent(
-                    Base64.encode(item.url)
-                  )}&officePreviewType=pdf`"
+                <iframe
+                  :src="`http://120.79.129.174:8012/onlinePreview?url=${Base64.encode(item.url)}&officePreviewType=pdf`"
                   width="100%"
                   type="application/pdf"
                   height="100%"
                   style="height: 700px"
                 />
-                <!-- This browser does not support PDFs. Please download the PDF to view it:
-                  <a href="/test.pdf">Download PDF</a>
-
-                </embed> -->
               </n-tab-pane>
               <n-tab-pane v-if="item.type === 1" :key="index" name="教学视频">
                 <playerVideo :src="item.url"></playerVideo>
@@ -44,9 +38,7 @@
               </n-tab-pane>
               <n-tab-pane v-if="item.type === 2" :key="index" name="PPT">
                 <embed
-                  :src="`http://120.79.129.174:8012/onlinePreview?url=${encodeURIComponent(
-                    Base64.encode(item.url)
-                  )}&officePreviewType=pdf`"
+                  :src="`http://120.79.129.174:8012/onlinePreview?url=${Base64.encode(item.url)}&officePreviewType=pdf`"
                   width="100%"
                   type="application/pdf"
                   height="100%"
@@ -59,9 +51,7 @@
               </n-tab-pane>
               <n-tab-pane v-if="item.type === 3" :key="index" name="实验手册">
                 <embed
-                  :src="`http://120.79.129.174:8012/onlinePreview?url=${encodeURIComponent(
-                    Base64.encode(item.url)
-                  )}&officePreviewType=pdf`"
+                  :src="`http://120.79.129.174:8012/onlinePreview?url=${Base64.encode(item.url)}&officePreviewType=pdf`"
                   width="100%"
                   type="application/pdf"
                   height="100%"

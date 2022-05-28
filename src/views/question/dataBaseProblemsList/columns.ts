@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-04-30 15:51:30
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-26 16:19:16
+ * @LastEditTime: 2022-05-28 15:46:57
  * @FilePath: \work\src\views\question\dataBaseProblemsList\columns.ts
  * @Description:
  */
@@ -14,14 +14,6 @@ import { getServiceEnv } from '@/utils';
 const message = useMessage();
 const result = getServiceEnv();
 export const columns = [
-  // {
-  //   title: '序号',
-  //   key: 'tableId',
-  //   width: 80,
-  //   render(row, index) {
-  //     return h('h1', index + 1);
-  //   }
-  // },
   {
     title: '题目名称',
     key: 'questionName',

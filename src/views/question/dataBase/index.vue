@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-04-30 14:33:21
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-28 15:16:09
+ * @LastEditTime: 2022-05-28 15:34:11
  * @FilePath: \work\src\views\question\dataBase\index.vue
  * @Description:
 -->
@@ -172,7 +172,7 @@ const delText = ref(''); // 删除的文字
 // eslint-disable-next-line consistent-return
 const handleDelete = (record: Recordable) => {
   if (record.questionCount !== '0') {
-    message.warning('已有绑定题目,不允许删除');
+    return message.warning('已有绑定题目,不允许删除');
   }
   delText.value = record.bankName;
   delData.value = record.id;
