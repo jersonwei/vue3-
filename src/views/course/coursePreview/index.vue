@@ -3,7 +3,7 @@
  * @Author: ZHENG
  * @Date: 2022-05-14 11:44:12
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-28 19:10:56
+ * @LastEditTime: 2022-05-28 20:50:34
  * @FilePath: \work\src\views\course\coursePreview\index.vue
  * @Description:
 -->
@@ -22,6 +22,15 @@
             <template v-for="(item, index) in courseData?.files">
               <n-tab-pane v-if="item.type === 0" :key="index" name="教学文档">
                 <iframe
+                  v-if="item.ext === `.pdf`"
+                  :src="`${item.url}#toolbar=0`"
+                  width="100%"
+                  type="application/pdf"
+                  height="100%"
+                  style="height: 700px"
+                />
+                <iframe
+                  v-else
                   :src="`http://120.79.129.174:8012/onlinePreview?url=${Base64.encode(item.url)}&officePreviewType=pdf`"
                   width="100%"
                   type="application/pdf"
@@ -37,7 +46,16 @@
                 </iframe> -->
               </n-tab-pane>
               <n-tab-pane v-if="item.type === 2" :key="index" name="PPT">
+                <iframe
+                  v-if="item.ext === `.pdf`"
+                  :src="`${item.url}#toolbar=0`"
+                  width="100%"
+                  type="application/pdf"
+                  height="100%"
+                  style="height: 700px"
+                />
                 <embed
+                  v-else
                   :src="`http://120.79.129.174:8012/onlinePreview?url=${Base64.encode(item.url)}&officePreviewType=pdf`"
                   width="100%"
                   type="application/pdf"
@@ -50,7 +68,16 @@
                 </iframe> -->
               </n-tab-pane>
               <n-tab-pane v-if="item.type === 3" :key="index" name="实验手册">
+                <iframe
+                  v-if="item.ext === `.pdf`"
+                  :src="`${item.url}#toolbar=0`"
+                  width="100%"
+                  type="application/pdf"
+                  height="100%"
+                  style="height: 700px"
+                />
                 <embed
+                  v-else
                   :src="`http://120.79.129.174:8012/onlinePreview?url=${Base64.encode(item.url)}&officePreviewType=pdf`"
                   width="100%"
                   type="application/pdf"
