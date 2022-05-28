@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-05-18 14:02:27
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-24 11:02:18
+ * @LastEditTime: 2022-05-28 21:32:34
  * @FilePath: \work\src\service\api\unitPracticeAnswers\unitPracticeAnswers.ts
  * @Description:
  */
@@ -23,7 +23,7 @@ export function updateUnitPracticeAnswers(params) {
 
 export function unitpracticeanswersExport(id, params) {
   const query = paramsToQuery(params);
-  const res = `http://192.168.3.234:8081/unitpracticeanswers/exportUnit/${id}${query}`;
+  const res = `http://120.79.129.174:8081/unitpracticeanswers/exportUnit/${id}${query}`;
   return res;
 }
 

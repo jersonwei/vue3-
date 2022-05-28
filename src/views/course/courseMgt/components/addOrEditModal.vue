@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-05-12 17:34:13
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-28 09:48:25
+ * @LastEditTime: 2022-05-28 21:15:49
  * @FilePath: \work\src\views\course\courseMgt\components\addOrEditModal.vue
  * @Description:
 -->
@@ -378,6 +378,7 @@ const customRequestIMage = ({ file, data }: UploadCustomRequestOptions) => {
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const customRequestOutline = ({ file, data }: UploadCustomRequestOptions) => {
+  console.log('上传的文件', file.file);
   Form.delete('outLine');
   Form.append('outLine', file.file || '');
 };

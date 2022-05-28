@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-05-12 14:54:50
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-28 09:52:11
+ * @LastEditTime: 2022-05-28 21:30:30
  * @FilePath: \work\src\views\course\courseDetail\index.vue
  * @Description:
 -->
@@ -74,6 +74,7 @@ import { h, onMounted, reactive, ref, watchEffect } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { TreeOption, useMessage } from 'naive-ui';
 // import { FileOutlined } from '@vicons/antd';
+import { Base64 } from 'js-base64';
 import { useCourseStore } from '@/store';
 import { getPreview } from '@/service';
 import { getServiceEnv } from '@/utils';
@@ -209,9 +210,20 @@ watchEffect(async () => {
   courseDetail.note = result.note;
   courseDetail.coverPic = `${http}${result.coverPic}`;
   courseOutLine.value = result.courseOutline;
-  courseDetail.courseOutline = `http://120.79.129.174:8012/onlinePreview?url=${http}${result.courseOutline}`;
-  // encodeURI
-  // https://view.xdocin.com/view?src=
+  // const num = result.courseOutline.lastIndexOf('.');
+  // const res = result.courseOutline.substr(num + 1);
+  // console.log(res);
+  // console.log(result);
+  // const paramsHttp = http + result.courseOutline;
+  // console.log(paramsHttp);
+  // if (res === 'pdf') {
+  //   courseDetail.courseOutline = http + result.courseOutline;
+  // } else {
+  //   courseDetail.courseOutline = `http://120.79.129.174:8012/onlinePreview?url=${Base64.encode(
+  //     http + result.courseOutline
+  //   )}&officePreviewType=pdf`;
+  // }
+  courseDetail.courseOutline = `https://view.xdocin.com/view?src=${http}${result.courseOutline}`;
   console.log(courseDetail.courseOutline);
 });
 const handleLoad = (option: CascaderOption) => {

@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-05-12 17:34:13
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-24 17:09:17
+ * @LastEditTime: 2022-05-28 21:21:32
  * @FilePath: \work\src\views\course\coursePractice\components\practiceModal.vue
  * @Description:
 -->
@@ -202,7 +202,7 @@
             </template>
           </n-space>
 
-          <p v-if="checkTagType === '单选题'">系统评分：{{ checkTagData.score }}</p>
+          <p v-if="checkTagType === '单选题' || checkTagType === '多选题'">系统评分：{{ checkTagData.score }}</p>
           <n-space v-else>
             <p>教师评分：</p>
             <n-input-number

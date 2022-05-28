@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-05-17 10:52:29
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-25 11:43:15
+ * @LastEditTime: 2022-05-28 21:35:00
  * @FilePath: \work\src\views\course\coursePractice\index.vue
  * @Description:
 -->
@@ -198,7 +198,9 @@ const handleSelect = async (key: string | number) => {
       classId: route.query.classId,
       features: 'one'
     };
-    const result = await unitpracticeanswersExport(unitId.value, params);
+    const idIndex = unitId.value.indexOf('-');
+    const unitIdValue = unitId.value.substr(idIndex + 1); // 当前章节ID
+    const result = await unitpracticeanswersExport(unitIdValue, params);
     download(result, '课时成绩.xls');
   }
 };
