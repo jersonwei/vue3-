@@ -5,7 +5,7 @@ import { getQuestionBankCategory, getTeacherCourse } from '@/service';
  * @Author: ZHENG
  * @Date: 2022-05-28 08:37:50
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-28 14:00:05
+ * @LastEditTime: 2022-05-28 15:00:31
  * @FilePath: \work\src\views\question\dataBase\getOptions.ts
  * @Description:
  */
@@ -29,7 +29,7 @@ export async function getChildren(option: CascaderOption) {
   for (let i = 0; i <= (option as { depth: number }).depth; ++i) {
     option.children = newList;
   }
-  return children;
+  // return children;
 }
 export async function getTeacherCourseList() {
   const { data: result } = await getTeacherCourse();

@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-05-12 17:34:13
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-28 14:01:49
+ * @LastEditTime: 2022-05-28 14:58:54
  * @FilePath: \work\src\views\question\dataBase\components\addOrEditModal.vue
  * @Description:
 -->
@@ -26,12 +26,13 @@
         class="m-2 py-4"
       >
         <n-form-item label="题库名称" path="courseName">
-          <n-input v-model:value="formParams.courseName" placeholder="请输入题库名称" />
+          <n-input v-model:value="formParams.bankName" placeholder="请输入题库名称" />
         </n-form-item>
         <n-form-item label="所属类别" path="courseCategory">
           <n-cascader
-            v-model:value="formParams.courseCategory"
+            v-model:value="formParams.bankType"
             clearable
+            default-value="微积分/数学"
             placeholder="请选择题库分类"
             :options="categoryNameOptions"
             :check-strategy="'child'"
@@ -41,7 +42,7 @@
           />
         </n-form-item>
         <n-form-item label="绑定课程" path="courseName">
-          <n-select v-model:value="formParams.courseName" :options="teacherCourseList" placeholder="请绑定课程" />
+          <n-select v-model:value="formParams.courseId" :options="teacherCourseList" placeholder="请绑定课程" />
         </n-form-item>
         <n-form-item label="题库介绍" path="note">
           <n-input v-model:value="formParams.note" type="textarea" placeholder="课程介绍" />
@@ -59,7 +60,7 @@
 <script lang="ts" setup>
 import { reactive, ref } from 'vue';
 import { CascaderOption, useMessage } from 'naive-ui';
-import { addQuestionBankCategory, editQuestionBankCategory } from '@/service';
+import { addQuestionBank, editQuestionBank } from '@/service';
 import { deafultFormParams } from '@/utils';
 import { getCategoryName, getChildren, getTeacherCourseList } from '../getOptions';
 
@@ -72,7 +73,7 @@ const addOrEdit = ref(false);
 
 // 新增修改的Form
 const rules = {
-  categoryName: {
+  bankName: {
     required: true,
     trigger: ['blur', 'input'],
     message: '请输入名称'
@@ -81,11 +82,9 @@ const rules = {
 const emits = defineEmits(['reloadTable']);
 const formParams = reactive({
   id: 0,
-  categoryParent: '',
-  categoryParentName: '',
-  courseCategory: '',
-  categoryName: '',
-  courseName: '',
+  bankType: '',
+  bankName: '',
+  courseId: '',
   note: ''
 });
 const categoryNameOptions = ref();
@@ -97,10 +96,8 @@ const getOption = async () => {
 getOption();
 const handleLoad = (option: CascaderOption) => {
   return new Promise<void>(resolve => {
-    window.setTimeout(() => {
-      categoryNameOptions.value.children = getChildren(option);
-      resolve();
-    }, 1000);
+    categoryNameOptions.value.children = getChildren(option);
+    resolve();
   });
 };
 /**
@@ -109,16 +106,8 @@ const handleLoad = (option: CascaderOption) => {
  * @param {*} record
  * @return {*}
  */
-const showAddModalFn = (record: Recordable) => {
+const showAddModalFn = () => {
   deafultFormParams(formParams);
-  if (!record) {
-    formParams.categoryParent = '';
-    formParams.categoryParentName = '无';
-  } else {
-    const { id, categoryName } = record;
-    formParams.categoryParent = id || '';
-    formParams.categoryParentName = categoryName || '无';
-  }
   addOrEdit.value = true;
   showModal.value = true;
 };
@@ -129,10 +118,15 @@ const showAddModalFn = (record: Recordable) => {
  * @return {*}
  */
 const showEditModalFn = (record: Recordable) => {
-  const { id, categoryName, note, categoryParent, categoryParentName } = record;
-  formParams.categoryParent = categoryParent || '0';
-  formParams.categoryParentName = categoryParentName || '无';
-  formParams.categoryName = categoryName;
+  const { id, bankType, courseId, bankName, note, categoryParent } = record;
+  for (let i = 0; i < categoryNameOptions.value.length; i++) {
+    if (categoryNameOptions.value[i].value === categoryParent) {
+      handleLoad(categoryNameOptions.value[i]);
+    }
+  }
+  formParams.bankType = bankType;
+  formParams.bankName = bankName;
+  formParams.courseId = courseId;
   formParams.note = note;
   formParams.id = id;
   addOrEdit.value = false;
@@ -147,28 +141,31 @@ const confirmForm = (e: { preventDefault: () => void }) => {
       setTimeout(async () => {
         // 新增
         if (addOrEdit.value === true) {
-          const { categoryName, categoryParent, note } = formParams;
+          const { bankType, bankName, courseId, note } = formParams;
           const params = {
-            categoryName,
-            categoryParent,
+            bankType,
+            bankName,
+            courseId,
             note
           };
-          const result = await addQuestionBankCategory(params);
+          const result = await addQuestionBank(params);
           if (!result.error) {
             message.success(`新建成功`);
           }
         } else {
           // 修改
-          const { id, categoryName, categoryParent, note } = formParams;
+          const { id, bankType, bankName, courseId, note } = formParams;
           const params = {
             id,
-            categoryName,
-            categoryParent,
+            bankType,
+            bankName,
+            courseId,
             note
           };
-          console.log(params);
-          const result = await editQuestionBankCategory(params);
-          console.log(result);
+          const result = await editQuestionBank(params);
+          if (!result.error) {
+            message.success(`修改成功`);
+          }
         }
 
         emits('reloadTable');

@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-04-30 14:33:21
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-28 09:12:38
+ * @LastEditTime: 2022-05-28 15:16:09
  * @FilePath: \work\src\views\question\dataBase\index.vue
  * @Description:
 -->
@@ -71,6 +71,31 @@ const actionColumn = reactive({
   key: 'action',
   fixed: 'right',
   render(record: Recordable<any>) {
+    console.log(record);
+    if (record.status === 0) {
+      return h(TableAction as any, {
+        style: 'button',
+        actions: [
+          {
+            label: '题目管理',
+
+            // eslint-disable-next-line @typescript-eslint/no-use-before-define
+            onClick: handleEdit.bind(null, record)
+          },
+          {
+            label: '编辑',
+
+            // eslint-disable-next-line @typescript-eslint/no-use-before-define
+            onClick: handleEdit.bind(null, record)
+          },
+          {
+            label: '删除',
+            // eslint-disable-next-line @typescript-eslint/no-use-before-define
+            onClick: handleDelete.bind(null, record)
+          }
+        ]
+      });
+    }
     return h(TableAction as any, {
       style: 'button',
       actions: [
@@ -85,11 +110,6 @@ const actionColumn = reactive({
 
           // eslint-disable-next-line @typescript-eslint/no-use-before-define
           onClick: handleEdit.bind(null, record)
-        },
-        {
-          label: '删除',
-          // eslint-disable-next-line @typescript-eslint/no-use-before-define
-          onClick: handleConfig.bind(null, record)
         }
       ]
     });
@@ -151,10 +171,10 @@ const delData = ref<number>(0); // 删除数据的ID
 const delText = ref(''); // 删除的文字
 // eslint-disable-next-line consistent-return
 const handleDelete = (record: Recordable) => {
-  if (record.statusName === '上架') {
-    return message.error('只有下架状态课程才能删除');
+  if (record.questionCount !== '0') {
+    message.warning('已有绑定题目,不允许删除');
   }
-  delText.value = record.courseName;
+  delText.value = record.bankName;
   delData.value = record.id;
   delModalRef.value.showDelModal = true;
 };
@@ -166,8 +186,6 @@ const addOrEditModalRef = ref();
 const addTable = () => {
   addOrEditModalRef.value.showAddModalFn();
 };
-
-const updateData = ref();
 /**
  * @author: ZHENG
  * @description: 编辑
@@ -175,22 +193,12 @@ const updateData = ref();
  * @return {*}
  */
 const handleEdit = (record: Recordable) => {
-  editModalRef.value.editModalFn(record);
+  addOrEditModalRef.value.showEditModalFn(record);
 };
 
 // 跳转详情页功能
 const actionRef = ref(); // 表格
-
-// 定时上架功能
-const updateModalRef = ref();
-const handUpdateStatus = (record: Recordable) => {
-  updateData.value = record;
-  console.log(updateData.value);
-  updateModalRef.value.showUpdateModal = true;
-};
-
 const { routerPush } = useRouterPush();
-
 /**
  * @author: ZHENG
  * @description: 跳转课程预览
@@ -200,18 +208,6 @@ const { routerPush } = useRouterPush();
 const handleDetail = (record: Recordable) => {
   courseStore.setCourseInfo(record.id);
   routerPush({ name: 'course_courseDetail', query: { id: record.id } });
-};
-
-/**
- * @author: ZHENG
- * @description: 跳转课程信息
- * @param {*} record
- * @return {*}
- */
-const handleConfig = (record: Recordable) => {
-  courseStore.setCourseInfo(record.id);
-  console.log(record.id);
-  routerPush({ name: 'course_courseInfo', query: { id: record.id } });
 };
 </script>
 <style scoped></style>

@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-05-27 17:45:03
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-28 09:19:05
+ * @LastEditTime: 2022-05-28 15:07:04
  * @FilePath: \work\src\service\api\question\questionBank\questionBank.ts
  * @Description:
  */
@@ -34,8 +34,8 @@ export function editQuestionBankStatus(params) {
 }
 
 // 删除题库数据
-export function delQuestionBankStatus(params) {
+export function delQuestionBank(params) {
   const query = paramsToQuery(params);
-  const res = request.put(`/questionBank/delete${query}`); //
+  const res = request.delete(`/questionBank/delete${query}`); //
   return res;
 }
