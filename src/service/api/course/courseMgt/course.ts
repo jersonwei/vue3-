@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-05-04 09:02:06
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-23 13:37:55
+ * @LastEditTime: 2022-05-30 10:59:38
  * @FilePath: \work\src\service\api\course\courseMgt\course.ts
  * @Description:
  */
@@ -30,8 +30,7 @@ import * as T from './types';
 /** 获取课程信息 */
 export function searchCouserInfo(params: T.searchCouserInfoParams) {
   const query = paramsToQuery(params);
-  // const res = request.get('/searchCouserInfo', params);
-  const res = request.get(`/listCourse${query}`);
+  const res = request.get<T.couserInfoList>(`/listCourse${query}`);
   return res;
 }
 
@@ -85,11 +84,6 @@ export function getCouserInfo(params) {
   // const res = request.get(`/chapter/list${query}`);
   const res = request.get(`/chapter/unit/getCourseChapterUnitListByCourseId/${params}`);
   // const res = mockRequest.get('/course/list', params);
-  return res;
-}
-
-export function getcourseCategoryList() {
-  const res = request.get(`/courseCategory/getList`);
   return res;
 }
 

@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-04-30 14:33:21
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-26 14:30:11
+ * @LastEditTime: 2022-05-30 11:02:08
  * @FilePath: \work\src\views\course\courseMgt\index.vue
  * @Description:
 -->
@@ -74,11 +74,9 @@ import { getCourseCategoryOptions, getCollegeLegistOptions, getStatusOptions, ge
 
 // 获取用户信息
 const { userRole } = getUserInfo();
-
-console.log(userRole);
-
 const courseStore = useCourseStore();
 const message = useMessage();
+const actionRef = ref(); // 表格
 const formData = ref({});
 const actionColumn = reactive({
   // Table操作列
@@ -165,7 +163,6 @@ const handleLoad = (option: CascaderOption) => {
   });
 };
 
-// , {}
 const [register] = useForm({
   // 查询FORM
   gridProps: { cols: '1 s:1 m:2 l:3 xl:4 2xl:4' },
@@ -183,15 +180,14 @@ const loadDataTable = async (res: any) => {
     pageSize: res.size,
     current: res.current
   };
-  const result = await searchCouserInfo({ ...formData.value, ...Param });
-  return result.data;
+  const { data: result } = await searchCouserInfo({ ...formData.value, ...Param });
+  return result;
 };
 /**
  * @author: ZHENG
  * @description: 刷新， 重置
  */
 const reloadTable = () => {
-  // eslint-disable-next-line @typescript-eslint/no-use-before-define
   actionRef.value.reload();
 };
 // 查询
@@ -207,7 +203,7 @@ const delText = ref(''); // 删除的文字
 // eslint-disable-next-line consistent-return
 const handleDelete = (record: Recordable) => {
   if (record.status === '0') {
-    return message.error('只有下架状态课程才能删除');
+    return message.warning('只有下架状态课程才能删除');
   }
   delText.value = record.courseName;
   delData.value = record.id;
@@ -231,14 +227,11 @@ const handleEdit = (record: Recordable) => {
   addOrEditModalRef.value.editModalFn(record);
 };
 
-// 跳转详情页功能
-const actionRef = ref(); // 表格
 const updateData = ref();
 // 定时上架功能
 const updateModalRef = ref();
 const handUpdateStatus = (record: Recordable) => {
   updateData.value = record;
-  console.log(updateData.value);
   updateModalRef.value.showUpdateModal = true;
 };
 
@@ -263,7 +256,6 @@ const handleDetail = (record: Recordable) => {
  */
 const handleConfig = (record: Recordable) => {
   courseStore.setCourseInfo(record.id);
-  console.log(record.id);
   routerPush({ name: 'course_courseInfo' });
 };
 </script>

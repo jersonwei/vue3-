@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-05-06 08:46:39
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-23 10:11:26
+ * @LastEditTime: 2022-05-30 11:01:23
  * @FilePath: \work\src\service\api\system\dictionary.ts
  * @Description:
  */
@@ -40,6 +40,7 @@ export function editDict(Param) {
   return res;
 }
 
+// 数据字典统一查询接口
 export function getCourseStatus(param) {
   const res = request.get(`/getCourseStatus/${param}`);
   return res;

@@ -3,7 +3,7 @@
  * @Author: ZHENG
  * @Date: 2022-05-14 11:44:12
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-28 22:06:33
+ * @LastEditTime: 2022-05-28 22:14:55
  * @FilePath: \work\src\views\course\coursePreview\index.vue
  * @Description:
 -->
@@ -18,7 +18,6 @@
             size="large"
             :tabs-padding="20"
             pane-style="padding: 20px;"
-            @on-update:value="updateTabs"
           >
             <template v-for="(item, index) in courseData?.files">
               <n-tab-pane v-if="item.type === 0" :key="index" name="教学文档">
@@ -57,6 +56,7 @@
                 />
                 <embed
                   v-else
+                  class="PPtStyle"
                   :src="`http://120.79.129.174:8012/onlinePreview?url=${Base64.encode(item.url)}&officePreviewType=pdf`"
                   width="100%"
                   type="application/pdf"
@@ -178,7 +178,7 @@
   </n-card>
 </template>
 <script setup lang="ts">
-import { ref, reactive, h, watchEffect } from 'vue';
+import { ref, reactive, h, watchEffect, onMounted } from 'vue';
 import { useMessage } from 'naive-ui';
 import { ExclamationCircleTwotone } from '@vicons/antd';
 import { Base64 } from 'js-base64';
@@ -229,10 +229,12 @@ const loadPaperDataTable = async (res: any) => {
 };
 loadPaperDataTable({ pageSize: 10, current: 1 });
 
-const updateTabs = value => {
-  console.log(value);
-  console.log(document.getElementById('#viewThumbnail'));
+const updateTabs = () => {
+  console.log(document.getElementsByClassName('.PPTstyle'));
 };
+onMounted(() => {
+  updateTabs();
+});
 
 const actionColumn = reactive({
   // Table操作列

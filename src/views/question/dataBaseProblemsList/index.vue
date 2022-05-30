@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-04-30 14:33:21
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-27 13:44:39
+ * @LastEditTime: 2022-05-30 11:18:56
  * @FilePath: \work\src\views\question\dataBaseProblemsList\index.vue
  * @Description:
 -->
@@ -10,29 +10,31 @@
   <n-card>
     <n-grid class="mt-4" cols="12" responsive="screen" :x-gap="12">
       <n-gi span="2">
-        <n-card :bordered="false" size="small">
-          <template #header>
-            <n-space>
-              <n-button type="info" ghost icon-placement="right">
-                <template #icon>
-                  <div class="flex items-center">
-                    <n-icon size="14">
-                      <PlusOutlined />
-                    </n-icon>
-                  </div>
-                </template>
-                添加题库
-              </n-button>
-            </n-space>
-          </template>
+        <n-card :bordered="false" class="b-1" size="small">
           <div class="w-full menu">
-            <n-input v-model:value="pattern" placeholder="输入菜单名称搜索">
-              <template #suffix>
-                <n-icon size="18" class="cursor-pointer">
-                  <SearchOutlined />
-                </n-icon>
-              </template>
-            </n-input>
+            <n-space vertical>
+              <n-cascader
+                v-model:value="propsFrom.bankType"
+                clearable
+                placeholder="请选择题库分类"
+                :options="bankTypeOptions"
+                :check-strategy="'child'"
+                :show-path="true"
+                remote
+                :on-load="handleLoad"
+              />
+              <n-input v-model:value="propsFrom.bankName" placeholder="输入题库名称搜索">
+                <template #suffix>
+                  <n-icon size="18" class="cursor-pointer">
+                    <SearchOutlined />
+                  </n-icon>
+                </template>
+              </n-input>
+              <n-space>
+                <n-button @click="refresh">重置</n-button><n-button @click="searchBank">搜索</n-button></n-space
+              >
+            </n-space>
+
             <div class="py-3 menu-list">
               <template v-if="loading">
                 <div class="flex items-center justify-center py-4">
@@ -46,20 +48,35 @@
                   :virtual-scroll="true"
                   key-field="id"
                   label-field="label"
-                  :pattern="pattern"
                   :data="treeData"
-                  style="height: 600px; overflow: hidden"
+                  :node-props="nodeProps"
+                  style="height: 600px; overflow: hidden; font-size: 18px; line-height: 35px"
                 />
               </template>
             </div>
           </div>
+          <template #action>
+            <n-button style="width: 100%" ghost icon-placement="right" @click="addDataBaseModal">
+              <template #icon>
+                <div class="flex items-center">
+                  <n-icon size="14">
+                    <PlusOutlined />
+                  </n-icon>
+                </div>
+              </template>
+              添加题库
+            </n-button>
+          </template>
         </n-card>
       </n-gi>
       <n-gi span="10">
         <n-card :bordered="false">
           <FormPro @register="register" @submit="handleSubmit" @reset="reloadTable">
             <template #courseCategorySlot="{ model, field }">
-              <n-select v-model:value="model[field]" placeholder="请选择类别" :options="options" />
+              <n-select v-model:value="model[field]" placeholder="请选择类别" :options="questionTypeoptions" />
+            </template>
+            <template #difficultySlot="{ model, field }">
+              <n-select v-model:value="model[field]" placeholder="请选择难易度" :options="difficultyoptions" />
             </template>
             <template #majorIdSlot="{ model, field }">
               <n-cascader
@@ -93,14 +110,6 @@
                   </template>
                   新建题目
                 </n-button>
-                <n-button type="primary" @click="addTable">
-                  <template #icon>
-                    <n-icon>
-                      <PlusOutlined />
-                    </n-icon>
-                  </template>
-                  导入
-                </n-button>
               </n-space>
             </template>
           </TablePro>
@@ -111,49 +120,90 @@
         </n-card>
       </n-gi>
     </n-grid>
+    <addDataBase ref="addDataBaseModalRef" @reload-table="searchBank"></addDataBase>
   </n-card>
 </template>
 
 <script lang="ts" setup>
 import { h, onMounted, reactive, ref } from 'vue';
-import { CascaderOption, useMessage } from 'naive-ui';
+import { CascaderOption, TreeOption, useMessage } from 'naive-ui';
 import { PlusOutlined } from '@vicons/antd';
-import { repeat } from 'seemly';
 import { useCourseStore } from '@/store';
 import { useRouterPush } from '@/composables';
-import {
-  searchCouserInfo,
-  getcourseCategoryList,
-  getClassList,
-  getCollegeLegistt,
-  getQuestionBankCategoryList,
-  getPaperList
-} from '@/service';
+import { getQuestionBank, getPaperList } from '@/service';
+import { resetForm } from '@/utils';
 import { TablePro, TableAction } from '@/components/TablePro';
 import { FormPro, useForm } from '@/components/FormPro';
+import addDataBase from '../dataBase/components/addOrEditModal.vue';
 import { columns } from './columns';
 import { schemas } from './schemas';
 import delModal from './components/delModal.vue';
 import addModalVue from './components/addModal.vue';
 import editModalVue from './components/editModal.vue';
 import updateCourse from './components/updateCourse.vue';
+import { getCategoryName, getChildren, getDictionary } from './getOptions';
+import { questionBankType } from './Type';
 
 const courseStore = useCourseStore();
 const message = useMessage();
 const formData = ref({});
-
+/**
+ * @author: ZHENG
+ * @description: 树形的逻辑
+ */
 const treeData = ref([]);
-const expandedKeys = ref([]);
-const pattern = ref('');
 const loading = ref(true);
-onMounted(async () => {
-  const params = {
-    pageSize: 100,
-    current: 1
-  };
-  const { data: treeMenuList } = await getQuestionBankCategoryList(params);
-  treeData.value = treeMenuList.records;
+const propsFrom = reactive({
+  bankType: '',
+  bankName: ''
+});
+const bankTypeOptions = ref();
+const questionTypeoptions = ref();
+const difficultyoptions = ref();
+const getOption = async () => {
+  bankTypeOptions.value = await getCategoryName();
+  questionTypeoptions.value = await getDictionary(2);
+  difficultyoptions.value = await getDictionary(23);
+};
+getOption();
+const handleLoad = (option: CascaderOption) => {
+  return new Promise<void>(resolve => {
+    window.setTimeout(() => {
+      bankTypeOptions.value.children = getChildren(option);
+      resolve();
+    }, 1000);
+  });
+};
+/**
+ * @author: ZHENG
+ * @description:重置刷新
+ * @return {*}
+ */
+const getQuestionBankData = async (from: { bankType: string; bankName: string }) => {
+  const { data: result } = await getQuestionBank(from);
+  const questionBank: questionBankType = result;
+  if (questionBank?.count) {
+    questionBank.listQuestionBank.unshift({ id: 0, bankName: '全部题库', questionCount: questionBank.count });
+    treeData.value = questionBank.listQuestionBank.map((item: { id: any; bankName: any; questionCount: any }) => {
+      console.log(item);
+      return { id: item.id, label: `${item.bankName} (${item.questionCount}道)` };
+    });
+  } else {
+    treeData.value = [];
+  }
   loading.value = false;
+};
+const refresh = () => {
+  resetForm(propsFrom, []);
+  loading.value = true;
+  getQuestionBankData(propsFrom);
+};
+const searchBank = () => {
+  loading.value = true;
+  getQuestionBankData(propsFrom);
+};
+onMounted(async () => {
+  await getQuestionBankData(propsFrom);
 });
 
 const actionColumn = reactive({
@@ -188,44 +238,19 @@ const actionColumn = reactive({
   }
 });
 
-// 院系和所属类别的下拉查询逻辑
-const options = ref([]);
-const cascaderOptions = ref([]);
-const getOptions = async () => {
-  const { data: result } = await getcourseCategoryList();
-  const newList = result.map((item: { id: any; categoryName: any }) => {
-    return { value: item.id, label: item.categoryName };
-  });
-  options.value = newList;
-  // 院系
-  const { data: collegeList } = await getCollegeLegistt();
-  const newcollegeList = collegeList.map((item: { id: any; collegeName: any }) => {
-    return { value: item.id, label: item.collegeName, depth: 1, isLeaf: false };
-  });
-  cascaderOptions.value = newcollegeList;
-};
-getOptions();
-
-async function getChildren(option: CascaderOption) {
-  const { data: result } = await getClassList();
-  const newList = result.map(item => {
-    return { value: item.id, label: item.className, isLeaf: 1 };
-  });
-  for (let i = 0; i <= (option as { depth: number }).depth; ++i) {
-    option.children = newList;
-  }
-  return children;
-}
-
-const handleLoad = (option: CascaderOption) => {
-  return new Promise<void>(resolve => {
-    window.setTimeout(() => {
-      cascaderOptions.value.children = getChildren(option);
-      resolve();
-    }, 1000);
-  });
+const nodeProps = ({ option }: { option: TreeOption }) => {
+  return {
+    onClick() {
+      message.info(`[Click] ${option.label}`);
+    }
+  };
 };
 
+// 新建题库
+const addDataBaseModalRef = ref();
+const addDataBaseModal = () => {
+  addDataBaseModalRef.value.showAddModalFn();
+};
 // , {}
 const [register] = useForm({
   // 查询FORM
@@ -331,4 +356,11 @@ const handleConfig = (record: Recordable) => {
   routerPush({ name: 'course_courseInfo', query: { id: record.id } });
 };
 </script>
-<style scoped></style>
+<style scoped>
+:deep(.n-tree.n-tree--block-line .n-tree-node:not(.n-tree-node--disabled).n-tree-node--selected) {
+  background-color: white !important;
+}
+:deep(.n-tree-node--selected .n-tree-node-content) {
+  color: #048bff !important;
+}
+</style>

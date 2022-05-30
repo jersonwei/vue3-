@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-05-20 11:00:55
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-23 15:48:19
+ * @LastEditTime: 2022-05-30 10:58:36
  * @FilePath: \work\src\service\api\course\index.ts
  * @Description:
  */
@@ -15,3 +15,5 @@ export * from './label/label';
 export * from './chapter/chapter';
 // 课时接口导出
 export * from './unit/unit';
+// 课程公用的接口到处
+export * from './course'

@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-05-20 16:40:06
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-23 21:13:45
+ * @LastEditTime: 2022-05-30 11:03:43
  * @FilePath: \work\src\views\course\courseMgt\components\updateCourse.vue
  * @Description:
 -->
@@ -33,7 +33,6 @@ import { format } from 'date-fns';
 import { updateCourseStatusAuto } from '@/service';
 import { disablePreviousDate } from '@/utils';
 
-const date = new Date();
 const formParams = reactive({
   time: Date.now()
 });

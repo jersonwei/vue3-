@@ -2,16 +2,23 @@
  * @Author: ZHENG
  * @Date: 2022-05-27 17:45:03
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-28 15:07:04
+ * @LastEditTime: 2022-05-30 08:34:40
  * @FilePath: \work\src\service\api\question\questionBank\questionBank.ts
  * @Description:
  */
 import { paramsToQuery } from '@/utils';
 import { request } from '@/service/request';
-// 获取题库数据
+// 获取题库分页数据
 export function getQuestionBankList(params) {
   const query = paramsToQuery(params);
   const res = request.get(`/questionBank/listPage${query}`); //
+  return res;
+}
+
+// 获取题库数据
+export function getQuestionBank(params) {
+  const query = paramsToQuery(params);
+  const res = request.get(`/questionBank/list${query}`); //
   return res;
 }
 
