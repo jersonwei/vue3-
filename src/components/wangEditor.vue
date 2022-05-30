@@ -2,12 +2,12 @@
  * @Author: ZHENG
  * @Date: 2022-05-17 18:13:55
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-27 15:35:02
+ * @LastEditTime: 2022-05-30 18:41:43
  * @FilePath: \work\src\components\wangEditor.vue
  * @Description:
 -->
 <template>
-  <div style="border: 1px solid #ccc">
+  <div style="width: 60%; border: 1px solid #ccc">
     <Toolbar style="border-bottom: 1px solid #ccc" :editor="editorRef" :default-config="toolbarConfig" :mode="mode" />
     <Editor
       v-model="valueHtml"
@@ -42,21 +42,34 @@ export default {
     // 模拟 ajax 异步获取内容
     onMounted(() => {
       setTimeout(() => {
+        console.log(editorRef.value);
         valueHtml.value = `<p>${props.propsValue}</p>`;
-      }, 1500);
+      }, 100);
     });
 
     const toolbarConfig = {
-      excludeKeys: [
-        'italic',
-        'color',
-        'emotion',
-        'viewLink',
-        'editLink',
-        'insertVideo',
-        'uploadVideo',
-        'group-more-style' // 排除菜单组，写菜单组 key 的值即可
+      toolbarKeys: [
+        'bold',
+        'underline',
+        '|',
+        'code',
+        'bulletedList',
+        'numberedList',
+        'uploadImage',
+        '|',
+        'undo',
+        'redo'
       ]
+      // excludeKeys: [
+      //   'italic',
+      //   'color',
+      //   'emotion',
+      //   'viewLink',
+      //   'editLink',
+      //   'insertVideo',
+      //   'uploadVideo',
+      //   'group-more-style' // 排除菜单组，写菜单组 key 的值即可
+      // ]
     };
     const editorConfig = { placeholder: '请输入内容...' };
 

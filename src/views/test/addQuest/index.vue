@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-04-30 14:33:21
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-27 16:08:05
+ * @LastEditTime: 2022-05-30 15:04:16
  * @FilePath: \work\src\views\question\dataBaseProblems\index.vue
  * @Description:
 -->
@@ -16,17 +16,17 @@
       label-width="auto"
       require-mark-placement="right-hanging"
     >
-      <n-form-item label="所属题库" path="problems">
-        <n-input v-model:value="fromModel.problems" :style="{ width: '50%' }" disabled placeholder="请选择题库" />
-        <n-button>选择题库</n-button>
+      <n-form-item label="所属题库" path="dataBaseName">
+        <n-input v-model:value="fromModel.dataBaseName" :style="{ width: '50%' }" disabled placeholder="请选择题库" />
+        <n-button @click="chooseDataBase">选择题库</n-button>
         <!-- <n-select v-model:value="model.selectValue" placeholder="Select" :options="generalOptions" /> -->
       </n-form-item>
       <n-form-item label="题目类型" path="problemsType">
         <n-button-group size="small">
           <n-button
             :style="{
-              color: questionType === 1 ? '#1890ff' : '',
-              border: questionType === 1 ? '2px solid #1890ff' : ''
+              color: fromModel.questionType === 1 ? '#1890ff' : '',
+              border: fromModel.questionType === 1 ? '2px solid #1890ff' : ''
             }"
             size="large"
             @click="changeQuestionType(1)"
@@ -34,33 +34,45 @@
           >
           <n-button
             :style="{
-              color: questionType === 2 ? '#1890ff' : '',
-              border: questionType === 2 ? '2px solid #1890ff' : ''
+              color: fromModel.questionType === 2 ? '#1890ff' : '',
+              border: fromModel.questionType === 2 ? '2px solid #1890ff' : ''
             }"
             size="large"
             @click="changeQuestionType(2)"
             >判断题</n-button
           >
           <n-button
-            :style="{ color: questionType === 3 ? 'blue' : '', border: questionType === 3 ? '2px solid #1890ff' : '' }"
+            :style="{
+              color: fromModel.questionType === 3 ? 'blue' : '',
+              border: fromModel.questionType === 3 ? '2px solid #1890ff' : ''
+            }"
             size="large"
             @click="changeQuestionType(3)"
             >多选题</n-button
           >
           <n-button
-            :style="{ color: questionType === 4 ? 'blue' : '', border: questionType === 4 ? '2px solid #1890ff' : '' }"
+            :style="{
+              color: fromModel.questionType === 4 ? 'blue' : '',
+              border: fromModel.questionType === 4 ? '2px solid #1890ff' : ''
+            }"
             size="large"
             @click="changeQuestionType(4)"
             >填空题</n-button
           >
           <n-button
-            :style="{ color: questionType === 5 ? 'blue' : '', border: questionType === 5 ? '2px solid #1890ff' : '' }"
+            :style="{
+              color: fromModel.questionType === 5 ? 'blue' : '',
+              border: fromModel.questionType === 5 ? '2px solid #1890ff' : ''
+            }"
             size="large"
             @click="changeQuestionType(5)"
             >简答题</n-button
           >
           <n-button
-            :style="{ color: questionType === 6 ? 'blue' : '', border: questionType === 6 ? '2px solid #1890ff' : '' }"
+            :style="{
+              color: fromModel.questionType === 6 ? 'blue' : '',
+              border: fromModel.questionType === 6 ? '2px solid #1890ff' : ''
+            }"
             size="large"
             @click="changeQuestionType(6)"
             >其他</n-button
@@ -68,11 +80,11 @@
         </n-button-group>
       </n-form-item>
       <n-form-item label="题干" path="problems">
-        <wangEditor></wangEditor>
+        <wangEditor ref="wangEditorStemRef" :props-value="fromModel.questionStem"></wangEditor>
         <!-- <n-select v-model:value="model.selectValue" placeholder="Select" :options="generalOptions" /> -->
       </n-form-item>
-      <template v-if="questionType === 1">
-        <n-form-item label="选项" path="problems">
+      <template v-if="fromModel.questionType === 1">
+        <n-form-item label="选项" path="problemsType">
           <n-space vertical class="drag-box">
             <Draggable
               :list="radioList"
@@ -83,8 +95,8 @@
               ghost-class="ghost"
             >
               <template #item="{ element, index }">
-                <n-form-item :label="`选项${radioOption[index]}`" path="problem"
-                  ><wangEditor ref="wangEditorRef" :props-value="element.value"></wangEditor>
+                <n-form-item :label="`选项${radioOption[index]}`" path="problemsType"
+                  ><wangEditor :ref="el => (wangEditorRadioRef[index] = el)" :props-value="element.value"></wangEditor>
                   <n-radio :checked="checkedValue === index" :value="index" name="basic-demo" @change="handleChange">
                     正确
                   </n-radio>
@@ -109,7 +121,7 @@
           </n-button>
         </n-space>
       </template>
-      <template v-if="questionType === 2">
+      <template v-if="fromModel.questionType === 2">
         <n-form-item label="选项" path="problems">
           <n-space vertical class="drag-box">
             <Draggable
@@ -132,7 +144,7 @@
           </n-space>
         </n-form-item>
       </template>
-      <template v-if="questionType === 3">
+      <template v-if="fromModel.questionType === 3">
         <n-form-item label="选项" path="problems">
           <n-space vertical class="drag-box">
             <Draggable
@@ -170,7 +182,7 @@
           </n-button>
         </n-space>
       </template>
-      <template v-if="questionType === 4">
+      <template v-if="fromModel.questionType === 4">
         <n-form-item label="选项" path="problems">
           <n-space vertical class="drag-box">
             <Draggable
@@ -208,10 +220,10 @@
           </n-button>
         </n-space>
       </template>
-      <template v-if="questionType === 5">
+      <template v-if="fromModel.questionType === 5">
         <n-form-item label="参考答案" path="problem"><wangEditor ref="wangEditorRef"></wangEditor> </n-form-item>
       </template>
-      <template v-if="questionType === 6">
+      <template v-if="fromModel.questionType === 6">
         <n-form-item label="参考答案" path="problem"><wangEditor ref="wangEditorRef"></wangEditor> </n-form-item>
       </template>
     </n-form>
@@ -286,7 +298,7 @@
 
       <n-space justify="center">
         <n-button size="large">返回</n-button>
-        <n-button size="large" type="info">保存</n-button>
+        <n-button size="large" type="info" @click="saveQuestion">保存</n-button>
         <n-button size="large" type="info">保存并继续</n-button>
       </n-space>
     </n-form>
@@ -300,27 +312,67 @@
     negative-text="算了"
     @positive-click="submitCallback"
   />
+  <dataBaseModal ref="dataBaseModalRef" @reload-table="choosedValue"></dataBaseModal>
 </template>
 
 <script lang="ts" setup>
 import { ref } from 'vue';
+import { useMessage } from 'naive-ui';
 import { PlusOutlined, DeleteTwotone } from '@vicons/antd';
 import Draggable from 'vuedraggable';
 import { radioOption } from '@/enum';
 import wangEditor from '@/components/wangEditor.vue';
+import dataBaseModal from './components/showDataBase.vue';
 
+const message = useMessage();
 const fromModel = ref({
-  problems: '',
+  dataBaseName: '',
+  dataBaseId: '',
+  questionType: 1,
+  questionStem: '',
   problemsType: 0
 });
 const rules = {
+  dataBaseName: {
+    required: true,
+    trigger: ['blur', 'input'],
+    message: '请选择题库'
+  },
   problems: {
     required: true,
     trigger: ['blur', 'input'],
-    message: '请输入名称'
+    message: '请填写题干'
   }
 };
-const questionType = ref(1);
+/**
+ * @author: ZHENG
+ * @description: 选择题库
+ */
+const dataBaseModalRef = ref();
+const chooseDataBase = () => {
+  dataBaseModalRef.value.showModalFn();
+};
+
+const choosedValue = (checkedValue, checkedValueName) => {
+  fromModel.value.dataBaseId = checkedValue;
+  fromModel.value.dataBaseName = checkedValueName;
+};
+
+/**
+ * @author: ZHENG
+ * @description: 切换题目类型
+ */
+const changeQuestionType = (type: number) => {
+  fromModel.value.questionType = type;
+  // checkedValue.value = '';
+};
+
+/**
+ * @author: ZHENG
+ * @description: 题干的ref
+ */
+const wangEditorStemRef = ref();
+
 const checkedValue = ref();
 /**
  * @author: ZHENG
@@ -330,19 +382,9 @@ const checkedValue = ref();
  */
 const handleChange = (e: Event) => {
   checkedValue.value = parseInt((e.target as HTMLInputElement).value, 10);
-  console.log(checkedValue.value, (e.target as HTMLInputElement).value);
 };
-/**
- * @author: ZHENG
- * @description: 切换题目类型
- * @param {*} type
- * @return {*}
- */
-const changeQuestionType = (type: number) => {
-  questionType.value = type;
-  checkedValue.value = '';
-};
-const radioList = ref([{ id: 0, value: '123' }, { id: 1 }, { id: 2 }, { id: 3 }]); // 单选
+
+const radioList = ref([{ id: 0, value: '' }, { id: 1 }, { id: 2 }, { id: 3 }]); // 单选
 const decideList = ref([
   { id: 0, value: '' },
   { id: 1, value: '' }
@@ -351,7 +393,6 @@ const multiList = ref([
   { id: 0, value: '' },
   { id: 1, value: '' }
 ]);
-const addOrEdit = ref(false);
 
 /**
  * @author: ZHENG
@@ -412,7 +453,25 @@ const submitCallback = () => {
     multiList.value.splice(delData.value, 1);
   }
 };
+const wangEditorRadioRef = ref([]);
 // 新增还是修改
+const saveQuestion = () => {
+  const { dataBaseId, questionType } = fromModel.value; // 题库ID，题库类型
+  const questionName = wangEditorStemRef.value.valueHtml; // 题干的值
+  const questionOption = [];
+  if (questionType === 1) {
+    if (!checkedValue.value) {
+      return message.warning('未选择正确答案');
+    }
+    for (let i = 0; i < wangEditorRadioRef.value.length; i++) {
+      console.log(radioOption[i]);
+      console.log(wangEditorRadioRef.value[i].valueHtml);
+      // const result = '['A:1', 'B:2', 'C:3', 'D:4']';
+      // console.log(JSON.parse(result));
+      // console.log('正确答案', radioOption[checkedValue.value], checkedValue.value);
+    }
+  }
+};
 </script>
 <style scoped>
 /* :deep(.n-form-item-blank) {

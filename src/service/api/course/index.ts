@@ -16,4 +16,4 @@ export * from './chapter/chapter';
 // 课时接口导出
 export * from './unit/unit';
 // 课程公用的接口到处
-export * from './course'
+export * from './course';

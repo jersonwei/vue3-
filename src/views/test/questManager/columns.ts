@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-04-30 15:51:30
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-28 15:46:57
+ * @LastEditTime: 2022-05-30 16:44:30
  * @FilePath: \work\src\views\question\dataBaseProblemsList\columns.ts
  * @Description:
  */
@@ -36,11 +36,11 @@ export const columns = [
     key: 'questionTypeName',
     width: 100
   },
-  {
-    title: '所属题库',
-    key: 'courseCategoryName',
-    width: 100
-  },
+  // {
+  //   title: '所属题库',
+  //   key: 'courseCategoryName',
+  //   width: 100
+  // },
   {
     title: '难易度',
     key: 'difficultLevelName',
@@ -80,11 +80,11 @@ export const columns = [
       });
     }
   },
-  {
-    title: '题目描述',
-    key: 'note',
-    width: 130
-  },
+  // {
+  //   title: '题目描述',
+  //   key: 'note',
+  //   width: 130
+  // },
   {
     title: '创建人',
     key: 'createrName',

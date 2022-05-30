@@ -291,6 +291,110 @@ export const routeModel: Record<Auth.RoleType, AuthRoute.Route[]> = {
       }
     },
     {
+      name: 'test',
+      path: '/test',
+      component: 'basic',
+      children: [
+        {
+          name: 'test_baseType',
+          path: '/test/baseType',
+          component: 'self',
+          meta: {
+            title: '题库分类',
+            requiresAuth: true,
+            icon: 'gg:calendar-today',
+            keepAlive: true
+          }
+        },
+        {
+          name: 'test_baseManager',
+          path: '/test/baseManager',
+          component: 'self',
+          meta: {
+            title: '题库管理',
+            requiresAuth: true,
+            icon: 'gg:calendar-today',
+            keepAlive: true
+          }
+        },
+        {
+          name: 'test_pointManager',
+          path: '/test/pointManager',
+          component: 'self',
+          meta: {
+            title: '知识点管理',
+            requiresAuth: true,
+            icon: 'gg:calendar-today'
+          }
+        },
+        {
+          name: 'test_questManager',
+          path: '/test/questManager',
+          component: 'self',
+          meta: {
+            title: '题目管理',
+            requiresAuth: true,
+            icon: 'gg:calendar-today'
+          }
+        },
+        {
+          name: 'test_questInfo',
+          path: '/test/questInfo',
+          component: 'self',
+          meta: {
+            title: '题目详情',
+            requiresAuth: true,
+            icon: 'gg:calendar-today'
+          }
+        },
+        {
+          name: 'test_addQuest',
+          path: '/test/addQuest',
+          component: 'self',
+          meta: {
+            title: '添加题目',
+            requiresAuth: true,
+            icon: 'gg:calendar-today'
+          }
+        },
+        {
+          name: 'exam_examManager',
+          path: '/exam/examManager',
+          component: 'self',
+          meta: {
+            title: '试卷管理',
+            requiresAuth: true,
+            icon: 'gg:calendar-today'
+          }
+        },
+        {
+          name: 'exam_examType',
+          path: '/exam/examType',
+          component: 'self',
+          meta: {
+            title: '试卷分类',
+            requiresAuth: true,
+            icon: 'gg:calendar-today'
+          }
+        },
+        {
+          name: 'exam_addExam',
+          path: '/exam/addExam',
+          component: 'self',
+          meta: {
+            title: '试卷创编',
+            requiresAuth: true,
+            icon: 'gg:calendar-today'
+          }
+        }
+      ],
+      meta: {
+        title: '测评管理',
+        icon: 'gg:calendar-today',
+        order: 8
+      }
+    },
+    {
       name: 'about',
       path: '/about',
       component: 'self',
@@ -458,13 +562,13 @@ export const routeModel: Record<Auth.RoleType, AuthRoute.Route[]> = {
       }
     },
     {
-      name: 'question',
-      path: '/question',
+      name: 'test',
+      path: '/test',
       component: 'basic',
       children: [
         {
-          name: 'question_dataBaseSort',
-          path: '/question/dataBaseSort',
+          name: 'test_baseType',
+          path: '/test/baseType',
           component: 'self',
           meta: {
             title: '题库分类',
@@ -474,8 +578,8 @@ export const routeModel: Record<Auth.RoleType, AuthRoute.Route[]> = {
           }
         },
         {
-          name: 'question_dataBase',
-          path: '/question/dataBase',
+          name: 'test_baseManager',
+          path: '/test/baseManager',
           component: 'self',
           meta: {
             title: '题库管理',
@@ -485,8 +589,8 @@ export const routeModel: Record<Auth.RoleType, AuthRoute.Route[]> = {
           }
         },
         {
-          name: 'question_knowledge',
-          path: '/question/knowledge',
+          name: 'test_pointManager',
+          path: '/test/pointManager',
           component: 'self',
           meta: {
             title: '知识点管理',
@@ -495,8 +599,8 @@ export const routeModel: Record<Auth.RoleType, AuthRoute.Route[]> = {
           }
         },
         {
-          name: 'question_dataBaseProblemsList',
-          path: '/question/dataBaseProblemsList',
+          name: 'test_questManager',
+          path: '/test/questManager',
           component: 'self',
           meta: {
             title: '题目管理',
@@ -505,8 +609,8 @@ export const routeModel: Record<Auth.RoleType, AuthRoute.Route[]> = {
           }
         },
         {
-          name: 'question_problemsInfo',
-          path: '/question/problemsInfo',
+          name: 'test_questInfo',
+          path: '/test/questInfo',
           component: 'self',
           meta: {
             title: '题目详情',
@@ -515,8 +619,8 @@ export const routeModel: Record<Auth.RoleType, AuthRoute.Route[]> = {
           }
         },
         {
-          name: 'question_dataBaseProblems',
-          path: '/question/dataBaseProblems',
+          name: 'test_addQuest',
+          path: '/test/addQuest',
           component: 'self',
           meta: {
             title: '添加题目',
@@ -525,18 +629,18 @@ export const routeModel: Record<Auth.RoleType, AuthRoute.Route[]> = {
           }
         },
         {
-          name: 'examination_examinationList',
-          path: '/examination/examinationList',
+          name: 'exam_examManager',
+          path: '/exam/examManager',
           component: 'self',
           meta: {
-            title: '试卷列表',
+            title: '试卷管理',
             requiresAuth: true,
             icon: 'gg:calendar-today'
           }
         },
         {
-          name: 'examination_examinationSort',
-          path: '/examination/examinationSort',
+          name: 'exam_examType',
+          path: '/exam/examType',
           component: 'self',
           meta: {
             title: '试卷分类',
@@ -545,8 +649,8 @@ export const routeModel: Record<Auth.RoleType, AuthRoute.Route[]> = {
           }
         },
         {
-          name: 'examination_examinationEdit',
-          path: '/examination/examinationEdit',
+          name: 'exam_addExam',
+          path: '/exam/addExam',
           component: 'self',
           meta: {
             title: '试卷创编',

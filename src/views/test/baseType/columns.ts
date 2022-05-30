@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-04-30 15:51:30
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-27 13:30:29
+ * @LastEditTime: 2022-05-30 16:07:09
  * @FilePath: \work\src\views\question\dataBaseSort\columns.ts
  * @Description:
  */
@@ -55,7 +55,7 @@ export const columns = [
   // },
   {
     title: '创建人',
-    key: 'createrName',
+    key: 'createName',
     width: 100
   },
   {

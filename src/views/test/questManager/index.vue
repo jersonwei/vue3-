@@ -2,8 +2,8 @@
  * @Author: ZHENG
  * @Date: 2022-04-30 14:33:21
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-30 11:18:56
- * @FilePath: \work\src\views\question\dataBaseProblemsList\index.vue
+ * @LastEditTime: 2022-05-30 18:11:56
+ * @FilePath: \work\src\views\test\questManager\index.vue
  * @Description:
 -->
 <template>
@@ -38,12 +38,13 @@
             <div class="py-3 menu-list">
               <template v-if="loading">
                 <div class="flex items-center justify-center py-4">
-                  <n-spin size="medium" />
+                  <n-spin size="medium" style="height: 600px; overflow: hidden" />
                 </div>
               </template>
               <template v-else>
                 <n-tree
                   :show-irrelevant-nodes="false"
+                  :default-selected-keys="defaultSelectKeys"
                   block-line
                   :virtual-scroll="true"
                   key-field="id"
@@ -134,7 +135,7 @@ import { getQuestionBank, getPaperList } from '@/service';
 import { resetForm } from '@/utils';
 import { TablePro, TableAction } from '@/components/TablePro';
 import { FormPro, useForm } from '@/components/FormPro';
-import addDataBase from '../dataBase/components/addOrEditModal.vue';
+import addDataBase from '../baseManager/components/addOrEditModal.vue';
 import { columns } from './columns';
 import { schemas } from './schemas';
 import delModal from './components/delModal.vue';
@@ -160,6 +161,7 @@ const propsFrom = reactive({
 const bankTypeOptions = ref();
 const questionTypeoptions = ref();
 const difficultyoptions = ref();
+const defaultSelectKeys = ref([0]);
 const getOption = async () => {
   bankTypeOptions.value = await getCategoryName();
   questionTypeoptions.value = await getDictionary(2);
@@ -183,9 +185,10 @@ const getQuestionBankData = async (from: { bankType: string; bankName: string })
   const { data: result } = await getQuestionBank(from);
   const questionBank: questionBankType = result;
   if (questionBank?.count) {
-    questionBank.listQuestionBank.unshift({ id: 0, bankName: '全部题库', questionCount: questionBank.count });
+    if (!from.bankName && !from.bankType) {
+      questionBank.listQuestionBank.unshift({ id: 0, bankName: '全部题库', questionCount: questionBank.count });
+    }
     treeData.value = questionBank.listQuestionBank.map((item: { id: any; bankName: any; questionCount: any }) => {
-      console.log(item);
       return { id: item.id, label: `${item.bankName} (${item.questionCount}道)` };
     });
   } else {
@@ -241,7 +244,8 @@ const actionColumn = reactive({
 const nodeProps = ({ option }: { option: TreeOption }) => {
   return {
     onClick() {
-      message.info(`[Click] ${option.label}`);
+      console.log(option);
+      message.info(`[Click] ${option.id} ${option.label}`);
     }
   };
 };
