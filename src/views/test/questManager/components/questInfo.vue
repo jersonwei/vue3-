@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-05-31 08:35:01
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-31 08:49:35
+ * @LastEditTime: 2022-05-31 18:04:58
  * @FilePath: \work\src\views\test\questManager\components\questInfo.vue
  * @Description:
 -->
@@ -29,7 +29,7 @@
               label="所属题库:"
               path="inputValue"
             >
-              <p style="font-size: 18px">{{ questInfo.listBankRelatedName?.join(',') }}</p>
+              <p style="font-size: 18px">{{ questInfo.bankName }}</p>
             </n-form-item-gi>
             <n-form-item-gi
               :span="7"
@@ -106,7 +106,7 @@ const questInfo = ref({
   questionAnswer: '',
   questionAnalyse: '',
   difficultLevelName: '',
-  listBankRelatedName: [],
+  bankName: '',
   listPointRelatedName: []
 });
 const showModal = ref(false);

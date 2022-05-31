@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-04-30 14:33:21
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-31 17:43:15
+ * @LastEditTime: 2022-05-31 18:13:41
  * @FilePath: \work\src\views\test\questManager\index.vue
  * @Description:
 -->
@@ -178,7 +178,10 @@ const handleLoad = (option: CascaderOption) => {
   });
 };
 const route = useRoute();
-defaultSelectKeys.value[0] = route.query.id;
+if (route.query.id) {
+  defaultSelectKeys.value[0] = route.query.id;
+}
+
 /**
  * @author: ZHENG
  * @description:重置刷新
@@ -247,9 +250,7 @@ const actionColumn = reactive({
 const nodeProps = ({ option }: { option: TreeOption }) => {
   return {
     onClick() {
-      console.log(option);
-      message.info(`[Click] ${option.id} ${option.label}`);
-      console.log(defaultSelectKeys.value);
+      defaultSelectKeys.value = option.id;
     }
   };
 };
@@ -273,12 +274,21 @@ const [register] = useForm({
  */
 // table查询
 const loadDataTable = async (res: any) => {
-  const Param = {
-    pageSize: res.size,
-    current: res.current
-  };
+  let param = {};
+  if (defaultSelectKeys.value[0] != 0) {
+    param = {
+      bankRelated: defaultSelectKeys.value[0],
+      pageSize: res.size,
+      current: res.current
+    };
+  } else {
+    param = {
+      pageSize: res.size,
+      current: res.current
+    };
+  }
 
-  const result = await getPaperList({ ...formData.value, ...Param });
+  const result = await getPaperList({ ...formData.value, ...param });
   return result.data;
 };
 /**
@@ -301,20 +311,6 @@ const handleInfo = (record: Recordable) => {
   questInfoRef.value.showModalFn(record);
 };
 
-// 删除逻辑
-const delModalRef = ref();
-const delData = ref<number>(0); // 删除数据的ID
-const delText = ref(''); // 删除的文字
-// eslint-disable-next-line consistent-return
-const handleDelete = (record: Recordable) => {
-  if (record.statusName === '上架') {
-    return message.error('只有下架状态课程才能删除');
-  }
-  delText.value = record.courseName;
-  delData.value = record.id;
-  delModalRef.value.showDelModal = true;
-};
-
 // 新建和编辑弹窗
 const addModalRef = ref();
 const editModalRef = ref();
@@ -323,7 +319,6 @@ const addTable = () => {
   addModalRef.value.showModalFn();
 };
 
-const updateData = ref();
 /**
  * @author: ZHENG
  * @description: 编辑
@@ -331,8 +326,24 @@ const updateData = ref();
  * @return {*}
  */
 const handleEdit = (record: Recordable) => {
-  console.log(record);
+  if (record.quoteCount > 0) {
+    return message.warning('题目已被引用，不可编辑');
+  }
+
   // editModalRef.value.editModalFn(record);
+};
+// 删除逻辑
+const delModalRef = ref();
+const delData = ref<number>(0); // 删除数据的ID
+const delText = ref(''); // 删除的文字
+// eslint-disable-next-line consistent-return
+const handleDelete = (record: Recordable) => {
+  if (record.quoteCount > 0) {
+    return message.warning('题目已被引用，不可删除');
+  }
+  delText.value = record.courseName;
+  delData.value = record.id;
+  delModalRef.value.showDelModal = true;
 };
 </script>
 <style scoped>

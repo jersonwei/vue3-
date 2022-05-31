@@ -2,13 +2,13 @@
  * @Author: ZHENG
  * @Date: 2022-04-30 15:51:30
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-31 08:30:20
+ * @LastEditTime: 2022-05-31 18:07:17
  * @FilePath: \work\src\views\test\questManager\columns.ts
  * @Description:
  */
 import { h } from 'vue';
 import { NAvatar, NTag, NSwitch, useMessage } from 'naive-ui';
-import { updateCourseStatusByCourseId } from '@/service';
+import { editStatusPaperQuestion } from '@/service';
 import { getServiceEnv } from '@/utils';
 
 const message = useMessage();
@@ -19,18 +19,18 @@ export const columns = [
     key: 'questionName',
     width: 120
   },
-  {
-    title: '题目分类',
-    key: 'listBankRelatedName',
-    width: 100,
-    render(row: { listBankRelatedName: any[] }) {
-      if (row.listBankRelatedName?.length) {
-        const tags = row.listBankRelatedName?.join(',');
-        return tags;
-      }
-      return [];
-    }
-  },
+  // {
+  //   title: '题目分类',
+  //   key: 'listBankRelatedName',
+  //   width: 100,
+  //   render(row: { listBankRelatedName: any[] }) {
+  //     if (row.listBankRelatedName?.length) {
+  //       const tags = row.listBankRelatedName?.join(',');
+  //       return tags;
+  //     }
+  //     return [];
+  //   }
+  // },
   {
     title: '题目类型',
     key: 'questionTypeName',
@@ -60,12 +60,12 @@ export const columns = [
   },
   {
     title: '被引用次数',
-    key: 'unitNum',
+    key: 'quoteCount',
     width: 130
   },
   {
     title: '作答次数',
-    key: 'unitNum',
+    key: 'answerCount',
     width: 130
   },
   {
@@ -78,11 +78,11 @@ export const columns = [
         onUpdateValue: value => {
           row.status = row.status === 1 ? 0 : 1;
           const params = {
-            CourseId: row.id,
+            id: row.id,
             status: row.status
           };
           // eslint-disable-next-line @typescript-eslint/no-use-before-define
-          updateCourse(params);
+          updateQuest(params);
         }
       });
     }
@@ -109,10 +109,10 @@ export const columns = [
  * @param {*} params
  * @return {*}
  */
-const updateCourse = async params => {
-  const courseResult = await updateCourseStatusByCourseId(params);
+const updateQuest = async params => {
+  const courseResult = await editStatusPaperQuestion(params);
   console.log(courseResult, params.status);
   if (!courseResult.error) {
-    window.$message?.success(`${params.status === 1 ? '上架' : '下架'}操作成功`);
+    window.$message?.success(`${params.status === 1 ? '启用' : '禁用'}操作成功`);
   }
 };
