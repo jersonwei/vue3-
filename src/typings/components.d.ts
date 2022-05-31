@@ -38,6 +38,7 @@ declare module '@vue/runtime-core' {
     IconSelect: typeof import('./../components/custom/IconSelect.vue')['default']
     IconUilSearch: typeof import('~icons/uil/search')['default']
     NaiveProvider: typeof import('./../components/common/NaiveProvider.vue')['default']
+    NAlert: typeof import('naive-ui')['NAlert']
     NBreadcrumb: typeof import('naive-ui')['NBreadcrumb']
     NBreadcrumbItem: typeof import('naive-ui')['NBreadcrumbItem']
     NButton: typeof import('naive-ui')['NButton']

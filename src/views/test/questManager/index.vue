@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-04-30 14:33:21
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-31 17:13:25
+ * @LastEditTime: 2022-05-31 17:43:15
  * @FilePath: \work\src\views\test\questManager\index.vue
  * @Description:
 -->
@@ -128,10 +128,10 @@
 
 <script lang="ts" setup>
 import { h, onMounted, reactive, ref } from 'vue';
+import { useRoute } from 'vue-router';
 import { CascaderOption, TreeOption, useMessage } from 'naive-ui';
 import { PlusOutlined } from '@vicons/antd';
 import { useCourseStore } from '@/store';
-import { useRouterPush } from '@/composables';
 import { getQuestionBank, getPaperList } from '@/service';
 import { resetForm } from '@/utils';
 import { TablePro, TableAction } from '@/components/TablePro';
@@ -145,8 +145,7 @@ import editModalVue from './components/editModal.vue';
 import { getCategoryName, getChildren, getDictionary } from './getOptions';
 import { questionBankType } from './Type';
 import questInfo from './components/questInfo.vue';
-
-const courseStore = useCourseStore();
+// defaultSelectKeys.value[0] = route.query.id;
 const message = useMessage();
 const formData = ref({});
 /**
@@ -178,6 +177,8 @@ const handleLoad = (option: CascaderOption) => {
     }, 1000);
   });
 };
+const route = useRoute();
+defaultSelectKeys.value[0] = route.query.id;
 /**
  * @author: ZHENG
  * @description:重置刷新
@@ -248,6 +249,7 @@ const nodeProps = ({ option }: { option: TreeOption }) => {
     onClick() {
       console.log(option);
       message.info(`[Click] ${option.id} ${option.label}`);
+      console.log(defaultSelectKeys.value);
     }
   };
 };
