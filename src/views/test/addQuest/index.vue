@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-04-30 14:33:21
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-31 10:41:19
+ * @LastEditTime: 2022-05-31 11:06:12
  * @FilePath: \work\src\views\test\addQuest\index.vue
  * @Description:
 -->
@@ -21,7 +21,8 @@
         <n-input v-model:value="fromModel.dataBaseName" :style="{ width: '50%' }" disabled placeholder="请选择题库" />
         <n-button @click="chooseDataBase">选择题库</n-button>
       </n-form-item>
-      <!-- <n-form-item label="题目类型" path="problemsType">
+      <!-- 题目类型 默认选择单选 1 单选 2 多选 3判断 4 填空题 5 简答题 6 编辑题 7 其他-->
+      <n-form-item label="题目类型" path="questionType">
         <n-button-group size="small">
           <n-button
             :style="{
@@ -34,20 +35,20 @@
           >
           <n-button
             :style="{
-              color: fromModel.questionType === 3 ? 'blue' : '',
-              border: fromModel.questionType === 3 ? '2px solid #1890ff' : ''
-            }"
-            size="large"
-            @click="changeQuestionType(3)"
-            >多选题</n-button
-          >
-          <n-button
-            :style="{
-              color: fromModel.questionType === 2 ? '#1890ff' : '',
+              color: fromModel.questionType === 2 ? 'blue' : '',
               border: fromModel.questionType === 2 ? '2px solid #1890ff' : ''
             }"
             size="large"
             @click="changeQuestionType(2)"
+            >多选题</n-button
+          >
+          <n-button
+            :style="{
+              color: fromModel.questionType === 3 ? '#1890ff' : '',
+              border: fromModel.questionType === 3 ? '2px solid #1890ff' : ''
+            }"
+            size="large"
+            @click="changeQuestionType(3)"
             >判断题</n-button
           >
           <n-button
@@ -71,24 +72,25 @@
           <n-button
             disabled
             :style="{
-              color: fromModel.questionType === 5 ? 'blue' : '',
-              border: fromModel.questionType === 5 ? '2px solid #1890ff' : ''
-            }"
-            size="large"
-            @click="changeQuestionType(5)"
-            >编程题</n-button
-          >
-          <n-button
-            :style="{
               color: fromModel.questionType === 6 ? 'blue' : '',
               border: fromModel.questionType === 6 ? '2px solid #1890ff' : ''
             }"
             size="large"
             @click="changeQuestionType(6)"
+            >编程题</n-button
+          >
+          <n-button
+            :style="{
+              color: fromModel.questionType === 7 ? 'blue' : '',
+              border: fromModel.questionType === 7 ? '2px solid #1890ff' : ''
+            }"
+            size="large"
+            @click="changeQuestionType(7)"
             >其他</n-button
           >
         </n-button-group>
       </n-form-item>
+      <!--
       <n-form-item label="题干" path="problems">
         <wangEditor ref="wangEditorStemRef" :props-value="fromModel.questionStem"></wangEditor>
       </n-form-item>
@@ -333,8 +335,8 @@ import dataBaseModal from './components/showDataBase.vue';
 const message = useMessage();
 const fromModel = ref({
   dataBaseName: '',
-  dataBaseId: ''
-  // questionType: 1,
+  dataBaseId: '',
+  questionType: 1
   // questionStem: '',
   // problemsType: 3
 });
@@ -344,12 +346,25 @@ const rules = {
     trigger: ['blur', 'input'],
     message: '请选择题库'
   },
+  questionType: {
+    required: true,
+    trigger: ['blur', 'input'],
+    message: '请选择题目类型'
+  },
   problems: {
     required: true,
     trigger: ['blur', 'input'],
     message: '请填写题干'
   }
 };
+/**
+ * @author: ZHENG
+ * @description: 切换题目类型
+ */
+const changeQuestionType = (type: number) => {
+  fromModel.value.questionType = type;
+};
+
 /**
  * @author: ZHENG
  * @description: 选择题库
@@ -362,15 +377,6 @@ const chooseDataBase = () => {
 const choosedValue = (checkedValue, checkedValueName) => {
   fromModel.value.dataBaseId = checkedValue;
   fromModel.value.dataBaseName = checkedValueName;
-};
-
-/**
- * @author: ZHENG
- * @description: 切换题目类型
- */
-const changeQuestionType = (type: number) => {
-  fromModel.value.questionType = type;
-  // checkedValue.value = '';
 };
 
 /**
