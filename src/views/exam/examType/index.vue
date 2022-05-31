@@ -2,8 +2,8 @@
  * @Author: ZHENG
  * @Date: 2022-04-30 14:33:21
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-27 17:39:14
- * @FilePath: \work\src\views\examination\examinationSort\index.vue
+ * @LastEditTime: 2022-05-31 17:20:46
+ * @FilePath: \work\src\views\exam\examType\index.vue
  * @Description:
 -->
 <template>
@@ -61,15 +61,15 @@ const actionColumn = reactive({
       style: 'button',
       actions: [
         {
+          label: '编辑',
+          // eslint-disable-next-line @typescript-eslint/no-use-before-define
+          onClick: handleEdit.bind(null, record)
+        },
+        {
           label: '删除',
           icon: 'ic:outline-delete-outline',
           // eslint-disable-next-line @typescript-eslint/no-use-before-define
           onClick: handleDelete.bind(null, record)
-        },
-        {
-          label: '编辑',
-          // eslint-disable-next-line @typescript-eslint/no-use-before-define
-          onClick: handleEdit.bind(null, record)
         }
       ]
     });

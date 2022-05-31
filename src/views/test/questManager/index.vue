@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-04-30 14:33:21
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-31 09:01:10
+ * @LastEditTime: 2022-05-31 17:13:25
  * @FilePath: \work\src\views\test\questManager\index.vue
  * @Description:
 -->
@@ -30,9 +30,10 @@
                   </n-icon>
                 </template>
               </n-input>
-              <n-space>
-                <n-button @click="refresh">重置</n-button><n-button @click="searchBank">搜索</n-button></n-space
-              >
+              <n-button-group style="width: 100%"
+                ><n-button style="width: 50%" @click="refresh">重置</n-button>
+                <n-button style="width: 50%" @click="searchBank">搜索</n-button>
+              </n-button-group>
             </n-space>
 
             <div class="py-3 menu-list">

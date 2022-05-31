@@ -2,8 +2,8 @@
  * @Author: ZHENG
  * @Date: 2022-04-30 15:51:30
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-30 16:07:09
- * @FilePath: \work\src\views\question\dataBaseSort\columns.ts
+ * @LastEditTime: 2022-05-31 17:28:54
+ * @FilePath: \work\src\views\test\baseType\columns.ts
  * @Description:
  */
 import { h } from 'vue';
@@ -55,7 +55,7 @@ export const columns = [
   // },
   {
     title: '创建人',
-    key: 'createName',
+    key: 'createrName',
     width: 100
   },
   {
