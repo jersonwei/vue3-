@@ -2,8 +2,8 @@
  * @Author: ZHENG
  * @Date: 2022-05-12 17:34:13
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-26 08:34:16
- * @FilePath: \work\src\views\question\knowledge\components\addOrEditModal.vue
+ * @LastEditTime: 2022-05-31 16:02:47
+ * @FilePath: \work\src\views\test\pointManager\components\addOrEditModal.vue
  * @Description:
 -->
 <template>
@@ -14,7 +14,7 @@
     style="width: 550px"
     :show-icon="false"
     preset="dialog"
-    :title="`${addOrEdit ? '新增' : '修改'}题库`"
+    :title="`${addOrEdit ? '新增' : '修改'}分类`"
   >
     <n-scrollbar ref="scrollRef" style="max-height: 750px">
       <n-form
@@ -27,9 +27,6 @@
       >
         <n-form-item label="分类名称" path="categoryName">
           <n-input v-model:value="formParams.categoryName" placeholder="请输入分类名称" />
-        </n-form-item>
-        <n-form-item label="分类备注" path="note">
-          <n-input v-model:value="formParams.note" type="textarea" placeholder="请输入分类名称" />
         </n-form-item>
       </n-form>
     </n-scrollbar>
@@ -44,7 +41,7 @@
 <script lang="ts" setup>
 import { reactive, ref } from 'vue';
 import { useMessage } from 'naive-ui';
-import { addQuestionBankCategory, editQuestionBankCategory } from '@/service';
+import { addPointCategory, editPointCategory } from '@/service';
 import { deafultFormParams } from '@/utils';
 
 const showModal = ref(false);
@@ -59,7 +56,7 @@ const rules = {
   categoryName: {
     required: true,
     trigger: ['blur', 'input'],
-    message: '请输入名称'
+    message: '请输入分类名称'
   }
 };
 const emits = defineEmits(['reloadTable']);
@@ -86,9 +83,8 @@ const showAddModalFn = (record: Recordable) => {
  * @return {*}
  */
 const showEditModalFn = (record: Recordable) => {
-  const { id, categoryName, note } = record;
+  const { id, categoryName } = record;
   formParams.categoryName = categoryName;
-  formParams.note = note;
   formParams.id = id;
   addOrEdit.value = false;
   showModal.value = true;
@@ -102,28 +98,26 @@ const confirmForm = (e: { preventDefault: () => void }) => {
       setTimeout(async () => {
         // 新增
         if (addOrEdit.value === true) {
-          const { categoryName, note } = formParams;
+          const { categoryName } = formParams;
           const params = {
-            categoryName,
-            note
+            categoryName
           };
-          const result = await addQuestionBankCategory(params);
+          const result = await addPointCategory(params);
           if (!result.error) {
             message.success(`新建成功`);
           }
         } else {
           // 修改
-          const { id, categoryName, note } = formParams;
+          const { id, categoryName } = formParams;
           const params = {
             id,
-            categoryName,
-            note
+            categoryName
           };
-          console.log(params);
-          const result = await editQuestionBankCategory(params);
-          console.log(result);
+          const result = await editPointCategory(params);
+          if (!result.error) {
+            message.success(`编辑成功`);
+          }
         }
-
         emits('reloadTable');
         showModal.value = false;
       });

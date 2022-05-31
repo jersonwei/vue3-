@@ -2,8 +2,8 @@
  * @Author: ZHENG
  * @Date: 2022-04-30 14:33:21
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-26 08:54:01
- * @FilePath: \work\src\views\question\knowledge\index.vue
+ * @LastEditTime: 2022-05-31 17:04:31
+ * @FilePath: \work\src\views\test\pointManager\index.vue
  * @Description:
 -->
 <template>
@@ -38,7 +38,7 @@
 import { h, reactive, ref } from 'vue';
 import { useMessage } from 'naive-ui';
 import { PlusOutlined } from '@vicons/antd';
-import { getQuestionBankCategoryList } from '@/service';
+import { getPointCategoryVoList } from '@/service';
 import { TablePro, TableAction } from '@/components/TablePro';
 import { FormPro, useForm } from '@/components/FormPro';
 import { columns } from './columns';
@@ -54,7 +54,8 @@ const actionColumn = reactive({
   key: 'action',
   fixed: 'right',
   render(record: Recordable<any>) {
-    if (record.categoryParent > 0) {
+    console.log(record);
+    if (!record.children?.length) {
       return h(TableAction as any, {
         style: 'button',
         actions: [
@@ -98,8 +99,8 @@ const actionColumn = reactive({
 });
 // , {}
 const [register] = useForm({
-  gridProps: { cols: '1 s:1 m:2 l:3 xl:4 2xl:4' },
-  labelWidth: 80,
+  gridProps: { cols: '3' },
+  labelWidth: 180,
   showAdvancedButton: false,
   schemas
 });
@@ -125,7 +126,7 @@ const loadDataTable = async (res: any) => {
     pageSize: res.size,
     current: res.current
   };
-  const result = await getQuestionBankCategoryList({ ...formData.value, ...Param });
+  const result = await getPointCategoryVoList({ ...formData.value, ...Param });
   return result.data;
 };
 

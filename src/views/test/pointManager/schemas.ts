@@ -2,18 +2,18 @@
  * @Author: ZHENG
  * @Date: 2022-05-12 17:48:09
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-25 09:22:56
- * @FilePath: \work\src\views\question\dataBaseSort\schemas.ts
+ * @LastEditTime: 2022-05-31 17:02:43
+ * @FilePath: \work\src\views\test\pointManager\schemas.ts
  * @Description:
  */
 
 export const schemas = [
   {
-    field: 'categoryName',
+    field: 'name',
     component: 'NInput',
-    label: '分类名称',
+    label: '分类名称/知识点名称',
     componentProps: {
-      placeholder: '请输入题库分类名称'
+      placeholder: '请输入分类名称/知识点名称'
     }
   }
 ];

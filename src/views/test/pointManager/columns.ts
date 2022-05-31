@@ -2,11 +2,13 @@
  * @Author: ZHENG
  * @Date: 2022-04-30 15:51:30
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-30 16:10:48
- * @FilePath: \work\src\views\question\knowledge\columns.ts
+ * @LastEditTime: 2022-05-31 16:58:37
+ * @FilePath: \work\src\views\test\pointManager\columns.ts
  * @Description:
  */
 import { h } from 'vue';
+import { NSwitch } from 'naive-ui';
+import { editStatusKnowledgePoint } from '@/service';
 
 export const columns = [
   // {
@@ -20,29 +22,19 @@ export const columns = [
   {
     title: '分类名称/知识点名称',
     key: 'categoryName',
-    width: 150,
-    render(row: { children: any; categoryName: any }, index) {
-      if (row.children?.length) {
-        return h('h1', `${row.categoryName}(${row.children.length})`);
+    width: 200,
+    render(row: { children: any; categoryName: any; levelType: any; pointName: any }, index) {
+      if (row.levelType === 1) {
+        return h('h1', `${row.categoryName}(${row.children?.length})`);
       }
-      return h('h1', `${row.categoryName}`);
+      return h('h1', `${row.pointName}`);
     }
-  },
-  {
-    title: '所属院系',
-    key: 'collegeName',
-    width: 80
   },
   {
     title: '题目数量',
     key: 'count',
     width: 80
   },
-  // {
-  //   title: '知识点备注',
-  //   key: 'note',
-  //   width: 130
-  // },
   {
     title: '创建人',
     key: 'createName',
@@ -52,5 +44,24 @@ export const columns = [
     title: '创建时间',
     key: 'createTime',
     width: 200
+  },
+  {
+    title: '状态',
+    key: 'status',
+    width: 130,
+    render(row: { status: number }) {
+      return h(NSwitch, {
+        value: row.status === 1,
+        onUpdateValue: async value => {
+          row.status = row.status === 1 ? 0 : 1;
+          const params = {
+            pointId: row.id,
+            status: row.status
+          };
+          // // eslint-disable-next-line @typescript-eslint/no-use-before-define
+          const result = await editStatusKnowledgePoint(params);
+        }
+      });
+    }
   }
 ];

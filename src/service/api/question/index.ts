@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-05-25 08:34:15
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-30 14:29:23
+ * @LastEditTime: 2022-05-31 15:48:41
  * @FilePath: \work\src\service\api\question\index.ts
  * @Description:
  */
@@ -16,3 +16,5 @@ export * from './examination/examination';
 export * from './questionBank/questionBank';
 
 export * from './question/question';
+
+export * from './pointManager/pointManager';

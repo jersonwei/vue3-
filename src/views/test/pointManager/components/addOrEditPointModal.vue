@@ -1,17 +1,9 @@
 <!--
  * @Author: ZHENG
- * @Date: 2022-05-26 08:38:12
- * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-26 08:57:18
- * @FilePath: \work\src\views\question\knowledge\components\addOrEditPointModal.vue
- * @Description:
--->
-<!--
- * @Author: ZHENG
  * @Date: 2022-05-12 17:34:13
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-26 08:34:16
- * @FilePath: \work\src\views\question\knowledge\components\addOrEditModal.vue
+ * @LastEditTime: 2022-05-31 16:47:50
+ * @FilePath: \work\src\views\test\pointManager\components\addOrEditPointModal.vue
  * @Description:
 -->
 <template>
@@ -39,8 +31,14 @@
         <n-form-item label="知识点名称" path="pointName">
           <n-input v-model:value="formParams.pointName" placeholder="请输入知识点名称" />
         </n-form-item>
-        <n-form-item label="知识点备注" path="note">
-          <n-input v-model:value="formParams.note" type="textarea" placeholder="请输入知识点备注" />
+        <n-form-item label="状态" path="status">
+          <n-radio-group v-model:value="formParams.status" name="radiogroup">
+            <n-space>
+              <n-radio v-for="song in songs" :key="song.value" :value="song.value">
+                {{ song.label }}
+              </n-radio>
+            </n-space>
+          </n-radio-group>
         </n-form-item>
       </n-form>
     </n-scrollbar>
@@ -55,7 +53,7 @@
 <script lang="ts" setup>
 import { reactive, ref } from 'vue';
 import { useMessage } from 'naive-ui';
-import { addQuestionBankCategory, editQuestionBankCategory } from '@/service';
+import { addKnowledgePoint, editKnowledgePoint } from '@/service';
 import { deafultFormParams } from '@/utils';
 
 const showModal = ref(false);
@@ -79,8 +77,18 @@ const formParams = reactive({
   categoryId: '',
   categoryName: '',
   pointName: '',
-  note: ''
+  status: 1
 });
+const songs = [
+  {
+    value: 1,
+    label: '启用'
+  },
+  {
+    value: 0,
+    label: '禁用'
+  }
+];
 /**
  * @author: ZHENG
  * @description: 新增的弹窗,在这里会修改数据
@@ -88,11 +96,11 @@ const formParams = reactive({
  * @return {*}
  */
 const showAddModalFn = (record: Recordable) => {
-  console.log(record);
   deafultFormParams(formParams);
   const { id, categoryName } = record;
   formParams.categoryId = id;
   formParams.categoryName = categoryName;
+  formParams.status = 1;
   addOrEdit.value = true;
   showModal.value = true;
 };
@@ -104,10 +112,10 @@ const showAddModalFn = (record: Recordable) => {
  */
 const showEditModalFn = (record: Recordable) => {
   console.log(record);
-  const { id, categoryParentName, categoryName, note } = record;
-  formParams.categoryName = categoryParentName;
-  formParams.pointName = categoryName;
-  formParams.note = note;
+  const { id, pointName, status } = record;
+  formParams.status = status;
+  // formParams.categoryName = categoryParentName;
+  formParams.pointName = pointName;
   formParams.id = id;
   addOrEdit.value = false;
   showModal.value = true;
@@ -121,26 +129,31 @@ const confirmForm = (e: { preventDefault: () => void }) => {
       setTimeout(async () => {
         // 新增
         if (addOrEdit.value === true) {
-          const { categoryName, note } = formParams;
+          const { pointName, status, categoryId } = formParams;
           const params = {
-            categoryName,
-            note
+            categoryId,
+            pointName,
+            status,
+            note: ''
           };
-          const result = await addQuestionBankCategory(params);
+          const result = await addKnowledgePoint(params);
           if (!result.error) {
             message.success(`新建成功`);
           }
         } else {
           // 修改
-          const { id, categoryName, note } = formParams;
+          const { id, categoryId, pointName, status } = formParams;
           const params = {
             id,
-            categoryName,
-            note
+            categoryId,
+            pointName,
+            status,
+            note: ''
           };
-          console.log(params);
-          const result = await editQuestionBankCategory(params);
-          console.log(result);
+          const result = await editKnowledgePoint(params);
+          if (!result.error) {
+            message.success(`新建成功`);
+          }
         }
 
         emits('reloadTable');

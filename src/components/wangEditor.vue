@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-05-17 18:13:55
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-30 18:41:43
+ * @LastEditTime: 2022-05-31 11:59:02
  * @FilePath: \work\src\components\wangEditor.vue
  * @Description:
 -->
@@ -23,6 +23,7 @@ import '@wangeditor/editor/dist/css/style.css'; // 引入 css
 
 import { onBeforeUnmount, ref, shallowRef, onMounted } from 'vue';
 import { Editor, Toolbar } from '@wangeditor/editor-for-vue';
+import { uploadPaperQuestion } from '@/service';
 
 export default {
   components: { Editor, Toolbar },
@@ -71,7 +72,28 @@ export default {
       //   'group-more-style' // 排除菜单组，写菜单组 key 的值即可
       // ]
     };
-    const editorConfig = { placeholder: '请输入内容...' };
+    const editorConfig = { MENU_CONF: {}, placeholder: '请输入内容...' };
+    editorConfig.MENU_CONF.uploadImage = {
+      async customUpload(file) {
+        console.log(file);
+        const Form = new FormData();
+        Form.append('file', file);
+        const result = await uploadPaperQuestion(Form);
+        console.log(result);
+      }
+      // async uploadPaperQuestion(file: File)
+      //   async uploadPaperQuestion(file: File, insertFn: InsertFnType) {
+      //     console.log(file);
+      //   }
+      //   // async customUpload(file: File, insertFn: InsertFnType) {
+      //   //   // file 即选中的文件
+      //   //   // 自己实现上传，并得到图片 url alt href
+      //   //   const { data: result } = await uploadPaperQuestion(file);
+      //   //   console.log(result);
+      //   //   // 最后插入图片
+      //   //   insertFn(url, alt, href);
+      //   // }
+    };
 
     // 组件销毁时，也及时销毁编辑器
     onBeforeUnmount(() => {
