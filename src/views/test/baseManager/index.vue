@@ -2,8 +2,8 @@
  * @Author: ZHENG
  * @Date: 2022-04-30 14:33:21
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-28 15:34:11
- * @FilePath: \work\src\views\question\dataBase\index.vue
+ * @LastEditTime: 2022-05-31 17:35:28
+ * @FilePath: \work\src\views\test\baseManager\index.vue
  * @Description:
 -->
 <template>
@@ -61,7 +61,6 @@ import { getCategoryName, getChildren } from './getOptions';
 import delModal from './components/delModal.vue';
 import addOrEditModalVue from './components/addOrEditModal.vue';
 
-const courseStore = useCourseStore();
 const message = useMessage();
 const formData = ref({});
 const actionColumn = reactive({
@@ -80,7 +79,7 @@ const actionColumn = reactive({
             label: '题目管理',
 
             // eslint-disable-next-line @typescript-eslint/no-use-before-define
-            onClick: handleEdit.bind(null, record)
+            onClick: handleManager.bind(null, record)
           },
           {
             label: '编辑',
@@ -103,7 +102,7 @@ const actionColumn = reactive({
           label: '题目管理',
 
           // eslint-disable-next-line @typescript-eslint/no-use-before-define
-          onClick: handleEdit.bind(null, record)
+          onClick: handleManager.bind(null, record)
         },
         {
           label: '编辑',
@@ -196,7 +195,7 @@ const handleEdit = (record: Recordable) => {
   addOrEditModalRef.value.showEditModalFn(record);
 };
 
-// 跳转详情页功能
+// 跳转题目管理功能
 const actionRef = ref(); // 表格
 const { routerPush } = useRouterPush();
 /**
@@ -205,9 +204,9 @@ const { routerPush } = useRouterPush();
  * @param {*} record
  * @return {*}
  */
-const handleDetail = (record: Recordable) => {
-  courseStore.setCourseInfo(record.id);
-  routerPush({ name: 'course_courseDetail', query: { id: record.id } });
+const handleManager = (record: Recordable) => {
+  // courseStore.setCourseInfo(record.id);
+  routerPush({ name: 'test_questManager', query: { id: record.id } });
 };
 </script>
 <style scoped></style>

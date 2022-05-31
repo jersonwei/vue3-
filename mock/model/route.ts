@@ -585,7 +585,8 @@ export const routeModel: Record<Auth.RoleType, AuthRoute.Route[]> = {
           meta: {
             title: '知识点管理',
             requiresAuth: true,
-            icon: 'gg:calendar-today'
+            icon: 'gg:calendar-today',
+            keepAlive: true
           }
         },
         {
@@ -595,7 +596,8 @@ export const routeModel: Record<Auth.RoleType, AuthRoute.Route[]> = {
           meta: {
             title: '题目管理',
             requiresAuth: true,
-            icon: 'gg:calendar-today'
+            icon: 'gg:calendar-today',
+            keepAlive: true
           }
         },
         {
@@ -605,7 +607,8 @@ export const routeModel: Record<Auth.RoleType, AuthRoute.Route[]> = {
           meta: {
             title: '添加题目',
             requiresAuth: true,
-            icon: 'gg:calendar-today'
+            icon: 'gg:calendar-today',
+            keepAlive: true
           }
         },
         {
@@ -615,7 +618,8 @@ export const routeModel: Record<Auth.RoleType, AuthRoute.Route[]> = {
           meta: {
             title: '试卷管理',
             requiresAuth: true,
-            icon: 'gg:calendar-today'
+            icon: 'gg:calendar-today',
+            keepAlive: true
           }
         },
         {
@@ -625,7 +629,8 @@ export const routeModel: Record<Auth.RoleType, AuthRoute.Route[]> = {
           meta: {
             title: '试卷分类',
             requiresAuth: true,
-            icon: 'gg:calendar-today'
+            icon: 'gg:calendar-today',
+            keepAlive: true
           }
         },
         {
@@ -635,7 +640,8 @@ export const routeModel: Record<Auth.RoleType, AuthRoute.Route[]> = {
           meta: {
             title: '试卷创编',
             requiresAuth: true,
-            icon: 'gg:calendar-today'
+            icon: 'gg:calendar-today',
+            keepAlive: true
           }
         }
       ],

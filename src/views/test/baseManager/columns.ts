@@ -2,8 +2,8 @@
  * @Author: ZHENG
  * @Date: 2022-04-30 15:51:30
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-28 09:22:19
- * @FilePath: \work\src\views\question\dataBase\columns.ts
+ * @LastEditTime: 2022-05-31 17:31:35
+ * @FilePath: \work\src\views\test\baseManager\columns.ts
  * @Description:
  */
 import { h } from 'vue';
@@ -37,6 +37,16 @@ export const columns = [
     width: 130
   },
   {
+    title: '创建人',
+    key: 'createrName',
+    width: 100
+  },
+  {
+    title: '创建时间',
+    key: 'createTime',
+    width: 200
+  },
+  {
     title: '题库状态',
     key: 'statusName',
     width: 100,
@@ -55,16 +65,6 @@ export const columns = [
         }
       });
     }
-  },
-  {
-    title: '创建人',
-    key: 'createrName',
-    width: 100
-  },
-  {
-    title: '创建时间',
-    key: 'createTime',
-    width: 200
   }
 ];
 /**
