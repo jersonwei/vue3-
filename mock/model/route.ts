@@ -348,8 +348,8 @@ export const routeModel: Record<Auth.RoleType, AuthRoute.Route[]> = {
           }
         },
         {
-          name: 'exam_examManager',
-          path: '/exam/examManager',
+          name: 'test_examManager',
+          path: '/test/examManager',
           component: 'self',
           meta: {
             title: '试卷管理',
@@ -358,8 +358,8 @@ export const routeModel: Record<Auth.RoleType, AuthRoute.Route[]> = {
           }
         },
         {
-          name: 'exam_examType',
-          path: '/exam/examType',
+          name: 'test_examType',
+          path: '/test/examType',
           component: 'self',
           meta: {
             title: '试卷分类',
@@ -368,8 +368,8 @@ export const routeModel: Record<Auth.RoleType, AuthRoute.Route[]> = {
           }
         },
         {
-          name: 'exam_addExam',
-          path: '/exam/addExam',
+          name: 'test_addExam',
+          path: '/test/addExam',
           component: 'self',
           meta: {
             title: '试卷创编',
@@ -612,36 +612,33 @@ export const routeModel: Record<Auth.RoleType, AuthRoute.Route[]> = {
           }
         },
         {
-          name: 'exam_examManager',
-          path: '/exam/examManager',
+          name: 'test_examManager',
+          path: '/test/examManager',
           component: 'self',
           meta: {
             title: '试卷管理',
             requiresAuth: true,
-            icon: 'gg:calendar-today',
-            keepAlive: true
+            icon: 'gg:calendar-today'
           }
         },
         {
-          name: 'exam_examType',
-          path: '/exam/examType',
+          name: 'test_examType',
+          path: '/test/examType',
           component: 'self',
           meta: {
             title: '试卷分类',
             requiresAuth: true,
-            icon: 'gg:calendar-today',
-            keepAlive: true
+            icon: 'gg:calendar-today'
           }
         },
         {
-          name: 'exam_addExam',
-          path: '/exam/addExam',
+          name: 'test_addExam',
+          path: '/test/addExam',
           component: 'self',
           meta: {
             title: '试卷创编',
             requiresAuth: true,
-            icon: 'gg:calendar-today',
-            keepAlive: true
+            icon: 'gg:calendar-today'
           }
         }
       ],

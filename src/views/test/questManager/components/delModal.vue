@@ -2,8 +2,8 @@
  * @Author: ZHENG
  * @Date: 2022-05-12 17:34:13
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-18 08:49:05
- * @FilePath: \work\src\views\course\courseMgt\components\delModal.vue
+ * @LastEditTime: 2022-05-31 18:22:47
+ * @FilePath: \work\src\views\test\questManager\components\delModal.vue
  * @Description:
 -->
 <template>
@@ -13,7 +13,7 @@
     preset="dialog"
     type="error"
     title="确认"
-    :content="`确认删除课程${delText}`"
+    :content="`确认删除题目${delText}`"
     positive-text="确认"
     negative-text="算了"
     @positive-click="onPositiveClick"
@@ -22,7 +22,7 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
 import { useMessage } from 'naive-ui';
-import { deleteCourse } from '@/service';
+import { delStatusPaperQuestion } from '@/service';
 
 const message = useMessage();
 const showDelModal = ref(false);
@@ -47,7 +47,7 @@ const onPositiveClick = async () => {
   const param = {
     id: props.delData
   };
-  const result = await deleteCourse(param);
+  const result = await delStatusPaperQuestion(param);
   if (result.data === '200') {
     message.success('删除数据成功');
   }

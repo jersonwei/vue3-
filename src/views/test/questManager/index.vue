@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-04-30 14:33:21
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-31 18:13:41
+ * @LastEditTime: 2022-05-31 18:16:14
  * @FilePath: \work\src\views\test\questManager\index.vue
  * @Description:
 -->
@@ -115,8 +115,6 @@
               </n-space>
             </template>
           </TablePro>
-          <addModalVue ref="addModalRef" @reload-table="reloadTable"></addModalVue>
-          <editModalVue ref="editModalRef" @reload-table="reloadTable"></editModalVue>
           <delModal ref="delModalRef" :del-data="delData" :del-text="delText" @reload-table="reloadTable"></delModal>
         </n-card>
       </n-gi>
@@ -140,8 +138,6 @@ import addDataBase from '../baseManager/components/addOrEditModal.vue';
 import { columns } from './columns';
 import { schemas } from './schemas';
 import delModal from './components/delModal.vue';
-import addModalVue from './components/addModal.vue';
-import editModalVue from './components/editModal.vue';
 import { getCategoryName, getChildren, getDictionary } from './getOptions';
 import { questionBankType } from './Type';
 import questInfo from './components/questInfo.vue';
@@ -341,7 +337,7 @@ const handleDelete = (record: Recordable) => {
   if (record.quoteCount > 0) {
     return message.warning('题目已被引用，不可删除');
   }
-  delText.value = record.courseName;
+  delText.value = record.questionName;
   delData.value = record.id;
   delModalRef.value.showDelModal = true;
 };
