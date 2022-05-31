@@ -2,8 +2,8 @@
  * @Author: ZHENG
  * @Date: 2022-05-30 11:48:24
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-30 14:12:17
- * @FilePath: \work\src\views\question\dataBaseProblems\components\showDataBase.vue
+ * @LastEditTime: 2022-05-31 10:45:36
+ * @FilePath: \work\src\views\test\addQuest\components\showDataBase.vue
  * @Description:
 -->
 <template>
@@ -41,15 +41,13 @@
 </template>
 <script lang="ts" setup>
 import { h, ref } from 'vue';
-import { CascaderOption, NRadio, useMessage } from 'naive-ui';
+import { CascaderOption, NRadio } from 'naive-ui';
 import { getQuestionBankList } from '@/service';
 import { FormPro, useForm } from '@/components/FormPro';
 import { schemas } from './showDataBase/schemas';
 import { getCategoryName, getChildren } from './showDataBase/getOptions';
 
-const message = useMessage();
 const [register] = useForm({
-  // 查询FORM
   gridProps: { cols: '1 s:1 m:2 l:3 xl:4 2xl:4' },
   labelWidth: 80,
   showAdvancedButton: false,
@@ -69,13 +67,14 @@ const handleLoad = (option: CascaderOption) => {
   });
 };
 
+const formData = ref({});
 const actionRef = ref();
 const loadDataTable = async (res: any) => {
   const Param = {
     pageSize: res.size,
     current: res.current
   };
-  const result = await getQuestionBankList({ ...Param });
+  const result = await getQuestionBankList({ ...formData.value, ...Param });
   return result.data;
 };
 /**
@@ -89,6 +88,12 @@ const showModal = ref(false);
 const showModalFn = () => {
   showModal.value = true;
 };
+const handleSubmit = (values: Recordable) => {
+  formData.value = values;
+  reloadTable();
+};
+
+// 选中的行
 const checkedValueRef = ref('');
 const checkedValueNameRef = ref('');
 const handleChange = (e: Event, row) => {

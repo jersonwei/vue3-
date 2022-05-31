@@ -2,8 +2,8 @@
  * @Author: ZHENG
  * @Date: 2022-04-30 15:51:30
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-30 16:44:30
- * @FilePath: \work\src\views\question\dataBaseProblemsList\columns.ts
+ * @LastEditTime: 2022-05-31 08:30:20
+ * @FilePath: \work\src\views\test\questManager\columns.ts
  * @Description:
  */
 import { h } from 'vue';
@@ -49,7 +49,14 @@ export const columns = [
   {
     title: '知识点',
     key: 'courseCategoryName',
-    width: 100
+    width: 100,
+    render(row: { listPointRelatedName: any[] }) {
+      if (row.listPointRelatedName?.length) {
+        const tags = row.listPointRelatedName?.join(',');
+        return tags;
+      }
+      return [];
+    }
   },
   {
     title: '被引用次数',

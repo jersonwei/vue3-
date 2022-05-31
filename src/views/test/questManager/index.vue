@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-04-30 14:33:21
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-30 18:11:56
+ * @LastEditTime: 2022-05-31 09:01:10
  * @FilePath: \work\src\views\test\questManager\index.vue
  * @Description:
 -->
@@ -117,11 +117,11 @@
           <addModalVue ref="addModalRef" @reload-table="reloadTable"></addModalVue>
           <editModalVue ref="editModalRef" @reload-table="reloadTable"></editModalVue>
           <delModal ref="delModalRef" :del-data="delData" :del-text="delText" @reload-table="reloadTable"></delModal>
-          <updateCourse ref="updateModalRef" :update-data="updateData" @reload-table="reloadTable"></updateCourse>
         </n-card>
       </n-gi>
     </n-grid>
     <addDataBase ref="addDataBaseModalRef" @reload-table="searchBank"></addDataBase>
+    <questInfo ref="questInfoRef"></questInfo>
   </n-card>
 </template>
 
@@ -141,9 +141,9 @@ import { schemas } from './schemas';
 import delModal from './components/delModal.vue';
 import addModalVue from './components/addModal.vue';
 import editModalVue from './components/editModal.vue';
-import updateCourse from './components/updateCourse.vue';
 import { getCategoryName, getChildren, getDictionary } from './getOptions';
 import { questionBankType } from './Type';
+import questInfo from './components/questInfo.vue';
 
 const courseStore = useCourseStore();
 const message = useMessage();
@@ -162,6 +162,7 @@ const bankTypeOptions = ref();
 const questionTypeoptions = ref();
 const difficultyoptions = ref();
 const defaultSelectKeys = ref([0]);
+const actionRef = ref(); // 表格
 const getOption = async () => {
   bankTypeOptions.value = await getCategoryName();
   questionTypeoptions.value = await getDictionary(2);
@@ -223,7 +224,7 @@ const actionColumn = reactive({
           label: '详情',
 
           // eslint-disable-next-line @typescript-eslint/no-use-before-define
-          onClick: handleEdit.bind(null, record)
+          onClick: handleInfo.bind(null, record)
         },
         {
           label: '编辑',
@@ -234,7 +235,7 @@ const actionColumn = reactive({
         {
           label: '删除',
           // eslint-disable-next-line @typescript-eslint/no-use-before-define
-          onClick: handleConfig.bind(null, record)
+          onClick: handleDelete.bind(null, record)
         }
       ]
     });
@@ -291,6 +292,12 @@ const handleSubmit = (values: Recordable) => {
   reloadTable();
 };
 
+// 详情
+const questInfoRef = ref();
+const handleInfo = (record: Recordable) => {
+  questInfoRef.value.showModalFn(record);
+};
+
 // 删除逻辑
 const delModalRef = ref();
 const delData = ref<number>(0); // 删除数据的ID
@@ -321,43 +328,8 @@ const updateData = ref();
  * @return {*}
  */
 const handleEdit = (record: Recordable) => {
-  editModalRef.value.editModalFn(record);
-};
-
-// 跳转详情页功能
-const actionRef = ref(); // 表格
-
-// 定时上架功能
-const updateModalRef = ref();
-const handUpdateStatus = (record: Recordable) => {
-  updateData.value = record;
-  console.log(updateData.value);
-  updateModalRef.value.showUpdateModal = true;
-};
-
-const { routerPush } = useRouterPush();
-
-/**
- * @author: ZHENG
- * @description: 跳转课程预览
- * @param {*} record
- * @return {*}
- */
-const handleDetail = (record: Recordable) => {
-  courseStore.setCourseInfo(record.id);
-  routerPush({ name: 'course_courseDetail', query: { id: record.id } });
-};
-
-/**
- * @author: ZHENG
- * @description: 跳转课程信息
- * @param {*} record
- * @return {*}
- */
-const handleConfig = (record: Recordable) => {
-  courseStore.setCourseInfo(record.id);
-  console.log(record.id);
-  routerPush({ name: 'course_courseInfo', query: { id: record.id } });
+  console.log(record);
+  // editModalRef.value.editModalFn(record);
 };
 </script>
 <style scoped>

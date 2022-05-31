@@ -338,16 +338,6 @@ export const routeModel: Record<Auth.RoleType, AuthRoute.Route[]> = {
           }
         },
         {
-          name: 'test_questInfo',
-          path: '/test/questInfo',
-          component: 'self',
-          meta: {
-            title: '题目详情',
-            requiresAuth: true,
-            icon: 'gg:calendar-today'
-          }
-        },
-        {
           name: 'test_addQuest',
           path: '/test/addQuest',
           component: 'self',
@@ -604,16 +594,6 @@ export const routeModel: Record<Auth.RoleType, AuthRoute.Route[]> = {
           component: 'self',
           meta: {
             title: '题目管理',
-            requiresAuth: true,
-            icon: 'gg:calendar-today'
-          }
-        },
-        {
-          name: 'test_questInfo',
-          path: '/test/questInfo',
-          component: 'self',
-          meta: {
-            title: '题目详情',
             requiresAuth: true,
             icon: 'gg:calendar-today'
           }
