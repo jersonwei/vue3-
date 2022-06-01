@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-05-13 16:33:03
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-06-01 15:03:13
+ * @LastEditTime: 2022-06-01 15:40:47
  * @FilePath: \work\src\service\api\paper\paper.ts
  * @Description:
  */
@@ -41,5 +41,11 @@ export function getUnitPracticeList(params) {
 export function getPaperManagerList(params) {
   const query = paramsToQuery(params);
   const res = request.get(`/paper/listPage${query}`); //
+  return res;
+}
+
+export function delPaper(params) {
+  const query = paramsToQuery(params);
+  const res = request.delete(`/paper/delete${query}`); //
   return res;
 }

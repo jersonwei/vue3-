@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-04-30 14:33:21
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-06-01 15:18:42
+ * @LastEditTime: 2022-06-01 15:40:11
  * @FilePath: \work\src\views\test\examManager\index.vue
  * @Description:
 -->
@@ -47,6 +47,7 @@
         </n-button>
       </template>
     </TablePro>
+    <delModal ref="delModalRef" :del-data="delData" :del-text="delText" @reloadTable="reloadTable"></delModal>
   </n-card>
 </template>
 
@@ -54,6 +55,7 @@
 import { h, reactive, ref } from 'vue';
 import { CascaderOption, useMessage } from 'naive-ui';
 import { PlusOutlined } from '@vicons/antd';
+import { differenceInDays, format } from 'date-fns';
 import { useRouterPush } from '@/composables';
 import { getPaperManagerList } from '@/service';
 import { getUserInfo } from '@/utils';
@@ -62,11 +64,10 @@ import { FormPro, useForm } from '@/components/FormPro';
 import { columns } from './columns';
 import { schemas } from './schemas';
 import { getCourseCategoryOptions, getCollegeLegistOptions, getStatusOptions, getChildren } from './getOptions';
+import delModal from './components/delModal.vue';
 
 // 获取用户信息
 const { userRole } = getUserInfo();
-
-
 
 const message = useMessage();
 const formData = ref({});
@@ -162,10 +163,16 @@ const delData = ref<number>(0); // 删除数据的ID
 const delText = ref(''); // 删除的文字
 // eslint-disable-next-line consistent-return
 const handleDelete = (record: Recordable) => {
-  if (record.status === '0') {
+  if (record.status === 1) {
     return message.error('只有关闭状态试卷才能删除');
   }
-  delText.value = record.courseName;
+  const theMoment = new Date();
+  const toDate = format(theMoment, 'yyyy-MM-dd HH:mm:ss');
+  if (record.paperBeginTime < toDate) {
+    return message.error('已过考试时间，不允许删除时间');
+  }
+
+  delText.value = record.paperName;
   delData.value = record.id;
   delModalRef.value.showDelModal = true;
 };
