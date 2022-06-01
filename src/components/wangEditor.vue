@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-05-17 18:13:55
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-31 11:59:02
+ * @LastEditTime: 2022-06-01 16:47:48
  * @FilePath: \work\src\components\wangEditor.vue
  * @Description:
 -->
@@ -74,12 +74,13 @@ export default {
     };
     const editorConfig = { MENU_CONF: {}, placeholder: '请输入内容...' };
     editorConfig.MENU_CONF.uploadImage = {
-      async customUpload(file) {
+      async customUpload(file, insertFn) {
         console.log(file);
         const Form = new FormData();
         Form.append('file', file);
-        const result = await uploadPaperQuestion(Form);
+        const { data: result } = await uploadPaperQuestion(Form);
         console.log(result);
+        insertFn(result.url);
       }
       // async uploadPaperQuestion(file: File)
       //   async uploadPaperQuestion(file: File, insertFn: InsertFnType) {

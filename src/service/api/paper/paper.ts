@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-05-13 16:33:03
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-06-01 15:41:48
+ * @LastEditTime: 2022-06-01 17:28:40
  * @FilePath: \work\src\service\api\paper\paper.ts
  * @Description:
  */
@@ -12,6 +12,7 @@ import { request } from '../../request';
 
 // 新增习题
 export function addPaper(params) {
+  console.log(params);
   const res = request.post(`/paper/add`, params); //
   return res;
 }
@@ -52,5 +53,11 @@ export function delPaper(params) {
 
 export function editStatusPaper(params) {
   const res = request.put(`/paper/editStatus`, params); //
+  return res;
+}
+
+export function getPaperDetail(params) {
+  const query = paramsToQuery(params);
+  const res = request.get(`/paper/detailed${query}`); //
   return res;
 }

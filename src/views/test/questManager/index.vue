@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-04-30 14:33:21
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-31 21:36:00
+ * @LastEditTime: 2022-06-01 16:44:50
  * @FilePath: \work\src\views\test\questManager\index.vue
  * @Description:
 -->
@@ -130,6 +130,7 @@ import { useRoute } from 'vue-router';
 import { CascaderOption, TreeOption, useMessage } from 'naive-ui';
 import { PlusOutlined } from '@vicons/antd';
 import { useCourseStore } from '@/store';
+import { useRouterPush } from '@/composables';
 import { getQuestionBank, getPaperList } from '@/service';
 import { resetForm } from '@/utils';
 import { TablePro, TableAction } from '@/components/TablePro';
@@ -141,6 +142,7 @@ import delModal from './components/delModal.vue';
 import { getCategoryName, getChildren, getDictionary } from './getOptions';
 import { questionBankType } from './Type';
 import questInfo from './components/questInfo.vue';
+
 // defaultSelectKeys.value[0] = route.query.id;
 const message = useMessage();
 const formData = ref({});
@@ -312,11 +314,11 @@ const handleInfo = (record: Recordable) => {
 };
 
 // 新建和编辑弹窗
-const addModalRef = ref();
-const editModalRef = ref();
+
+const { routerPush } = useRouterPush();
 // 新建
 const addTable = () => {
-  addModalRef.value.showModalFn();
+  routerPush({ name: 'test_addQuest' });
 };
 
 /**
@@ -329,7 +331,7 @@ const handleEdit = (record: Recordable) => {
   if (record.quoteCount > 0) {
     return message.warning('题目已被引用，不可编辑');
   }
-
+  routerPush({ name: 'test_addQuest' });
   // editModalRef.value.editModalFn(record);
 };
 // 删除逻辑

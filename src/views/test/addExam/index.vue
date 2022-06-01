@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-04-30 14:33:21
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-06-01 14:58:54
+ * @LastEditTime: 2022-06-01 17:34:39
  * @FilePath: \work\src\views\test\addExam\index.vue
  * @Description:
 -->
@@ -154,10 +154,23 @@
 import { computed, ref } from 'vue';
 import { SelectOption, useMessage } from 'naive-ui';
 import { PlusOutlined } from '@vicons/antd';
+import { format } from 'date-fns';
+import { useExamStore } from '@/store';
+import { addPaper } from '@/service';
 import { disablePreviousDate, numberfilter } from '@/utils';
 import { columns } from './columns';
 import showQuest from './components/showQuestModal.vue';
 
+const examStore = useExamStore();
+const paperData = examStore.getPaper();
+console.log(paperData);
+const addOrEdit = ref(false); // true 新增
+if (!paperData) {
+  addOrEdit.value = true;
+} else {
+  addOrEdit.value = false;
+}
+console.log(addOrEdit.value);
 const message = useMessage();
 const baseInfoRule = {
   paperName: {
@@ -174,11 +187,6 @@ const baseInfoRule = {
     required: true,
     trigger: ['blur', 'input'],
     message: '请选择试卷分类'
-  },
-  time: {
-    required: true,
-    trigger: ['blur', 'input'],
-    message: '请选择考试时间'
   }
 };
 const detailRule = {
@@ -320,17 +328,19 @@ const addDetail = () => {
 };
 const BaseFormRef = ref();
 const detailFormRef = ref();
-const saveDetail = () => {
+const saveDetail = async () => {
   console.log(paperList.value);
   let ruleError = false;
-  BaseFormRef.value.validate((errors: any) => {
+  await BaseFormRef.value.validate((errors: any) => {
     if (!errors) {
+      console.log(ruleError);
       ruleError = true;
       // message.success('请填写完整信息');
     } else {
       message.error('请填写完整信息');
     }
   });
+  console.log(ruleError);
   if (!ruleError) {
     return;
   }
@@ -343,21 +353,44 @@ const saveDetail = () => {
       }
     });
   }
-  const { type, paperName, note } = paperList.value.BaseInfo;
-  const param = {
+  const { type, paperName, note, time, difficultLevel } = paperList.value.BaseInfo;
+  const paperBeginTime = format(new Date(time[0]), 'yyyy-MM-dd HH:mm:ss');
+  const paperEndTime = format(new Date(time[1]), 'yyyy-MM-dd HH:mm:ss');
+  const params = {
     paper: {
       categoryId: type,
       paperName,
       paperDescribe: note,
-      paperScores: sumQuestMark,
+      paperScores: sumQuestMark.value,
       status: 0,
-      delayedSubmit: 0
+      delayedSubmit: 0,
+      paperBeginTime,
+      paperEndTime,
+      difficultLevel
     },
     listPaperDetaile: []
   };
   for (let i = 0; i < paperList.value.detail.length; i++) {
-    console.log(paperList.value.detail[i]);
+    for (let y = 0; y < paperList.value.detail[i]?.data.length; y++) {
+      console.log();
+      const { questType, note, name } = paperList.value.detail[i];
+      const { id: questionId, questionScore } = paperList.value.detail[i]?.data[y];
+      const param = {
+        questionType: questType,
+        questionId,
+        questionSort: y,
+        partSort: i,
+        questionScore,
+        extraScore: 0,
+        partDescribe: note,
+        partName: name
+      };
+      params.listPaperDetaile.push(param);
+    }
   }
+  console.log(params);
+  const { data: result } = await addPaper(params);
+  console.log(result);
 };
 /**
  * @author: ZHENG

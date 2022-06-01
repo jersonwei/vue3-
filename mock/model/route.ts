@@ -344,6 +344,7 @@ export const routeModel: Record<Auth.RoleType, AuthRoute.Route[]> = {
           meta: {
             title: '添加题目',
             requiresAuth: true,
+            hide: true,
             icon: 'gg:calendar-today'
           }
         },
@@ -607,6 +608,7 @@ export const routeModel: Record<Auth.RoleType, AuthRoute.Route[]> = {
           meta: {
             title: '添加题目',
             requiresAuth: true,
+            hide: true,
             icon: 'gg:calendar-today',
             keepAlive: true
           }

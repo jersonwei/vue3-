@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-04-30 14:33:21
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-06-01 15:58:50
+ * @LastEditTime: 2022-06-01 17:51:57
  * @FilePath: \work\src\views\test\pointManager\index.vue
  * @Description:
 -->
@@ -160,7 +160,7 @@ const delModalRef = ref();
 // eslint-disable-next-line consistent-return
 const handleDelete = (record: Recordable, type: string) => {
   console.log(record, type);
-  delModalRef.value.showDelModalFn(record.levelType);
+  delModalRef.value.showDelModalFn(record, type);
 };
 </script>
 <style scoped></style>

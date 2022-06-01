@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-05-12 17:34:13
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-31 17:00:46
+ * @LastEditTime: 2022-06-01 17:52:24
  * @FilePath: \work\src\views\test\pointManager\components\delModal.vue
  * @Description:
 -->
@@ -34,7 +34,7 @@ const emits = defineEmits(['reloadTable']);
 const showDelModalFn = (record: Recordable, type: string) => {
   delData.value = record;
   showDelModal.value = true;
-  console.log(delType.value);
+  console.log(delData.value);
   if (type === '1') {
     delType.value = true;
   } else {

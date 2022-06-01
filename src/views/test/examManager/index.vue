@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-04-30 14:33:21
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-06-01 15:40:11
+ * @LastEditTime: 2022-06-01 16:27:29
  * @FilePath: \work\src\views\test\examManager\index.vue
  * @Description:
 -->
@@ -48,6 +48,7 @@
       </template>
     </TablePro>
     <delModal ref="delModalRef" :del-data="delData" :del-text="delText" @reloadTable="reloadTable"></delModal>
+    <showExamModal ref="showExamModalRef"></showExamModal>
   </n-card>
 </template>
 
@@ -56,6 +57,7 @@ import { h, reactive, ref } from 'vue';
 import { CascaderOption, useMessage } from 'naive-ui';
 import { PlusOutlined } from '@vicons/antd';
 import { differenceInDays, format } from 'date-fns';
+import { useExamStore } from '@/store';
 import { useRouterPush } from '@/composables';
 import { getPaperManagerList } from '@/service';
 import { getUserInfo } from '@/utils';
@@ -65,9 +67,10 @@ import { columns } from './columns';
 import { schemas } from './schemas';
 import { getCourseCategoryOptions, getCollegeLegistOptions, getStatusOptions, getChildren } from './getOptions';
 import delModal from './components/delModal.vue';
+import showExamModal from './components/showExamModal.vue';
 
 // 获取用户信息
-const { userRole } = getUserInfo();
+const examStore = useExamStore();
 
 const message = useMessage();
 const formData = ref({});
@@ -178,9 +181,13 @@ const handleDelete = (record: Recordable) => {
 };
 
 // 新建和编辑弹窗
-const addOrEditModalRef = ref();
+const actionRef = ref(); // 表格
+const { routerPush } = useRouterPush();
 // 新建
-const addTable = () => {};
+const addTable = () => {
+  examStore.setPaper('');
+  routerPush({ name: 'test_addExam' });
+};
 
 /**
  * @author: ZHENG
@@ -188,21 +195,19 @@ const addTable = () => {};
  * @param {*} record
  * @return {*}
  */
-const handleEdit = (record: Recordable) => {};
-
-const actionRef = ref(); // 表格
-
-const { routerPush } = useRouterPush();
-
+const handleEdit = (record: Recordable) => {
+  examStore.setPaper(record);
+  routerPush({ name: 'test_addExam' });
+};
 /**
  * @author: ZHENG
  * @description: 跳转课程预览
  * @param {*} record
  * @return {*}
  */
+const showExamModalRef = ref();
 const handleDetail = (record: Recordable) => {
-  // courseStore.setCourseInfo(record.id);
-  // routerPush({ name: 'course_courseDetail', query: { id: record.id } });
+  showExamModalRef.value.showModal(record);
 };
 </script>
 <style scoped></style>
