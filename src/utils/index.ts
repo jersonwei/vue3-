@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-04-30 08:41:04
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-25 11:32:18
+ * @LastEditTime: 2022-06-01 13:56:04
  * @FilePath: \work\src\utils\index.ts
  * @Description:
  */
@@ -105,4 +105,38 @@ export function resetForm(from: { [x: string]: string }, obj: string | string[])
     // eslint-disable-next-line no-param-reassign
     from[key] = '';
   });
+}
+
+export function numberfilter(num) {
+  const changeNum = ['零', '一', '二', '三', '四', '五', '六', '七', '八', '九']; // changeNum[0] = "零"
+  const unit = ['', '十', '百'];
+  num = parseInt(num);
+  const getWan = temp => {
+    const strArr = temp.toString().split('').reverse();
+    let newNum = '';
+    for (let i = 0; i < strArr.length; i++) {
+      newNum =
+        (i == 0 && strArr[i] == 0
+          ? ''
+          : i > 0 && strArr[i] == 0 && strArr[i - 1] == 0
+          ? ''
+          : changeNum[strArr[i]] + (strArr[i] == 0 ? unit[0] : unit[i])) + newNum;
+    }
+    return newNum;
+  };
+  const overWan = Math.floor(num / 100);
+  let noWan = num % 100;
+  if (noWan.toString().length < 2) noWan = `0${noWan}`;
+  const strr = overWan ? `${getWan(overWan)}百${getWan(noWan)}` : getWan(num);
+  if (strr.split('')[0] == '一') {
+    let showNum = '';
+    if (strr == '一') {
+      showNum = strr.substring(0);
+    } else {
+      showNum = strr.substring(1);
+    }
+    return `${showNum}`;
+  }
+  const showNum = overWan ? `${getWan(overWan)}百${getWan(noWan)}` : getWan(num);
+  return `${showNum}`;
 }

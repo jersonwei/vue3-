@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-04-30 14:33:21
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-06-01 11:52:43
+ * @LastEditTime: 2022-06-01 13:59:12
  * @FilePath: \work\src\views\test\addExam\index.vue
  * @Description:
 -->
@@ -14,7 +14,7 @@
           <n-space vertical>
             <n-button style="width: 100%" @click="scrollBar('')">基本信息</n-button>
             <template v-for="(item, index) in paperList.detail" :key="index">
-              <n-button style="width: 100%" @click="scrollBar(index)">第{{ index + 1 }}部分</n-button>
+              <n-button style="width: 100%" @click="scrollBar(index)">第{{ numberfilter(index + 1) }}部分</n-button>
             </template>
             <n-button style="width: 100%" type="info" ghost @click="addDetail">
               <template #icon>
@@ -23,7 +23,7 @@
                 </n-icon> </template
               >添加部分</n-button
             >
-            <p>总题数: {{ sumQuestNum }} 道</p>
+            <p>总题数： {{ sumQuestNum }} 道</p>
             <p>总分值：{{ sumQuestMark }} 分</p>
             <n-button style="width: 100%" type="info" @click="saveDetail">保存</n-button>
           </n-space>
@@ -50,22 +50,36 @@
                   <n-select v-model:value="paperList.BaseInfo.type" :options="examTypeOptions" placeholder="请选择" />
                 </n-form-item-gi>
                 <n-form-item-gi :span="12" label="考试时间" path="type">
-                  <n-date-picker v-model:value="paperList.BaseInfo.time" type="datetimerange" clearable />
+                  <n-date-picker
+                    v-model:value="paperList.BaseInfo.time"
+                    type="datetimerange"
+                    clearable
+                    :is-date-disabled="disablePreviousDate"
+                  />
                 </n-form-item-gi>
               </n-grid>
               <n-grid :cols="24" :x-gap="24">
                 <n-form-item-gi :span="12" label="上架时间" path="type">
-                  <n-date-picker v-model:value="paperList.BaseInfo.timestamp" type="datetime" clearable />
+                  <n-date-picker
+                    v-model:value="paperList.BaseInfo.timestamp"
+                    type="datetime"
+                    clearable
+                    :is-date-disabled="disablePreviousDate"
+                  />
                 </n-form-item-gi>
                 <n-form-item-gi :span="12" label="试卷难易度" path="type">
-                  <n-date-picker v-model:value="paperList.BaseInfo.timestamp" type="datetime" clearable />
+                  <n-select
+                    v-model:value="paperList.BaseInfo.difficultLevel"
+                    placeholder="请选择难易度"
+                    :options="difficultyOptions"
+                  />
                 </n-form-item-gi>
               </n-grid>
             </n-form>
           </n-card>
           <n-space vertical>
             <template v-for="(item, index) in paperList.detail" :key="index">
-              <n-card :id="`li${index}`" embedded style="width: 100%" :title="`📖 第${index + 1}部分`">
+              <n-card :id="`li${index}`" embedded style="width: 100%" :title="`📖 第${numberfilter(index + 1)}部分`">
                 <template #header-extra>
                   <n-space>
                     <n-button @click="topMove(index)">上移</n-button>
@@ -89,6 +103,8 @@
                         v-model:value="paperList.detail[index].questType"
                         :options="questTypeOptions"
                         placeholder="请选择"
+                        @update:show="show => handleShowValue(show, index)"
+                        @update:value="(value, option) => handleUpdateValue(value, option, index)"
                       />
                     </n-form-item-gi>
                   </n-grid>
@@ -108,7 +124,6 @@
                       <n-button @click="addQuest(index, paperList.detail[index].questType)">添加题目</n-button>
                       <n-data-table
                         :columns="columns"
-                        :row-key="id"
                         :data="paperList.detail[index].data"
                         :bordered="false"
                       /> </n-collapse-item
@@ -121,13 +136,25 @@
       </n-gi>
     </n-grid>
     <showQuest ref="showQuestRef" @choose-quest="chooseQuest"></showQuest>
+    <n-modal
+      v-model:show="showChangeQuestionTypeModal"
+      :mask-closable="false"
+      preset="dialog"
+      title="确认"
+      content="确认切换题目类型?会清空当前已选题目！"
+      positive-text="确认"
+      negative-text="算了"
+      @positive-click="submitCallback"
+      @negative-click="cancelCallback"
+    />
   </n-card>
 </template>
 
 <script lang="ts" setup>
 import { computed, ref } from 'vue';
-import { useMessage } from 'naive-ui';
+import { SelectOption, useMessage } from 'naive-ui';
 import { PlusOutlined } from '@vicons/antd';
+import { disablePreviousDate, numberfilter } from '@/utils';
 import { columns } from './columns';
 import showQuest from './components/showQuestModal.vue';
 
@@ -161,8 +188,8 @@ const paperList = ref({
     paperName: '',
     note: '',
     type: '',
-    time: ref<[number, number]>([1183135260000, Date.now()]),
-    timestamp: ref(1183135260000),
+    time: ref<[number, number]>(),
+    timestamp: ref(),
     difficultLevel: ''
   },
   detail: [
@@ -227,6 +254,28 @@ const questTypeOptions = ref([
     value: '7'
   }
 ]);
+const difficultyOptions = ref([
+  {
+    label: '较难',
+    value: '4'
+  },
+  {
+    label: '难',
+    value: '3'
+  },
+  {
+    label: '中',
+    value: '2'
+  },
+  {
+    label: '易',
+    value: '1'
+  },
+  {
+    label: '较易',
+    value: '0'
+  }
+]);
 const sumQuestNum = computed(() => {
   let sum = 0;
   const paper = paperList.value.detail;
@@ -261,6 +310,11 @@ const addDetail = () => {
 const saveDetail = () => {
   message.info('保存');
 };
+/**
+ * @author: ZHENG
+ * @description: 切换类型
+ * @return {*}
+ */
 /**
  * @author: ZHENG
  * @description: 上移数据
@@ -328,6 +382,38 @@ const scrollBar = index => {
   }
 
   // li 1
+};
+
+/**
+ * @author: ZHENG
+ * @description: 展开的时候记录当前的questionType,检查更新后与旧值不同弹出提示，更新的话把表格数据清空
+ * @return {*}
+ */
+const oldQuestType = ref();
+const handleShowValue = (show: boolean, index: number) => {
+  console.log(show, index);
+  if (show) {
+    oldQuestType.value = paperList.value.detail[index].questType;
+  }
+};
+const showChangeQuestionTypeModal = ref(false);
+const changeQuestionIndex = ref();
+const handleUpdateValue = (value: string, option: SelectOption, index: number) => {
+  if (oldQuestType.value && oldQuestType.value !== value) {
+    showChangeQuestionTypeModal.value = true;
+    changeQuestionIndex.value = index;
+  }
+};
+/**
+ * @author: ZHENG
+ * @description: 清空当前的选项值
+ */
+const submitCallback = () => {
+  paperList.value.detail[changeQuestionIndex.value].data = [];
+};
+// 不清空并会把值重置回去
+const cancelCallback = () => {
+  paperList.value.detail[changeQuestionIndex.value].questType = oldQuestType.value;
 };
 
 // // 获取用户信息
