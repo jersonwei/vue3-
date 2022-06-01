@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-05-30 14:28:27
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-31 18:17:09
+ * @LastEditTime: 2022-06-01 17:55:16
  * @FilePath: \work\src\service\api\question\question\question.ts
  * @Description:
  */
@@ -25,6 +25,7 @@ export function editStatusPaperQuestion(params) {
 }
 
 export function delStatusPaperQuestion(params) {
-  const res = request.delete(`/paperQuestion/delete`, params); //
+  const query = paramsToQuery(params);
+  const res = request.delete(`/paperQuestion/delete${query}`); //
   return res;
 }
