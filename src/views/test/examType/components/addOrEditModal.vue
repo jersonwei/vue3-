@@ -2,8 +2,8 @@
  * @Author: ZHENG
  * @Date: 2022-05-12 17:34:13
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-27 17:36:35
- * @FilePath: \work\src\views\examination\examinationSort\components\addOrEditModal.vue
+ * @LastEditTime: 2022-06-01 15:20:35
+ * @FilePath: \work\src\views\test\examType\components\addOrEditModal.vue
  * @Description:
 -->
 <template>
@@ -26,13 +26,13 @@
         class="m-2 py-4"
       >
         <n-form-item label="分类名称" path="courseName">
-          <n-input v-model:value="formParams.courseName" placeholder="请输入课程名称" />
+          <n-input v-model:value="formParams.courseName" placeholder="请输入分类名称" />
         </n-form-item>
         <n-form-item label="所属课程" path="courseCategory">
           <n-select v-model:value="formParams.courseCategory" :options="form.courseCategory" />
         </n-form-item>
         <n-form-item label="分类介绍" path="note">
-          <n-input v-model:value="formParams.note" type="textarea" placeholder="课程介绍" />
+          <n-input v-model:value="formParams.note" type="textarea" placeholder="分类介绍" />
         </n-form-item>
       </n-form>
     </n-scrollbar>

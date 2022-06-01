@@ -2,8 +2,8 @@
  * @Author: ZHENG
  * @Date: 2022-04-30 14:33:21
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-25 16:34:38
- * @FilePath: \work\src\views\examination\examinationList\index.vue
+ * @LastEditTime: 2022-06-01 15:18:42
+ * @FilePath: \work\src\views\test\examManager\index.vue
  * @Description:
 -->
 <template>
@@ -36,9 +36,17 @@
       :action-column="actionColumn"
       :scroll-x="2200"
     >
+      <template #tableTitle>
+        <n-button type="primary" @click="addTable">
+          <template #icon>
+            <n-icon>
+              <PlusOutlined />
+            </n-icon>
+          </template>
+          新建试卷
+        </n-button>
+      </template>
     </TablePro>
-    <addOrEditModalVue ref="addOrEditModalRef" @reload-table="reloadTable"></addOrEditModalVue>
-    <delModal ref="delModalRef" :del-data="delData" :del-text="delText" @reload-table="reloadTable"></delModal>
   </n-card>
 </template>
 
@@ -46,24 +54,20 @@
 import { h, reactive, ref } from 'vue';
 import { CascaderOption, useMessage } from 'naive-ui';
 import { PlusOutlined } from '@vicons/antd';
-import { useCourseStore } from '@/store';
 import { useRouterPush } from '@/composables';
-import { searchCouserInfo } from '@/service';
+import { getPaperManagerList } from '@/service';
 import { getUserInfo } from '@/utils';
 import { TablePro, TableAction } from '@/components/TablePro';
 import { FormPro, useForm } from '@/components/FormPro';
 import { columns } from './columns';
 import { schemas } from './schemas';
-import delModal from './components/delModal.vue';
-import addOrEditModalVue from './components/addOrEditModal.vue';
 import { getCourseCategoryOptions, getCollegeLegistOptions, getStatusOptions, getChildren } from './getOptions';
 
 // 获取用户信息
 const { userRole } = getUserInfo();
 
-console.log(userRole);
 
-const courseStore = useCourseStore();
+
 const message = useMessage();
 const formData = ref({});
 const actionColumn = reactive({
@@ -135,7 +139,7 @@ const loadDataTable = async (res: any) => {
     pageSize: res.size,
     current: res.current
   };
-  const result = await searchCouserInfo({ ...formData.value, ...Param });
+  const result = await getPaperManagerList({ ...formData.value, ...Param });
   return result.data;
 };
 /**
@@ -159,7 +163,7 @@ const delText = ref(''); // 删除的文字
 // eslint-disable-next-line consistent-return
 const handleDelete = (record: Recordable) => {
   if (record.status === '0') {
-    return message.error('只有下架状态课程才能删除');
+    return message.error('只有关闭状态试卷才能删除');
   }
   delText.value = record.courseName;
   delData.value = record.id;

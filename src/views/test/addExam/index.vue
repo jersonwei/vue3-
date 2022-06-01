@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-04-30 14:33:21
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-06-01 13:59:12
+ * @LastEditTime: 2022-06-01 14:58:54
  * @FilePath: \work\src\views\test\addExam\index.vue
  * @Description:
 -->
@@ -33,7 +33,7 @@
         <n-scrollbar ref="scrollbarRef" style="width: 100%; max-height: calc(100vh - 240px)">
           <n-card embedded title="📖 基本信息">
             <n-form
-              ref="formRef"
+              ref="BaseFormRef"
               :model="paperList.BaseInfo"
               :rules="baseInfoRule"
               label-placement="left"
@@ -49,7 +49,7 @@
                 <n-form-item-gi :span="12" label="试卷分类" path="type">
                   <n-select v-model:value="paperList.BaseInfo.type" :options="examTypeOptions" placeholder="请选择" />
                 </n-form-item-gi>
-                <n-form-item-gi :span="12" label="考试时间" path="type">
+                <n-form-item-gi :span="12" label="考试时间" path="time">
                   <n-date-picker
                     v-model:value="paperList.BaseInfo.time"
                     type="datetimerange"
@@ -59,15 +59,15 @@
                 </n-form-item-gi>
               </n-grid>
               <n-grid :cols="24" :x-gap="24">
-                <n-form-item-gi :span="12" label="上架时间" path="type">
+                <!-- <n-form-item-gi :span="12" label="发布时间" path="timestamp">
                   <n-date-picker
                     v-model:value="paperList.BaseInfo.timestamp"
                     type="datetime"
                     clearable
                     :is-date-disabled="disablePreviousDate"
                   />
-                </n-form-item-gi>
-                <n-form-item-gi :span="12" label="试卷难易度" path="type">
+                </n-form-item-gi> -->
+                <n-form-item-gi :span="12" label="试卷难易度" path="difficultLevel">
                   <n-select
                     v-model:value="paperList.BaseInfo.difficultLevel"
                     placeholder="请选择难易度"
@@ -88,7 +88,7 @@
                   </n-space>
                 </template>
                 <n-form
-                  ref="formRef"
+                  ref="detailFormRef"
                   :model="paperList.detail[index]"
                   :rules="detailRule"
                   label-placement="left"
@@ -169,6 +169,16 @@ const baseInfoRule = {
     required: true,
     trigger: ['blur', 'input'],
     message: '请输入试卷简介'
+  },
+  type: {
+    required: true,
+    trigger: ['blur', 'input'],
+    message: '请选择试卷分类'
+  },
+  time: {
+    required: true,
+    trigger: ['blur', 'input'],
+    message: '请选择考试时间'
   }
 };
 const detailRule = {
@@ -300,15 +310,54 @@ const sumQuestMark = computed(() => {
  * @return {*}
  */
 const addDetail = () => {
-  message.info('添加');
   paperList.value.detail.push({
     name: '',
     note: '',
-    data: []
+    questType: '',
+    data: [],
+    checkRowKeys: []
   });
 };
+const BaseFormRef = ref();
+const detailFormRef = ref();
 const saveDetail = () => {
-  message.info('保存');
+  console.log(paperList.value);
+  let ruleError = false;
+  BaseFormRef.value.validate((errors: any) => {
+    if (!errors) {
+      ruleError = true;
+      // message.success('请填写完整信息');
+    } else {
+      message.error('请填写完整信息');
+    }
+  });
+  if (!ruleError) {
+    return;
+  }
+  for (let i = 0; i < detailFormRef.value.length; i++) {
+    detailFormRef.value[i].validate((detailErrors: any) => {
+      if (!detailErrors && ruleError) {
+        message.success('请填写完整信息');
+      } else {
+        message.error('请填写完整信息');
+      }
+    });
+  }
+  const { type, paperName, note } = paperList.value.BaseInfo;
+  const param = {
+    paper: {
+      categoryId: type,
+      paperName,
+      paperDescribe: note,
+      paperScores: sumQuestMark,
+      status: 0,
+      delayedSubmit: 0
+    },
+    listPaperDetaile: []
+  };
+  for (let i = 0; i < paperList.value.detail.length; i++) {
+    console.log(paperList.value.detail[i]);
+  }
 };
 /**
  * @author: ZHENG

@@ -2,8 +2,8 @@
  * @Author: ZHENG
  * @Date: 2022-05-13 16:33:03
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-14 15:24:40
- * @FilePath: \e-class-admin\src\service\api\paper\paper.ts
+ * @LastEditTime: 2022-06-01 15:03:13
+ * @FilePath: \work\src\service\api\paper\paper.ts
  * @Description:
  */
 
@@ -35,5 +35,11 @@ export function getPaperList(params) {
 export function getUnitPracticeList(params) {
   const query = paramsToQuery(params);
   const res = request.get(`/unitPractice/listUnitPracticeInfo${query}`); //
+  return res;
+}
+
+export function getPaperManagerList(params) {
+  const query = paramsToQuery(params);
+  const res = request.get(`/paper/listPage${query}`); //
   return res;
 }

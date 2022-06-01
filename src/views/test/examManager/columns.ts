@@ -2,8 +2,8 @@
  * @Author: ZHENG
  * @Date: 2022-04-30 15:51:30
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-25 16:33:58
- * @FilePath: \work\src\views\examination\examinationList\columns.ts
+ * @LastEditTime: 2022-06-01 15:13:46
+ * @FilePath: \work\src\views\test\examManager\columns.ts
  * @Description:
  */
 import { h } from 'vue';
@@ -21,47 +21,42 @@ export const columns = [
   },
   {
     title: '试卷名称',
-    key: 'courseName',
+    key: 'paperName',
     width: 120
+  },
+  {
+    title: '所属分类',
+    key: 'categoryName',
+    width: 80
   },
   {
     title: '所属院系',
     key: 'collegeName',
-    width: 100
+    width: 80
   },
   {
-    title: '所属专业',
-    key: 'majorName',
+    title: '绑定课程',
+    key: 'courseName',
+    width: 80
+  },
+  {
+    title: '题目数量',
+    key: 'questionCount',
+    width: 80
+  },
+  {
+    title: '考试开始时间',
+    key: 'paperBeginTime',
     width: 120
   },
   {
-    title: '所属课程',
-    key: 'listClassName',
-    width: 150
-  },
-  {
-    title: '所属分类',
-    key: 'listLabelName',
-    width: 150
-  },
-  {
-    title: '试卷时长',
-    key: 'chapterNum',
-    width: 80
-  },
-  {
-    title: '使用次数',
-    key: 'unitNum',
-    width: 80
-  },
-  {
-    title: '参与人数',
-    key: 'unitNum',
-    width: 80
+    title: '考试结束时间',
+    key: 'paperEndTime',
+    width: 120
   },
   {
     title: '试卷状态',
-    key: 'statusName',
+    key: 'status',
     width: 100,
     render(row: { status: number }) {
       return h(NSwitch, {
