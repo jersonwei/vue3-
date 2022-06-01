@@ -2,50 +2,44 @@
  * @Author: ZHENG
  * @Date: 2022-04-30 15:51:30
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-25 16:20:15
- * @FilePath: \work\src\views\examination\examinationSort\columns.ts
+ * @LastEditTime: 2022-05-31 22:56:45
+ * @FilePath: \work\src\views\test\addExam\columns.ts
  * @Description:
  */
 import { h } from 'vue';
-import { NTag, NSwitch } from 'naive-ui';
+import { NTag, NSwitch, NInput } from 'naive-ui';
 
 export const columns = [
   {
-    title: '序号',
-    key: 'tableId',
-    width: 50,
-    render(row, index) {
-      return h('h1', index + 1);
+    type: 'expand',
+    renderExpand: rowData => {
+      return `${rowData.name} is a good guy.`;
     }
   },
   {
-    title: '所属专业',
-    key: 'majorName',
+    title: '题目',
+    key: 'questionName',
     width: 120
   },
   {
-    title: '所属课程',
+    title: '分值',
+    key: 'questionScore',
+    width: 120,
+    render(row: { questionScore: string & [string, string] }) {
+      return h(NInput, {
+        value: row.questionScore,
+        onUpdateValue(v) {
+          // console.log(row, index);
+          // eslint-disable-next-line no-param-reassign
+          row.questionScore = v;
+          // data.value[index].name = v;
+        }
+      });
+    }
+  },
+  {
+    title: '操作',
     key: 'courseName',
     width: 150
-  },
-  {
-    title: '分类名称',
-    key: 'listLabelName',
-    width: 150
-  },
-  {
-    title: '分类介绍',
-    key: 'listLabelName',
-    width: 150
-  },
-  {
-    title: '试卷数量',
-    key: 'unitNum',
-    width: 80
   }
-  // {
-  //   title: '课程描述',
-  //   key: 'note',
-  //   width: 130
-  // },
 ];

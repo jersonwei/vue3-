@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-04-30 14:33:21
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-31 18:16:14
+ * @LastEditTime: 2022-05-31 21:36:00
  * @FilePath: \work\src\views\test\questManager\index.vue
  * @Description:
 -->
@@ -246,7 +246,10 @@ const actionColumn = reactive({
 const nodeProps = ({ option }: { option: TreeOption }) => {
   return {
     onClick() {
-      defaultSelectKeys.value = option.id;
+      // console.log(option);
+      // message.info(option.id);
+      defaultSelectKeys.value[0] = option.id;
+      reloadTable();
     }
   };
 };
@@ -271,6 +274,7 @@ const [register] = useForm({
 // table查询
 const loadDataTable = async (res: any) => {
   let param = {};
+  console.log(defaultSelectKeys.value[0]);
   if (defaultSelectKeys.value[0] != 0) {
     param = {
       bankRelated: defaultSelectKeys.value[0],
