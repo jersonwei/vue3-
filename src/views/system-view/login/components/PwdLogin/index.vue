@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-04-25 20:43:55
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-28 16:06:01
+ * @LastEditTime: 2022-06-01 09:37:55
  * @FilePath: \work\src\views\system-view\login\components\PwdLogin\index.vue
  * @Description:
 -->
@@ -33,12 +33,12 @@
         </div>
       </div>
     </n-form-item>
-    <!-- <n-form-item>
+    <n-form-item>
       <n-space>
         <n-button @click="quickLogin('admin')">管理员登录</n-button>
         <n-button @click="quickLogin('teacher')">教师登录</n-button>
       </n-space>
-    </n-form-item> -->
+    </n-form-item>
     <LoginAgreement></LoginAgreement>
     <n-space :vertical="true" :size="24">
       <div class="flex-y-center justify-between">
