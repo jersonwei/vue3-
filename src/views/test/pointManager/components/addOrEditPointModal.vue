@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-05-12 17:34:13
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-31 16:47:50
+ * @LastEditTime: 2022-06-01 15:59:26
  * @FilePath: \work\src\views\test\pointManager\components\addOrEditPointModal.vue
  * @Description:
 -->
@@ -144,7 +144,7 @@ const confirmForm = (e: { preventDefault: () => void }) => {
           // 修改
           const { id, categoryId, pointName, status } = formParams;
           const params = {
-            id,
+            pointId: id,
             categoryId,
             pointName,
             status,
@@ -152,7 +152,7 @@ const confirmForm = (e: { preventDefault: () => void }) => {
           };
           const result = await editKnowledgePoint(params);
           if (!result.error) {
-            message.success(`新建成功`);
+            message.success(`编辑成功`);
           }
         }
 

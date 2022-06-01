@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-04-30 14:33:21
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-31 17:04:31
+ * @LastEditTime: 2022-06-01 15:58:50
  * @FilePath: \work\src\views\test\pointManager\index.vue
  * @Description:
 -->
@@ -55,7 +55,7 @@ const actionColumn = reactive({
   fixed: 'right',
   render(record: Recordable<any>) {
     console.log(record);
-    if (!record.children?.length) {
+    if (record.levelType === 2) {
       return h(TableAction as any, {
         style: 'button',
         actions: [
@@ -160,7 +160,7 @@ const delModalRef = ref();
 // eslint-disable-next-line consistent-return
 const handleDelete = (record: Recordable, type: string) => {
   console.log(record, type);
-  delModalRef.value.showDelModalFn(record, type);
+  delModalRef.value.showDelModalFn(record.levelType);
 };
 </script>
 <style scoped></style>

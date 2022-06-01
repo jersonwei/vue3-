@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-05-13 16:33:03
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-06-01 15:40:47
+ * @LastEditTime: 2022-06-01 15:41:48
  * @FilePath: \work\src\service\api\paper\paper.ts
  * @Description:
  */
@@ -47,5 +47,10 @@ export function getPaperManagerList(params) {
 export function delPaper(params) {
   const query = paramsToQuery(params);
   const res = request.delete(`/paper/delete${query}`); //
+  return res;
+}
+
+export function editStatusPaper(params) {
+  const res = request.put(`/paper/editStatus`, params); //
   return res;
 }

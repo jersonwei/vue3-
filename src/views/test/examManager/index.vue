@@ -180,9 +180,7 @@ const handleDelete = (record: Recordable) => {
 // 新建和编辑弹窗
 const addOrEditModalRef = ref();
 // 新建
-const addTable = () => {
-  addOrEditModalRef.value.showModalFn();
-};
+const addTable = () => {};
 
 /**
  * @author: ZHENG
@@ -190,20 +188,9 @@ const addTable = () => {
  * @param {*} record
  * @return {*}
  */
-const handleEdit = (record: Recordable) => {
-  addOrEditModalRef.value.editModalFn(record);
-};
+const handleEdit = (record: Recordable) => {};
 
-// 跳转详情页功能
 const actionRef = ref(); // 表格
-const updateData = ref();
-// 定时上架功能
-const updateModalRef = ref();
-const handUpdateStatus = (record: Recordable) => {
-  updateData.value = record;
-  console.log(updateData.value);
-  updateModalRef.value.showUpdateModal = true;
-};
 
 const { routerPush } = useRouterPush();
 
@@ -214,20 +201,8 @@ const { routerPush } = useRouterPush();
  * @return {*}
  */
 const handleDetail = (record: Recordable) => {
-  courseStore.setCourseInfo(record.id);
-  routerPush({ name: 'course_courseDetail', query: { id: record.id } });
-};
-
-/**
- * @author: ZHENG
- * @description: 跳转课程信息\配置
- * @param {*} record
- * @return {*}
- */
-const handleConfig = (record: Recordable) => {
-  courseStore.setCourseInfo(record.id);
-  console.log(record.id);
-  routerPush({ name: 'course_courseInfo' });
+  // courseStore.setCourseInfo(record.id);
+  // routerPush({ name: 'course_courseDetail', query: { id: record.id } });
 };
 </script>
 <style scoped></style>

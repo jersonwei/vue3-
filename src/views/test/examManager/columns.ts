@@ -2,13 +2,13 @@
  * @Author: ZHENG
  * @Date: 2022-04-30 15:51:30
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-06-01 15:13:46
+ * @LastEditTime: 2022-06-01 15:42:37
  * @FilePath: \work\src\views\test\examManager\columns.ts
  * @Description:
  */
 import { h } from 'vue';
 import { NTag, NSwitch } from 'naive-ui';
-import { updateCourseStatusByCourseId } from '@/service';
+import { editStatusPaper } from '@/service';
 
 export const columns = [
   {
@@ -64,7 +64,7 @@ export const columns = [
         onUpdateValue: async value => {
           row.status = row.status === 1 ? 0 : 1;
           const params = {
-            CourseId: row.id,
+            id: row.id,
             status: row.status
           };
           // eslint-disable-next-line @typescript-eslint/no-use-before-define
@@ -91,9 +91,9 @@ export const columns = [
  * @return {*}
  */
 const updateCourse = async params => {
-  const courseResult = await updateCourseStatusByCourseId(params);
+  const courseResult = await editStatusPaper(params);
   if (!courseResult.error) {
-    window.$message?.success(`${params.status === 1 ? '上架' : '下架'}操作成功`);
+    window.$message?.success(`${params.status === 1 ? '启用' : '禁用'}操作成功`);
     return true;
   }
   return false;

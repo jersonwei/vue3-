@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-04-30 15:51:30
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-31 16:58:37
+ * @LastEditTime: 2022-06-01 15:48:59
  * @FilePath: \work\src\views\test\pointManager\columns.ts
  * @Description:
  */
@@ -50,18 +50,24 @@ export const columns = [
     key: 'status',
     width: 130,
     render(row: { status: number }) {
-      return h(NSwitch, {
-        value: row.status === 1,
-        onUpdateValue: async value => {
-          row.status = row.status === 1 ? 0 : 1;
-          const params = {
-            pointId: row.id,
-            status: row.status
-          };
-          // // eslint-disable-next-line @typescript-eslint/no-use-before-define
-          const result = await editStatusKnowledgePoint(params);
-        }
-      });
+      if (row.levelType === 2) {
+        return h(NSwitch, {
+          value: row.status === 1,
+          onUpdateValue: async value => {
+            row.status = row.status === 1 ? 0 : 1;
+            const params = {
+              pointId: row.id,
+              status: row.status
+            };
+            // // eslint-disable-next-line @typescript-eslint/no-use-before-define
+            const result = await editStatusKnowledgePoint(params);
+            if (!result.error) {
+              window.$message?.success(`${params.status === 1 ? '启用' : '禁用'}操作成功`);
+              return true;
+            }
+          }
+        });
+      }
     }
   }
 ];
