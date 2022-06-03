@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-04-30 14:33:21
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-06-01 17:34:39
+ * @LastEditTime: 2022-06-04 00:21:37
  * @FilePath: \work\src\views\test\addExam\index.vue
  * @Description:
 -->
@@ -123,6 +123,7 @@
                       <template #header-extra> 共有{{ paperList.detail[index].data?.length }}条数据 </template>
                       <n-button @click="addQuest(index, paperList.detail[index].questType)">添加题目</n-button>
                       <n-data-table
+                        ref="tableRef"
                         :columns="columns"
                         :data="paperList.detail[index].data"
                         :bordered="false"
@@ -147,30 +148,190 @@
       @positive-click="submitCallback"
       @negative-click="cancelCallback"
     />
+    <showQuestionInfo ref="showQuestionInfoRef"></showQuestionInfo>
+    <n-modal
+      v-model:show="showSortModal"
+      :mask-closable="false"
+      preset="dialog"
+      title="确认"
+      content="确认切换题目类型?会清空当前已选题目！"
+      positive-text="确认"
+      negative-text="算了"
+      @positive-click="submitQuestionSort"
+    >
+      <p>移动道第 <n-input v-model:value="questionSort" style="width: 30%" />位</p>
+    </n-modal>
   </n-card>
 </template>
 
 <script lang="ts" setup>
-import { computed, ref } from 'vue';
-import { SelectOption, useMessage } from 'naive-ui';
+import { computed, h, ref } from 'vue';
+import { SelectOption, useMessage, NInputNumber, NButton } from 'naive-ui';
 import { PlusOutlined } from '@vicons/antd';
 import { format } from 'date-fns';
 import { useExamStore } from '@/store';
-import { addPaper } from '@/service';
+import { addPaper, getPaperDetail, getPaperList } from '@/service';
 import { disablePreviousDate, numberfilter } from '@/utils';
-import { columns } from './columns';
+// import { columns } from './columns';
 import showQuest from './components/showQuestModal.vue';
+import { getPaperClassInfo, getDictionary } from './geOptions';
+import showQuestionInfo from './components/showQuestionInfo.vue';
 
 const examStore = useExamStore();
 const paperData = examStore.getPaper();
 console.log(paperData);
 const addOrEdit = ref(false); // true 新增
-if (!paperData) {
-  addOrEdit.value = true;
-} else {
-  addOrEdit.value = false;
-}
-console.log(addOrEdit.value);
+const tableRef = ref();
+
+const showQuestionInfoRef = ref();
+const showSortModal = ref(false);
+const questionSort = ref();
+const submitQuestionSort = () => {};
+const columns = [
+  {
+    title: '题目',
+    key: 'questionName',
+    width: 120
+  },
+  {
+    title: '分值',
+    key: 'questionScore',
+    width: 120,
+    render(row: { questionScore: string & [string, string] }) {
+      return h(NInputNumber, {
+        value: row.questionScore,
+        onUpdateValue(v) {
+          // console.log(row, index);
+          // eslint-disable-next-line no-param-reassign
+          row.questionScore = v;
+          console.log(row.questionScore);
+          // data.value[index].name = v;
+        }
+      });
+    }
+  },
+  {
+    title: '操作',
+    key: 'courseName',
+    width: 100,
+    render(row, index, event) {
+      return h('div', [
+        h(
+          NButton,
+          {
+            strong: true,
+            tertiary: true,
+            size: 'small',
+            onClick: () => {
+              showQuestionInfoRef.value.showModalFn(row);
+              // console.log(123);
+            }
+          },
+          { default: () => '详情' }
+        ),
+        h(
+          NButton,
+          {
+            strong: true,
+            tertiary: true,
+            size: 'small',
+            onClick: () => {
+              console.log(event);
+              console.log(tableRef, row, index);
+              questionSort.value = index + 1;
+              showSortModal.value = true;
+            }
+          },
+          { default: () => '排序' }
+        ),
+        h(
+          NButton,
+          {
+            strong: true,
+            tertiary: true,
+            size: 'small',
+            onClick: () => {
+              console.log(123);
+            }
+          },
+          { default: () => '移除' }
+        )
+      ]);
+    }
+  }
+];
+
+const getAddOrEdit = async () => {
+  if (!paperData) {
+    addOrEdit.value = true;
+  } else {
+    const param = {
+      id: paperData.id
+    };
+    const { data: result } = await getPaperDetail(param);
+    // console.log(result);
+    addOrEdit.value = false;
+    const { paper, listPaperDetaile } = result;
+    getPaperData(paper);
+    getPaperDetailData(listPaperDetaile);
+  }
+  // console.log(addOrEdit.value);
+};
+const getPaperData = paper => {
+  const { paperName, paperDescribe, categoryId, paperBeginTime, paperEndTime, difficultLevel } = paper;
+  const beginTime = new Date(paperBeginTime).getTime();
+  const endTime = new Date(paperEndTime).getTime();
+  const object = {
+    paperName,
+    note: paperDescribe,
+    type: categoryId,
+    time: ref<[number, number]>([beginTime, endTime]),
+    difficultLevel
+  };
+  const paperListValue = paperList.value.BaseInfo;
+  Object.assign(paperListValue, object);
+};
+const getPaperDetailData = listPaperDetaile => {
+  console.log(listPaperDetaile);
+  const { detail } = paperList.value;
+  detail.length = 0; // 保证不要有异常数据影响，清空掉
+  listPaperDetaile.forEach(async item => {
+    console.log(item);
+    const { partSort, partName, questionType, partDescribe, id, questionScore, questionId } = item;
+    const { records: questionData } = await loadQuestionData(questionId);
+    const rowData = {
+      id,
+      questionScore,
+      ...questionData[0]
+    };
+    if (detail[partSort]) {
+      // 如果已存在不分
+      detail[partSort].data.push(rowData);
+    } else {
+      // 不存在部分
+      detail[partSort] = {
+        name: partName,
+        note: partDescribe,
+        questType: questionType,
+        data: [],
+        checkRowKeys: []
+      };
+      detail[partSort].data.push(rowData);
+    }
+    console.log(detail);
+  });
+};
+const loadQuestionData = async id => {
+  const Param = {
+    id,
+    pageSize: 1,
+    current: 1
+  };
+  const { data: result } = await getPaperList({ ...Param });
+  return result;
+};
+getAddOrEdit();
+
 const message = useMessage();
 const baseInfoRule = {
   paperName: {
@@ -218,82 +379,11 @@ const paperList = ref({
       data: [],
       checkRowKeys: []
     }
-    // {
-    //   name: '',
-    //   note: ''
-    // }
   ]
 });
-const examTypeOptions = ref([
-  {
-    label: '模拟试题',
-    value: '0'
-  },
-  {
-    label: '仿真试题',
-    value: '1'
-  },
-  {
-    label: '历年真题',
-    value: '2'
-  },
-  {
-    label: '阶段冲刺',
-    value: '3'
-  }
-]);
-const questTypeOptions = ref([
-  {
-    label: '单选',
-    value: '0'
-  },
-  {
-    label: '多选',
-    value: '1'
-  },
-  {
-    label: '填空题',
-    value: '3'
-  },
-  {
-    label: '简答题',
-    value: '4'
-  },
-  {
-    label: '编辑题',
-    value: '5'
-  },
-  {
-    label: '其他',
-    value: '6'
-  },
-  {
-    label: '判断',
-    value: '7'
-  }
-]);
-const difficultyOptions = ref([
-  {
-    label: '较难',
-    value: '4'
-  },
-  {
-    label: '难',
-    value: '3'
-  },
-  {
-    label: '中',
-    value: '2'
-  },
-  {
-    label: '易',
-    value: '1'
-  },
-  {
-    label: '较易',
-    value: '0'
-  }
-]);
+const examTypeOptions = ref([]);
+const questTypeOptions = ref([]);
+const difficultyOptions = ref([]);
 const sumQuestNum = computed(() => {
   let sum = 0;
   const paper = paperList.value.detail;
@@ -312,6 +402,13 @@ const sumQuestMark = computed(() => {
   }
   return sumMark;
 });
+
+const getOptios = async () => {
+  examTypeOptions.value = await getPaperClassInfo();
+  questTypeOptions.value = await getDictionary(2);
+  difficultyOptions.value = await getDictionary(23);
+};
+getOptios();
 /**
  * @author: ZHENG
  * @description: 新增部分

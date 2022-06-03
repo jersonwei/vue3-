@@ -2,8 +2,8 @@
  * @Author: ZHENG
  * @Date: 2022-05-12 17:34:13
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-18 08:49:05
- * @FilePath: \work\src\views\course\courseMgt\components\delModal.vue
+ * @LastEditTime: 2022-06-03 21:30:50
+ * @FilePath: \work\src\views\test\addExam\components\delModal.vue
  * @Description:
 -->
 <template>

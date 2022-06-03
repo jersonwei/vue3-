@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-05-13 16:33:03
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-06-01 17:28:40
+ * @LastEditTime: 2022-06-03 21:16:59
  * @FilePath: \work\src\service\api\paper\paper.ts
  * @Description:
  */
@@ -59,5 +59,11 @@ export function editStatusPaper(params) {
 export function getPaperDetail(params) {
   const query = paramsToQuery(params);
   const res = request.get(`/paper/detailed${query}`); //
+  return res;
+}
+
+export function getPaperClassListInfo(params) {
+  const query = paramsToQuery(params);
+  const res = request.get(`/exampaperclassification/listInfo${query}`); //
   return res;
 }

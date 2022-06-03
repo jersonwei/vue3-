@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-04-30 15:51:30
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-06-01 11:25:00
+ * @LastEditTime: 2022-06-03 23:02:21
  * @FilePath: \work\src\views\test\addExam\columns.ts
  * @Description:
  */
