@@ -520,9 +520,9 @@ const handleLoad = (option: CascaderOption) => {
   });
 };
 const getAddOrEdit = async () => {
+  console.log(questionData);
   if (!questionData) {
     addOrEdit.value = true;
-    defaultFormValue();
     const { questionType } = fromModel.value;
     if (questionType === 0) {
       // 单选题
@@ -632,6 +632,7 @@ const changeQuestionType = (type: number) => {
   if (!addOrEdit.value) {
     return message.warning("修改题目不允许修改题目类型");
   }
+  defaultFormValue();
   fromModel.value.questionType = type;
   checkedValue.value = "";
   getAddOrEdit();
