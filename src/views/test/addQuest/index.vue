@@ -305,7 +305,7 @@
             placeholder="请选择课时"
             :options="pointOptions"
             :check-strategy="'child'"
-            :show-path="true"
+            :show-path="false"
             :multiple="true"
             remote
             :on-load="handleLoad"
