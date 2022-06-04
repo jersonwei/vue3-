@@ -391,7 +391,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, watch, watchEffect } from "vue";
+import { ref, reactive } from "vue";
 import { useRoute } from "vue-router"; // 调用hook
 import { storeToRefs } from "pinia";
 import { CascaderOption, useMessage } from "naive-ui";
@@ -464,8 +464,9 @@ const otherList = ref(); // 其他题
 const checkedValue = ref("");
 const message = useMessage();
 const examStore = useExamStore();
-const { questionList } = storeToRefs(examStore);
-const questionData = examStore.getQuestionList();
+// const { questionList } = storeToRefs(examStore);
+const questionData = ref({});
+questionData.value = examStore.getQuestionList();
 const addOrEdit = ref(false); // true 新增
 
 const defaultFormValue = () => {
@@ -510,7 +511,7 @@ const getOptions = async () => {
       // console.log(indexNumber);
     }
   }
-  console.log(questionData);
+  console.log(questionData.value);
 };
 getOptions();
 const handleLoad = (option: CascaderOption) => {
@@ -520,8 +521,7 @@ const handleLoad = (option: CascaderOption) => {
   });
 };
 const getAddOrEdit = async () => {
-  console.log(questionData);
-  if (!questionData) {
+  if (!questionData.value) {
     addOrEdit.value = true;
     const { questionType } = fromModel.value;
     if (questionType === 0) {
@@ -552,7 +552,6 @@ const getAddOrEdit = async () => {
       otherList.value = "";
     }
   } else {
-    console.log(questionData);
     addOrEdit.value = false;
     // 修改
     const {
@@ -566,7 +565,7 @@ const getAddOrEdit = async () => {
       questionAnalyse,
       pointRelated,
       questionAnswer,
-    } = questionData;
+    } = questionData.value;
     const params = {
       id,
       dataBaseId,
@@ -1167,7 +1166,11 @@ const saveQuestion = async (type) => {
   if (type === 1) {
     tab.removeTab("/test/addQuest");
   } else if (type === 2) {
+    wangEditorStemRef.value.valueHtml = "";
+    problemsAnalysissWangEditorRef.value.valueHtml = "";
     defaultFormValue();
+    questionData.value = "";
+    getAddOrEdit();
   }
 };
 </script>
