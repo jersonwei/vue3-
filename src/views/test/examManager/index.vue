@@ -96,11 +96,11 @@ const actionColumn = reactive({
           onClick: handleEdit.bind(null, record)
         },
 
-        {
-          label: '预览',
-          // eslint-disable-next-line @typescript-eslint/no-use-before-define
-          onClick: handleDetail.bind(null, record)
-        }
+        // {
+        //   label: '预览',
+        //   // eslint-disable-next-line @typescript-eslint/no-use-before-define
+        //   onClick: handleDetail.bind(null, record)
+        // }
       ]
     });
   }
