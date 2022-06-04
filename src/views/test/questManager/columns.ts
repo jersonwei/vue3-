@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-04-30 15:51:30
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-31 18:07:17
+ * @LastEditTime: 2022-06-04 10:43:16
  * @FilePath: \work\src\views\test\questManager\columns.ts
  * @Description:
  */
@@ -17,7 +17,10 @@ export const columns = [
   {
     title: '题目名称',
     key: 'questionName',
-    width: 120
+    width: 120,
+    render(row) {
+      return row.questionName.replace(/(<([^>]+)>)/gi, '').replace(/[\r\n]/g, '');
+    }
   },
   // {
   //   title: '题目分类',

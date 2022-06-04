@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-05-17 18:13:55
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-06-01 16:47:48
+ * @LastEditTime: 2022-06-04 10:12:36
  * @FilePath: \work\src\components\wangEditor.vue
  * @Description:
 -->
@@ -44,7 +44,7 @@ export default {
     onMounted(() => {
       setTimeout(() => {
         console.log(editorRef.value);
-        valueHtml.value = `<p>${props.propsValue}</p>`;
+        valueHtml.value = `${props.propsValue}`;
       }, 100);
     });
 

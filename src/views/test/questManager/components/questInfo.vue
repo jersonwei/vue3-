@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-05-31 08:35:01
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-31 18:04:58
+ * @LastEditTime: 2022-06-04 10:52:30
  * @FilePath: \work\src\views\test\questManager\components\questInfo.vue
  * @Description:
 -->
@@ -18,9 +18,10 @@
   >
     <n-card :title="`📖 题目信息  ${questInfo.questionTypeName}`" :bordered="false">
       <n-space vertical>
-        <p style="text-indent: 2em; padding: 50px">
-          {{ questInfo.questionName }}
-        </p>
+        <div v-html="questInfo.questionName"></div>
+        <!-- <p style="text-indent: 2em; padding: 50px"> -->
+        <!-- {{ questInfo.questionName }} -->
+        <!-- </p> -->
         <n-form ref="formRef" :model="model" label-placement="left">
           <n-grid :cols="24" :x-gap="24">
             <n-form-item-gi
@@ -87,9 +88,10 @@
               :label-style="{ fontSize: '20px', fontWeight: 'bold' }"
               path="checkboxGroupValue"
             >
-              <p>
+              <div v-html="questInfo.questionAnalyse"></div>
+              <!-- <p>
                 {{ questInfo.questionAnalyse }}
-              </p>
+              </p> -->
             </n-form-item-gi>
           </n-grid>
         </n-form>

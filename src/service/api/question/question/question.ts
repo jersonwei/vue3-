@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-05-30 14:28:27
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-06-01 17:55:16
+ * @LastEditTime: 2022-06-04 11:39:21
  * @FilePath: \work\src\service\api\question\question\question.ts
  * @Description:
  */
@@ -21,6 +21,11 @@ export function uploadPaperQuestion(params) {
 
 export function editStatusPaperQuestion(params) {
   const res = request.put(`/paperQuestion/editStatus`, params); //
+  return res;
+}
+
+export function editPaperQuestion(params) {
+  const res = request.put(`/paperQuestion/edit`, params); //
   return res;
 }
 

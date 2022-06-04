@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-04-30 14:33:21
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-06-04 00:21:37
+ * @LastEditTime: 2022-06-04 09:04:19
  * @FilePath: \work\src\views\test\addExam\index.vue
  * @Description:
 -->
@@ -159,8 +159,20 @@
       negative-text="算了"
       @positive-click="submitQuestionSort"
     >
-      <p>移动道第 <n-input v-model:value="questionSort" style="width: 30%" />位</p>
+      <p>
+        移动道第 <n-input-number v-model:value="questionSort" :max="maxQuestionSort" :min="1" style="width: 30%" />位
+      </p>
     </n-modal>
+    <n-modal
+      v-model:show="showRemoveModal"
+      :mask-closable="false"
+      preset="dialog"
+      title="提示"
+      content="确认要移除该题目吗？"
+      positive-text="确认"
+      negative-text="取消"
+      @positive-click="submitRemoveQuestion"
+    />
   </n-card>
 </template>
 
@@ -170,7 +182,7 @@ import { SelectOption, useMessage, NInputNumber, NButton } from 'naive-ui';
 import { PlusOutlined } from '@vicons/antd';
 import { format } from 'date-fns';
 import { useExamStore } from '@/store';
-import { addPaper, getPaperDetail, getPaperList } from '@/service';
+import { addPaper, editPaper, getPaperDetail, getPaperList } from '@/service';
 import { disablePreviousDate, numberfilter } from '@/utils';
 // import { columns } from './columns';
 import showQuest from './components/showQuestModal.vue';
@@ -186,7 +198,48 @@ const tableRef = ref();
 const showQuestionInfoRef = ref();
 const showSortModal = ref(false);
 const questionSort = ref();
-const submitQuestionSort = () => {};
+const changeQuesionSort = ref();
+const changeQuesionIndexSort = ref();
+const showQuestionInfoModal = (row, index) => {
+  questionSort.value = index + 1;
+  showSortModal.value = true;
+  changeQuesionSort.value = row;
+  changeQuesionIndexSort.value = index;
+};
+const maxQuestionSort = computed(() => {
+  const tableDataIndex = changeQuesionSort.value.partSort;
+  const changeRowLength = paperList.value.detail[tableDataIndex]?.data?.length;
+  return changeRowLength || 0;
+});
+const submitQuestionSort = () => {
+  const tableDataIndex = changeQuesionSort.value.partSort;
+  const changeOldIndex = changeQuesionIndexSort.value;
+  const changeNewIndex = questionSort.value;
+  if (changeOldIndex === changeNewIndex) {
+    return;
+  }
+  // console.log(changeOldIndex, changeNewIndex);
+  // console.log(paperList.value.detail[tableDataIndex]);
+  const changeRowData = paperList.value.detail[tableDataIndex].data[changeOldIndex]; // 需要变更顺序的行
+  // console.log(paperList.value.detail[tableDataIndex].data);
+  paperList.value.detail[tableDataIndex].data.splice(changeNewIndex, 0, changeRowData);
+  paperList.value.detail[tableDataIndex].data.splice(changeOldIndex, 1);
+  // console.log(changeRowData);
+};
+const showRemoveModal = ref(false);
+const removeRowData = ref();
+const removeRowIndex = ref();
+const showRemoveModalFn = (row, index) => {
+  showRemoveModal.value = true;
+  removeRowData.value = row;
+  removeRowIndex.value = index;
+};
+const submitRemoveQuestion = () => {
+  const tableDataIndex = removeRowData.value.partSort; // 需要删除数据的table
+  const tableData = paperList.value.detail[tableDataIndex].data;
+  tableData.splice(removeRowIndex.value, 1);
+  // console.log(tableData, removeRowIndex.value);
+};
 const columns = [
   {
     title: '题目',
@@ -214,7 +267,7 @@ const columns = [
     title: '操作',
     key: 'courseName',
     width: 100,
-    render(row, index, event) {
+    render(row, index) {
       return h('div', [
         h(
           NButton,
@@ -236,10 +289,7 @@ const columns = [
             tertiary: true,
             size: 'small',
             onClick: () => {
-              console.log(event);
-              console.log(tableRef, row, index);
-              questionSort.value = index + 1;
-              showSortModal.value = true;
+              showQuestionInfoModal(row, index);
             }
           },
           { default: () => '排序' }
@@ -251,7 +301,7 @@ const columns = [
             tertiary: true,
             size: 'small',
             onClick: () => {
-              console.log(123);
+              showRemoveModalFn(row, index);
             }
           },
           { default: () => '移除' }
@@ -278,10 +328,11 @@ const getAddOrEdit = async () => {
   // console.log(addOrEdit.value);
 };
 const getPaperData = paper => {
-  const { paperName, paperDescribe, categoryId, paperBeginTime, paperEndTime, difficultLevel } = paper;
+  const { paperName, paperDescribe, categoryId, paperBeginTime, paperEndTime, difficultLevel, id } = paper;
   const beginTime = new Date(paperBeginTime).getTime();
   const endTime = new Date(paperEndTime).getTime();
   const object = {
+    id,
     paperName,
     note: paperDescribe,
     type: categoryId,
@@ -300,8 +351,9 @@ const getPaperDetailData = listPaperDetaile => {
     const { partSort, partName, questionType, partDescribe, id, questionScore, questionId } = item;
     const { records: questionData } = await loadQuestionData(questionId);
     const rowData = {
-      id,
+      rowID: id,
       questionScore,
+      partSort,
       ...questionData[0]
     };
     if (detail[partSort]) {
@@ -364,6 +416,7 @@ const detailRule = {
 };
 const paperList = ref({
   BaseInfo: {
+    id: '',
     paperName: '',
     note: '',
     type: '',
@@ -427,20 +480,21 @@ const BaseFormRef = ref();
 const detailFormRef = ref();
 const saveDetail = async () => {
   console.log(paperList.value);
-  let ruleError = false;
-  await BaseFormRef.value.validate((errors: any) => {
-    if (!errors) {
-      console.log(ruleError);
-      ruleError = true;
-      // message.success('请填写完整信息');
-    } else {
-      message.error('请填写完整信息');
-    }
-  });
-  console.log(ruleError);
-  if (!ruleError) {
-    return;
-  }
+  const ruleError = false;
+  // await BaseFormRef.value.validate((errors: any) => {
+  //   if (!errors) {
+  //     console.log(ruleError);
+  //     ruleError = true;
+  //     // message.success('请填写完整信息');
+  //   } else {
+  //     message.error('请填写完整信息');
+  //   }
+  // });
+  console.log(123);
+  // console.log(ruleError);
+  // if (!ruleError) {
+  //   return;
+  // }
   for (let i = 0; i < detailFormRef.value.length; i++) {
     detailFormRef.value[i].validate((detailErrors: any) => {
       if (!detailErrors && ruleError) {
@@ -450,44 +504,90 @@ const saveDetail = async () => {
       }
     });
   }
-  const { type, paperName, note, time, difficultLevel } = paperList.value.BaseInfo;
+  console.log(123);
+  const { type, paperName, note, time, difficultLevel, id } = paperList.value.BaseInfo;
   const paperBeginTime = format(new Date(time[0]), 'yyyy-MM-dd HH:mm:ss');
   const paperEndTime = format(new Date(time[1]), 'yyyy-MM-dd HH:mm:ss');
-  const params = {
-    paper: {
-      categoryId: type,
-      paperName,
-      paperDescribe: note,
-      paperScores: sumQuestMark.value,
-      status: 0,
-      delayedSubmit: 0,
-      paperBeginTime,
-      paperEndTime,
-      difficultLevel
-    },
-    listPaperDetaile: []
-  };
-  for (let i = 0; i < paperList.value.detail.length; i++) {
-    for (let y = 0; y < paperList.value.detail[i]?.data.length; y++) {
-      console.log();
-      const { questType, note, name } = paperList.value.detail[i];
-      const { id: questionId, questionScore } = paperList.value.detail[i]?.data[y];
-      const param = {
-        questionType: questType,
-        questionId,
-        questionSort: y,
-        partSort: i,
-        questionScore,
-        extraScore: 0,
-        partDescribe: note,
-        partName: name
-      };
-      params.listPaperDetaile.push(param);
+
+  if (addOrEdit.value === true) {
+    const params = {
+      paper: {
+        categoryId: type,
+        paperName,
+        paperDescribe: note,
+        paperScores: sumQuestMark.value,
+        status: 0,
+        delayedSubmit: 0,
+        paperBeginTime,
+        paperEndTime,
+        difficultLevel
+      },
+      listPaperDetaile: []
+    };
+    for (let i = 0; i < paperList.value.detail.length; i++) {
+      for (let y = 0; y < paperList.value.detail[i]?.data.length; y++) {
+        console.log();
+        const { questType, detailNote, name } = paperList.value.detail[i];
+        const { id: questionId, questionScore } = paperList.value.detail[i]?.data[y];
+        const param = {
+          questionType: questType,
+          questionId,
+          questionSort: y,
+          partSort: i,
+          questionScore,
+          extraScore: 0,
+          partDescribe: detailNote,
+          partName: name
+        };
+        params.listPaperDetaile.push(param);
+      }
+    }
+    console.log(params);
+    const result = await addPaper(params);
+    if (!result.error) {
+      message.success('保存成功');
+    }
+  } else {
+    // 编辑
+    // console.log(paperList.value);
+    const params = {
+      paper: {
+        id,
+        categoryId: type,
+        paperName,
+        paperDescribe: note,
+        paperScores: sumQuestMark.value,
+        status: 0,
+        delayedSubmit: 0,
+        paperBeginTime,
+        paperEndTime,
+        difficultLevel
+      },
+      listPaperDetaile: []
+    };
+    for (let i = 0; i < paperList.value.detail.length; i++) {
+      for (let y = 0; y < paperList.value.detail[i]?.data.length; y++) {
+        const { questType, detailNote, name } = paperList.value.detail[i];
+        const { rowID, id: questionId, questionScore } = paperList.value.detail[i]?.data[y];
+        const param = {
+          id: rowID,
+          questionType: questType,
+          questionId,
+          questionSort: y,
+          partSort: i,
+          questionScore,
+          extraScore: 0,
+          partDescribe: detailNote,
+          partName: name
+        };
+        params.listPaperDetaile.push(param);
+      }
+    }
+    const result = await editPaper(params);
+    if (!result.error) {
+      message.success('保存成功');
     }
   }
-  console.log(params);
-  const { data: result } = await addPaper(params);
-  console.log(result);
 };
 /**
  * @author: ZHENG

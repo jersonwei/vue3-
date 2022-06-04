@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-04-30 14:33:21
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-06-01 16:44:50
+ * @LastEditTime: 2022-06-04 09:19:13
  * @FilePath: \work\src\views\test\questManager\index.vue
  * @Description:
 -->
@@ -129,7 +129,7 @@ import { h, onMounted, reactive, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { CascaderOption, TreeOption, useMessage } from 'naive-ui';
 import { PlusOutlined } from '@vicons/antd';
-import { useCourseStore } from '@/store';
+import { useCourseStore, useExamStore } from '@/store';
 import { useRouterPush } from '@/composables';
 import { getQuestionBank, getPaperList } from '@/service';
 import { resetForm } from '@/utils';
@@ -143,6 +143,7 @@ import { getCategoryName, getChildren, getDictionary } from './getOptions';
 import { questionBankType } from './Type';
 import questInfo from './components/questInfo.vue';
 
+const examStore = useExamStore();
 // defaultSelectKeys.value[0] = route.query.id;
 const message = useMessage();
 const formData = ref({});
@@ -318,6 +319,7 @@ const handleInfo = (record: Recordable) => {
 const { routerPush } = useRouterPush();
 // 新建
 const addTable = () => {
+  examStore.setQuestionList('');
   routerPush({ name: 'test_addQuest' });
 };
 
@@ -331,6 +333,7 @@ const handleEdit = (record: Recordable) => {
   if (record.quoteCount > 0) {
     return message.warning('题目已被引用，不可编辑');
   }
+  examStore.setQuestionList(record);
   routerPush({ name: 'test_addQuest' });
   // editModalRef.value.editModalFn(record);
 };
