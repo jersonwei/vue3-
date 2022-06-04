@@ -78,7 +78,6 @@ export function getPointCategory() {
   return res;
 }
 
-
 export function getListByPointCategoryId(param) {
   const res = request.get(`/knowledgePoint/getListByPointCategoryId/${param}`); //
   return res;

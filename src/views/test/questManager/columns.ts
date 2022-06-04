@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-04-30 15:51:30
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-06-04 10:43:16
+ * @LastEditTime: 2022-06-04 15:16:09
  * @FilePath: \work\src\views\test\questManager\columns.ts
  * @Description:
  */
@@ -17,7 +17,7 @@ export const columns = [
   {
     title: '题目名称',
     key: 'questionName',
-    width: 120,
+    width: 100,
     render(row) {
       return row.questionName.replace(/(<([^>]+)>)/gi, '').replace(/[\r\n]/g, '');
     }
@@ -37,7 +37,7 @@ export const columns = [
   {
     title: '题目类型',
     key: 'questionTypeName',
-    width: 100
+    width: 50
   },
   // {
   //   title: '所属题库',
@@ -47,12 +47,12 @@ export const columns = [
   {
     title: '难易度',
     key: 'difficultLevelName',
-    width: 100
+    width: 50
   },
   {
     title: '知识点',
     key: 'courseCategoryName',
-    width: 100,
+    width: 80,
     render(row: { listPointRelatedName: any[] }) {
       if (row.listPointRelatedName?.length) {
         const tags = row.listPointRelatedName?.join(',');
@@ -64,17 +64,17 @@ export const columns = [
   {
     title: '被引用次数',
     key: 'quoteCount',
-    width: 130
+    width: 80
   },
   {
     title: '作答次数',
     key: 'answerCount',
-    width: 130
+    width: 80
   },
   {
     title: '状态',
     key: 'statusName',
-    width: 100,
+    width: 80,
     render(row: { status: number }) {
       return h(NSwitch, {
         value: row.status === 1,
@@ -98,12 +98,12 @@ export const columns = [
   {
     title: '创建人',
     key: 'createrName',
-    width: 100
+    width: 80
   },
   {
     title: '创建时间',
     key: 'createTime',
-    width: 200
+    width: 100
   }
 ];
 /**
