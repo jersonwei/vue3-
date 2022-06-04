@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-04-30 08:41:04
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-06-01 16:02:14
+ * @LastEditTime: 2022-06-04 17:54:49
  * @FilePath: \work\.env-config.ts
  * @Description:
  */
@@ -20,7 +20,7 @@ const serviceEnvConfig: ServiceEnv = {
     proxy: '/api'
   },
   prod: {
-    url: 'http://192.168.3.7:8081',
+    url: 'http://192.168.3.78:8081',
     proxy: '/api'
   }
 };

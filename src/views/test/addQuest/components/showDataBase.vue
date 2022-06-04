@@ -30,36 +30,28 @@
         />
       </template>
     </FormPro>
-    <TablePro
-      ref="actionRef"
-      :columns="columns"
-      :request="loadDataTable"
-      :row-key="(row) => row.id"
-      :scroll-x="800"
-    />
+    <TablePro ref="actionRef" :columns="columns" :request="loadDataTable" :row-key="row => row.id" :scroll-x="800" />
     <template #action>
       <n-space>
         <n-button @click="() => (showModal = false)">取消</n-button>
-        <n-button type="info" :loading="formBtnLoading" @click="confirmForm"
-          >确定</n-button
-        >
+        <n-button type="info" :loading="formBtnLoading" @click="confirmForm">确定</n-button>
       </n-space>
     </template>
   </n-modal>
 </template>
 <script lang="ts" setup>
-import { h, ref } from "vue";
-import { CascaderOption, NRadio } from "naive-ui";
-import { getQuestionBankList } from "@/service";
-import { FormPro, useForm } from "@/components/FormPro";
-import { schemas } from "./showDataBase/schemas";
-import { getCategoryName, getChildren } from "./showDataBase/getOptions";
+import { h, ref } from 'vue';
+import { CascaderOption, NRadio } from 'naive-ui';
+import { getQuestionBankList } from '@/service';
+import { FormPro, useForm } from '@/components/FormPro';
+import { schemas } from './showDataBase/schemas';
+import { getCategoryName, getChildren } from './showDataBase/getOptions';
 
 const [register] = useForm({
-  gridProps: { cols: "1 s:1 m:2 l:3 xl:4 2xl:4" },
+  gridProps: { cols: '1 s:1 m:2 l:3 xl:4 2xl:4' },
   labelWidth: 80,
   showAdvancedButton: false,
-  schemas,
+  schemas
 });
 const categoryNameOptions = ref();
 const getOption = async () => {
@@ -67,7 +59,7 @@ const getOption = async () => {
 };
 getOption();
 const handleLoad = (option: CascaderOption) => {
-  return new Promise<void>((resolve) => {
+  return new Promise<void>(resolve => {
     window.setTimeout(() => {
       categoryNameOptions.value.children = getChildren(option);
       resolve();
@@ -81,7 +73,7 @@ const loadDataTable = async (res: any) => {
   const Param = {
     status: 1,
     pageSize: res.size,
-    current: res.current,
+    current: res.current
   };
   const result = await getQuestionBankList({ ...formData.value, ...Param });
   return result.data;
@@ -103,52 +95,52 @@ const handleSubmit = (values: Recordable) => {
 };
 
 // 选中的行
-const checkedValueRef = ref("");
-const checkedValueNameRef = ref("");
+const checkedValueRef = ref('');
+const checkedValueNameRef = ref('');
 const handleChange = (e: Event, row) => {
   checkedValueRef.value = (e.target as HTMLInputElement).value;
   checkedValueNameRef.value = row.bankName;
 };
 const columns = [
   {
-    title: "选择",
+    title: '选择',
     width: 20,
     render(row, index) {
       return h(NRadio, {
         checked: checkedValueRef.value === row.id,
         value: row.id,
         disabled: row.status === 1,
-        onChange: (e) => {
+        onChange: e => {
           handleChange(e, row);
-        },
+        }
       });
-    },
+    }
   },
   {
-    title: "题库名称",
-    key: "bankName",
-    width: 80,
+    title: '题库名称',
+    key: 'bankName',
+    width: 80
   },
   {
-    title: "所属分类",
-    key: "categoryName",
-    width: 80,
+    title: '所属分类',
+    key: 'categoryName',
+    width: 80
   },
   {
-    title: "题库状态",
-    key: "status",
+    title: '题库状态',
+    key: 'status',
     width: 50,
     render(row, index) {
-      return h("h1", row.status === 0 ? "启用" : "禁用");
-    },
-  },
+      return h('h1', row.status === 0 ? '启用' : '禁用');
+    }
+  }
 ];
 const formBtnLoading = ref(false);
-const emits = defineEmits(["reloadTable"]);
+const emits = defineEmits(['reloadTable']);
 const confirmForm = (e: { preventDefault: () => void }) => {
   e.preventDefault();
   formBtnLoading.value = true;
-  emits("reloadTable", checkedValueRef.value, checkedValueNameRef.value);
+  emits('reloadTable', checkedValueRef.value, checkedValueNameRef.value);
   showModal.value = false;
   formBtnLoading.value = false;
 };

@@ -25,11 +25,7 @@
         <template v-if="questInfo.questionTypeName === '单选题'">
           <n-radio-group :value="checkTagData.answerContent" disabled name="radiogroup">
             <n-space vertical>
-              <n-radio
-                v-for="song in checkTagData.questionOption"
-                :key="song.value"
-                :value="song.value"
-              >
+              <n-radio v-for="song in checkTagData.questionOption" :key="song.value" :value="song.value">
                 {{ song.label }}
               </n-radio>
             </n-space>
@@ -83,7 +79,7 @@
               :label-style="{ fontSize: '20px', fontWeight: 'bold' }"
               path="switchValue"
             >
-              <p>{{ questInfo.listPointRelatedName?.join(",") }}</p>
+              <p>{{ questInfo.listPointRelatedName?.join(',') }}</p>
             </n-form-item-gi>
             <n-form-item-gi
               :span="24"
@@ -113,19 +109,19 @@
   </n-modal>
 </template>
 <script lang="ts" setup>
-import { ref, reactive } from "vue";
+import { ref, reactive } from 'vue';
 
 const questInfo = ref({
-  questionTypeName: "",
-  questionName: "",
-  questionAnswer: "",
-  questionAnalyse: "",
-  difficultLevelName: "",
-  bankName: "",
-  listPointRelatedName: [],
+  questionTypeName: '',
+  questionName: '',
+  questionAnswer: '',
+  questionAnalyse: '',
+  difficultLevelName: '',
+  bankName: '',
+  listPointRelatedName: []
 });
 const showModal = ref(false);
-const showModalFn = (record) => {
+const showModalFn = record => {
   console.log(record);
   Object.assign(questInfo.value, record);
   showModal.value = true;
@@ -139,7 +135,7 @@ const model = reactive({
   datetimeValue: null,
   nestedValue: {
     path1: null,
-    path2: null,
+    path2: null
   },
   switchValue: false,
   checkboxGroupValue: null,
@@ -148,7 +144,7 @@ const model = reactive({
   inputNumberValue: null,
   timePickerValue: null,
   sliderValue: 0,
-  transferValue: null,
+  transferValue: null
 });
 defineExpose({ showModalFn });
 </script>
