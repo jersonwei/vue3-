@@ -35,139 +35,139 @@
         </n-card>
       </n-gi>
       <n-gi span="10">
-				<div>
-					<n-scrollbar ref="scrollbarRef" style="width: 100%; max-height: calc(100vh - 240px)">
-						<n-card v-if="addStep === 1" embedded title="📖 基本信息">
-							<n-form
-								ref="BaseFormRef"
-								:model="paperList.BaseInfo"
-								:rules="baseInfoRule"
-								label-placement="left"
-								:label-width="120"
-							>
-								<n-grid :cols="24" :x-gap="24">
-									<n-form-item-gi :span="24" label="试卷名称" path="paperName">
-										<n-input v-model:value="paperList.BaseInfo.paperName" placeholder="请输入试卷名称" />
-									</n-form-item-gi>
-									<n-form-item-gi :span="24" label="试卷简介" path="note">
-										<n-input v-model:value="paperList.BaseInfo.note" type="textarea" placeholder="请输入试卷简介" />
-									</n-form-item-gi>
-									<n-form-item-gi :span="12" label="试卷分类" path="type">
-										<n-select
-											v-model:value="paperList.BaseInfo.type"
-											:options="examTypeOptions"
-											placeholder="请选择试卷分类"
-										/>
-									</n-form-item-gi>
-									<n-form-item-gi :span="12" label="考试时间" path="time">
-										<n-date-picker
-											v-model:value="paperList.BaseInfo.time"
-											type="datetimerange"
-											clearable
-											:is-date-disabled="disablePreviousDate"
-										/>
-									</n-form-item-gi>
-									<n-form-item-gi :span="12" label="试卷难易度" path="difficultLevel">
-										<n-select
-											v-model:value="paperList.BaseInfo.difficultLevel"
-											placeholder="请选择难易度"
-											:options="difficultyOptions"
-										/>
-									</n-form-item-gi>
-								</n-grid>
-							</n-form>
-						</n-card>
-						<n-card v-else embedded title="📖 基本信息">
-							<n-form label-placement="left" :label-width="120">
-							<n-grid :cols="24" :x-gap="24">
-								<n-form-item-gi :span="12" label="试卷名称" path="paperName">
-									<p style="font-size: 18px">{{ paperList.BaseInfo.paperName }}</p>
-								</n-form-item-gi>
-								<n-form-item-gi  :span="12" label="试卷简介" path="note">
-									<p style="font-size: 18px">{{ paperList.BaseInfo.note }}</p>
-								</n-form-item-gi >
-									<n-form-item-gi :span="12" label="试卷分类" path="type">
-										<p style="font-size: 18px">
-											{{ paperList.BaseInfo.categoryName }}
-										</p>
-									</n-form-item-gi>
-									<n-form-item-gi :span="12" label="考试时间" path="time">
-										<n-date-picker
-											v-model:value="paperList.BaseInfo.time"
-											disabled
-											type="datetimerange"
-											clearable
-											:is-date-disabled="disablePreviousDate"
-										/>
-									</n-form-item-gi>
-									<n-form-item-gi :span="12" label="试卷难易度" path="difficultLevel">
-										<p style="font-size: 18px">
-											{{ paperList.BaseInfo.difficultyLevelName }}
-										</p>
-									</n-form-item-gi>
-								</n-grid>
-							</n-form>
-						</n-card>
-						<n-space style="padding-top:10px" vertical>
-							<template v-for="(item, index) in paperList.detail" :key="index">
-								<n-card :id="`li${index}`" embedded style="width: 100%" :title="`📖 第${numberfilter(index + 1)}部分`">
-									<template #header-extra>
-										<n-space>
-											<n-button @click="topMove(index)">上移</n-button>
-											<n-button @click="downMove(index)">下移</n-button>
-											<n-button @click="remove(index)">移除该部分</n-button>
-										</n-space>
-									</template>
-									<n-form
-										ref="detailFormRef"
-										:model="paperList.detail[index]"
-										:rules="detailRule"
-										label-placement="left"
-										:label-width="120"
-									>
-										<n-form-item-gi :span="12" label="名称" path="name">
-											<n-input v-model:value="paperList.detail[index].name" placeholder="请输入名称" />
-										</n-form-item-gi>
-										<n-form-item-gi :span="12" label="题目类型" path="questType">
-											<n-select
-												v-model:value="paperList.detail[index].questType"
-												:options="questTypeOptions"
-												placeholder="请选择"
-												@update:show="show => handleShowValue(show, index)"
-												@update:value="(value, option) => handleUpdateValue(value, option, index)"
-											/>
-										</n-form-item-gi>
+        <div>
+          <n-scrollbar ref="scrollbarRef" style="width: 100%; max-height: calc(100vh - 240px)">
+            <n-card v-if="addStep === 1" embedded title="📖 基本信息">
+              <n-form
+                ref="BaseFormRef"
+                :model="paperList.BaseInfo"
+                :rules="baseInfoRule"
+                label-placement="left"
+                :label-width="120"
+              >
+                <n-grid :cols="24" :x-gap="24">
+                  <n-form-item-gi :span="24" label="试卷名称" path="paperName">
+                    <n-input v-model:value="paperList.BaseInfo.paperName" placeholder="请输入试卷名称" />
+                  </n-form-item-gi>
+                  <n-form-item-gi :span="24" label="试卷简介" path="note">
+                    <n-input v-model:value="paperList.BaseInfo.note" type="textarea" placeholder="请输入试卷简介" />
+                  </n-form-item-gi>
+                  <n-form-item-gi :span="12" label="试卷分类" path="type">
+                    <n-select
+                      v-model:value="paperList.BaseInfo.type"
+                      :options="examTypeOptions"
+                      placeholder="请选择试卷分类"
+                    />
+                  </n-form-item-gi>
+                  <n-form-item-gi :span="12" label="考试时间" path="time">
+                    <n-date-picker
+                      v-model:value="paperList.BaseInfo.time"
+                      type="datetimerange"
+                      clearable
+                      :is-date-disabled="disablePreviousDate"
+                    />
+                  </n-form-item-gi>
+                  <n-form-item-gi :span="12" label="试卷难易度" path="difficultLevel">
+                    <n-select
+                      v-model:value="paperList.BaseInfo.difficultLevel"
+                      placeholder="请选择难易度"
+                      :options="difficultyOptions"
+                    />
+                  </n-form-item-gi>
+                </n-grid>
+              </n-form>
+            </n-card>
+            <n-card v-else embedded title="📖 基本信息">
+              <n-form label-placement="left" :label-width="120">
+                <n-grid :cols="24" :x-gap="24">
+                  <n-form-item-gi :span="12" label="试卷名称" path="paperName">
+                    <p style="font-size: 18px">{{ paperList.BaseInfo.paperName }}</p>
+                  </n-form-item-gi>
+                  <n-form-item-gi :span="12" label="试卷简介" path="note">
+                    <p style="font-size: 18px">{{ paperList.BaseInfo.note }}</p>
+                  </n-form-item-gi>
+                  <n-form-item-gi :span="12" label="试卷分类" path="type">
+                    <p style="font-size: 18px">
+                      {{ paperList.BaseInfo.categoryName }}
+                    </p>
+                  </n-form-item-gi>
+                  <n-form-item-gi :span="12" label="考试时间" path="time">
+                    <n-date-picker
+                      v-model:value="paperList.BaseInfo.time"
+                      disabled
+                      type="datetimerange"
+                      clearable
+                      :is-date-disabled="disablePreviousDate"
+                    />
+                  </n-form-item-gi>
+                  <n-form-item-gi :span="12" label="试卷难易度" path="difficultLevel">
+                    <p style="font-size: 18px">
+                      {{ paperList.BaseInfo.difficultyLevelName }}
+                    </p>
+                  </n-form-item-gi>
+                </n-grid>
+              </n-form>
+            </n-card>
+            <n-space style="padding-top: 10px" vertical>
+              <template v-for="(item, index) in paperList.detail" :key="index">
+                <n-card :id="`li${index}`" embedded style="width: 100%" :title="`📖 第${numberfilter(index + 1)}部分`">
+                  <template #header-extra>
+                    <n-space>
+                      <n-button @click="topMove(index)">上移</n-button>
+                      <n-button @click="downMove(index)">下移</n-button>
+                      <n-button @click="remove(index)">移除该部分</n-button>
+                    </n-space>
+                  </template>
+                  <n-form
+                    ref="detailFormRef"
+                    :model="paperList.detail[index]"
+                    :rules="detailRule"
+                    label-placement="left"
+                    :label-width="120"
+                  >
+                    <n-form-item-gi :span="12" label="名称" path="name">
+                      <n-input v-model:value="paperList.detail[index].name" placeholder="请输入名称" />
+                    </n-form-item-gi>
+                    <n-form-item-gi :span="12" label="题目类型" path="questType">
+                      <n-select
+                        v-model:value="paperList.detail[index].questType"
+                        :options="questTypeOptions"
+                        placeholder="请选择"
+                        @update:show="show => handleShowValue(show, index)"
+                        @update:value="(value, option) => handleUpdateValue(value, option, index)"
+                      />
+                    </n-form-item-gi>
 
-										<n-grid :cols="24" :x-gap="24">
-											<n-form-item-gi :span="24" label="答题说明" path="type">
-												<n-input
-													v-model:value="paperList.detail[index].note"
-													type="textarea"
-													placeholder="请输入答题说明"
-												/>
-											</n-form-item-gi>
-										</n-grid>
+                    <n-grid :cols="24" :x-gap="24">
+                      <n-form-item-gi :span="24" label="答题说明" path="type">
+                        <n-input
+                          v-model:value="paperList.detail[index].note"
+                          type="textarea"
+                          placeholder="请输入答题说明"
+                        />
+                      </n-form-item-gi>
+                    </n-grid>
 
-										<n-collapse>
-											<n-collapse-item title="试题详情" name="1">
-												<template #header-extra> 共有{{ paperList.detail[index].data?.length }}条数据 </template>
-												<n-button @click="addQuest(index, paperList.detail[index].questType)">添加题目</n-button>
-												<n-data-table
-													ref="tableRef"
-													:columns="columns"
-													:data="paperList.detail[index].data"
-													:bordered="false"
-												/> </n-collapse-item
-										></n-collapse>
-									</n-form>
-								</n-card>
-							</template>
-						</n-space>
-					</n-scrollbar>
-					<div style="display: flex; justify-content: center; padding-top: 10px">
-						<n-button style="width: 10%" type="info" @click="saveDetail">保存</n-button>
-					</div>
-				</div>
+                    <n-collapse>
+                      <n-collapse-item title="试题详情" name="1">
+                        <template #header-extra> 共有{{ paperList.detail[index].data?.length }}条数据 </template>
+                        <n-button @click="addQuest(index, paperList.detail[index].questType)">添加题目</n-button>
+                        <n-data-table
+                          ref="tableRef"
+                          :columns="columns"
+                          :data="paperList.detail[index].data"
+                          :bordered="false"
+                        /> </n-collapse-item
+                    ></n-collapse>
+                  </n-form>
+                </n-card>
+              </template>
+            </n-space>
+          </n-scrollbar>
+          <div style="display: flex; justify-content: center; padding-top: 10px">
+            <n-button style="width: 10%" type="info" @click="saveDetail">保存</n-button>
+          </div>
+        </div>
       </n-gi>
     </n-grid>
     <showQuest ref="showQuestRef" @choose-quest="chooseQuest"></showQuest>
@@ -194,10 +194,8 @@
       @positive-click="submitQuestionSort"
     >
       <n-space>
-
         移动到第
-        <n-input-number v-model:value="questionSort" :max="maxQuestionSort" :min="1" style='width:100px'/>位
-		
+        <n-input-number v-model:value="questionSort" :max="maxQuestionSort" :min="1" style="width: 100px" />位
       </n-space>
     </n-modal>
     <n-modal
@@ -238,7 +236,7 @@ const questionSort = ref();
 const changeQuesionSort = ref();
 const changeQuesionIndexSort = ref();
 const showQuestionInfoModal = (row, index) => {
-	//console.log(row)
+  // console.log(row)
   questionSort.value = index + 1;
   showSortModal.value = true;
   changeQuesionSort.value = row;
@@ -257,8 +255,8 @@ const submitQuestionSort = () => {
     return;
   }
   const changeRowData = paperList.value.detail[tableDataIndex].data[changeOldIndex]; // 需要变更顺序的行
-	paperList.value.detail[tableDataIndex].data.splice(changeOldIndex, 1);
-	paperList.value.detail[tableDataIndex].data.splice(changeNewIndex - 1, 0, changeRowData);
+  paperList.value.detail[tableDataIndex].data.splice(changeOldIndex, 1);
+  paperList.value.detail[tableDataIndex].data.splice(changeNewIndex - 1, 0, changeRowData);
 };
 const showRemoveModal = ref(false);
 const removeRowData = ref();
@@ -291,7 +289,7 @@ const columns = [
           // console.log(row, index);
           // eslint-disable-next-line no-param-reassign
           row.questionScore = v;
-          //console.log(row.questionScore);
+          // console.log(row.questionScore);
           // data.value[index].name = v;
         }
       });
@@ -540,13 +538,12 @@ const saveDetail = async () => {
     });
   }
   const { type, paperName, note, time, difficultLevel, id } = paperList.value.BaseInfo;
-	let paperBeginTime = ''
-	let paperEndTime = ''
-	if(time){
-		 paperBeginTime =format(new Date(time[0]), 'yyyy-MM-dd HH:mm:ss');
-  	 paperEndTime = format(new Date(time[1]), 'yyyy-MM-dd HH:mm:ss');
-	}
-  
+  let paperBeginTime = '';
+  let paperEndTime = '';
+  if (time) {
+    paperBeginTime = format(new Date(time[0]), 'yyyy-MM-dd HH:mm:ss');
+    paperEndTime = format(new Date(time[1]), 'yyyy-MM-dd HH:mm:ss');
+  }
 
   if (addOrEdit.value === true && addStep.value === 1) {
     const params = {
@@ -722,9 +719,9 @@ const addQuest = (index, questType) => {
 };
 const chooseQuest = (index, checkRow, checkRowKeys) => {
   paperList.value.detail[index].checkRowKeys = checkRowKeys;
-	for(let i = 0;i<checkRow.length;i++){
-		checkRow[i].partSort = index
-	}
+  for (let i = 0; i < checkRow.length; i++) {
+    checkRow[i].partSort = index;
+  }
 
   paperList.value.detail[index].data.push(...checkRow);
   console.log(index, checkRow, checkRowKeys);
