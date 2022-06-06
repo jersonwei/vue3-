@@ -550,7 +550,7 @@ export const routeModel: Record<Auth.RoleType, AuthRoute.Route[]> = {
       ],
       meta: {
         title: '在线课程',
-        icon: 'gg:calendar-today',
+        icon: 'carbon:course',
         order: 8
       }
     },

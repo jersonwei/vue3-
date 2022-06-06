@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-05-12 14:54:50
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-28 21:30:30
+ * @LastEditTime: 2022-06-06 13:46:06
  * @FilePath: \work\src\views\course\courseDetail\index.vue
  * @Description:
 -->
@@ -14,7 +14,7 @@
           <div style="font-size: 24px">{{ courseDetail.label }}</div>
           <div style="font-size: 18px">
             课程介绍:
-            <span style="font-size: 15px">{{ courseDetail.note || '' }}</span>
+            <span style="font-size: 15px">{{ courseDetail.note || "" }}</span>
           </div>
         </n-space>
         <div>
@@ -32,7 +32,7 @@
         style="margin: 0 -4px"
         pane-style="padding-left: 4px; padding-right: 4px; box-sizing: border-box;"
       >
-        <n-tab-pane name="signin" tab="章节列表">
+        <n-tab-pane name="signin" tab="章节列表" :key="1">
           <n-scrollbar style="max-height: 500px">
             <n-tree
               block-line
@@ -46,50 +46,59 @@
               default-expand-all
             />
           </n-scrollbar>
-          <!-- <n-list>
-            <n-list-item v-for="item in activity" :key="item.id">
-              <template #prefix>
-                {{ 123 }}
-                <FileOutlined class="text-48px" />
-              </template>
-              <n-thing :title="item.content" />
-            </n-list-item>
-          </n-list> -->
         </n-tab-pane>
         <n-tab-pane v-if="courseOutLine" name="signup" tab="课程大纲">
-          <!-- <pdf :pdf-url="`http://120.79.129.174:9000/hms/reportcfba6a96dbd24599bb1560ecc35f7994.pdf`"></pdf> -->
-          <!-- <template v-for="item in pageNum" :key="item">
-            <canvas :id="`pdf-canvas-${item}`" class="pdf-page" />
-          </template> -->
-          <iframe :src="courseDetail.courseOutline" width="100%" height="100%" style="height: 600px">
-            This browser does not support PDFs. Please download the PDF to view it: <a href="/test.pdf">Download PDF</a>
-          </iframe>
+          <iframe
+            :src="`${courseOutLine}`"
+            width="100%"
+            type="application/pdf"
+            height="100%"
+            style="height: 700px"
+          />
+          <!-- <iframe
+            v-if="item.ext === `.pdf`"
+            :src="`${item.url}#toolbar=0`"
+            width="100%"
+            type="application/pdf"
+            height="100%"
+            style="height: 700px"
+          />
+          <iframe
+            v-else
+            :src="`http://120.79.129.174:8012/onlinePreview?url=${Base64.encode(
+              item.url
+            )}&officePreviewType=pdf`"
+            width="100%"
+            type="application/pdf"
+            height="100%"
+            style="height: 700px"
+          /> -->
         </n-tab-pane>
       </n-tabs>
     </n-card>
   </n-space>
 </template>
 <script lang="ts" setup>
-import { h, onMounted, reactive, ref, watchEffect } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
-import { TreeOption, useMessage } from 'naive-ui';
+import { h, onMounted, reactive, ref, watchEffect } from "vue";
+import { useRoute, useRouter } from "vue-router";
+import { TreeOption, useMessage } from "naive-ui";
 // import { FileOutlined } from '@vicons/antd';
-import { Base64 } from 'js-base64';
-import { useCourseStore } from '@/store';
-import { getPreview } from '@/service';
-import { getServiceEnv } from '@/utils';
 
-// import pdf from './components/pdf.vue';
+import { useCourseStore } from "@/store";
+import { getPreview } from "@/service";
+import { getServiceEnv } from "@/utils";
+
 const route = useRoute();
+
 const router = useRouter();
 const message = useMessage();
 const { setFiles, getCourseInfo } = useCourseStore();
 const treeData = ref([]);
 const courseDetail = reactive({
-  label: '',
-  note: '',
-  coverPic: '',
-  courseOutline: ''
+  label: "",
+  note: "",
+  coverPic: "",
+  courseOutline: "",
 });
 // eslint-disable-next-line consistent-return
 const renderSuffix = ({ option }: { option: TreeOption }) => {
@@ -102,85 +111,85 @@ const renderSuffix = ({ option }: { option: TreeOption }) => {
       if (option.files[i].type === 0) {
         model.push(
           h(
-            'NButton',
+            "NButton",
             {
               props: {
-                type: 'primary',
-                size: 'small'
+                type: "primary",
+                size: "small",
               },
-              style: { marginRight: '5px' },
+              style: { marginRight: "5px" },
               onclick: () => {
-                console.log('123');
-              }
+                console.log("123");
+              },
             },
             {
-              default: () => 'PPT'
+              default: () => "PPT",
             }
           )
         );
       } else if (option.files[i].type === 1) {
         model.push(
           h(
-            'NButton',
+            "NButton",
             {
               props: {
-                type: 'primary',
-                size: 'small'
+                type: "primary",
+                size: "small",
               },
-              style: { marginRight: '5px' },
+              style: { marginRight: "5px" },
               onclick: () => {
                 // window.event.stopPropagation();
                 // selectedTreeAdd('新建章节', option);
-              }
+              },
             },
             {
-              default: () => '视频'
+              default: () => "视频",
             }
           )
         );
       } else if (option.files[i].type === 2) {
         model.push(
           h(
-            'NButton',
+            "NButton",
             {
               props: {
-                type: 'primary',
-                size: 'small'
+                type: "primary",
+                size: "small",
               },
-              style: { marginRight: '5px' },
+              style: { marginRight: "5px" },
               onclick: () => {
                 // window.event.stopPropagation();
                 // selectedTreeAdd('新建章节', option);
-              }
+              },
             },
             {
-              default: () => '教学文档'
+              default: () => "教学文档",
             }
           )
         );
       } else if (option.files[i].type === 3) {
         model.push(
           h(
-            'NButton',
+            "NButton",
             {
               props: {
-                type: 'primary',
-                size: 'small'
+                type: "primary",
+                size: "small",
               },
-              style: { marginRight: '5px' },
+              style: { marginRight: "5px" },
               onclick: () => {
                 // window.event.stopPropagation();
                 // selectedTreeAdd('新建章节', option);
-              }
+              },
             },
             {
-              default: () => '实验手册'
+              default: () => "实验手册",
             }
           )
         );
       }
     }
-    return [h('div', [model])];
+    return [h("div", [model])];
   }
 };
 const nodeProps = ({ option }: { option: TreeOption }) => {
@@ -190,8 +199,8 @@ const nodeProps = ({ option }: { option: TreeOption }) => {
         message.info(`[Click] ${option.label}`);
         console.log(option);
         setFiles(option);
-        router.push({ name: 'course_coursePreview' });
-      }
+        router.push({ name: "course_coursePreview" });
+      },
     };
   }
 };
@@ -199,35 +208,32 @@ const courseOutLine = ref();
 watchEffect(async () => {
   // const id =getCourseInfo()
   const params = {
-    id: getCourseInfo()
+    id: getCourseInfo(),
   };
   const { data: result } = await getPreview(params);
   console.log(getCourseInfo());
   const http = getServiceEnv();
   treeData.value = result.children;
-  console.log('treeData', treeData.value);
   courseDetail.label = result.label;
   courseDetail.note = result.note;
   courseDetail.coverPic = `${http}${result.coverPic}`;
-  courseOutLine.value = result.courseOutline;
-  // const num = result.courseOutline.lastIndexOf('.');
-  // const res = result.courseOutline.substr(num + 1);
-  // console.log(res);
-  // console.log(result);
-  // const paramsHttp = http + result.courseOutline;
-  // console.log(paramsHttp);
-  // if (res === 'pdf') {
-  //   courseDetail.courseOutline = http + result.courseOutline;
+  courseOutLine.value = `${http}${result.courseOutline}`;
+  // const lineType = result.courseOutline.substring(result.courseOutline.length - 4);
+  // const url = `${http}${result.courseOutline}`;
+  // if (lineType === ".pdf") {
+  //   courseDetail.courseOutline = url;
   // } else {
   //   courseDetail.courseOutline = `http://120.79.129.174:8012/onlinePreview?url=${Base64.encode(
-  //     http + result.courseOutline
+  //     url
   //   )}&officePreviewType=pdf`;
   // }
-  courseDetail.courseOutline = `https://view.xdocin.com/view?src=${http}${result.courseOutline}`;
-  console.log(courseDetail.courseOutline);
+  setTimeout(() => {
+    console.log(previewMd.value);
+  }, 2000);
+  console.log(previewMd.value);
 });
 const handleLoad = (option: CascaderOption) => {
-  return new Promise<void>(resolve => {
+  return new Promise<void>((resolve) => {
     window.setTimeout(() => {
       getChildren(option);
       resolve();
