@@ -10,7 +10,11 @@
   <n-card class="relative" :bordered="false">
     <FormPro @register="register" @submit="handleSubmit" @reset="reloadTable">
       <template #courseCategorySlot="{ model, field }">
-        <n-select v-model:value="model[field]" placeholder="请选择所属类别" :options="courseCategoryOptions" />
+        <n-select
+          v-model:value="model[field]"
+          placeholder="请选择课程类别"
+          :options="courseCategoryOptions"
+        />
       </template>
       <template #majorIdSlot="{ model, field }">
         <n-cascader
@@ -25,14 +29,18 @@
         />
       </template>
       <template #statusSlot="{ model, field }">
-        <n-select v-model:value="model[field]" placeholder="请选择课程状态" :options="courseStatusOptions" />
+        <n-select
+          v-model:value="model[field]"
+          placeholder="请选择课程状态"
+          :options="courseStatusOptions"
+        />
       </template>
     </FormPro>
     <TablePro
       ref="actionRef"
       :columns="columns"
       :request="loadDataTable"
-      :row-key="row => row.id"
+      :row-key="(row) => row.id"
       :action-column="actionColumn"
       :scroll-x="2200"
     >
@@ -47,30 +55,47 @@
         </n-button>
       </template>
     </TablePro>
-    <addOrEditModalVue ref="addOrEditModalRef" @reload-table="reloadTable"></addOrEditModalVue>
+    <addOrEditModalVue
+      ref="addOrEditModalRef"
+      @reload-table="reloadTable"
+    ></addOrEditModalVue>
     <!-- <editModalVue ref="editModalRef" @reload-table="reloadTable"></editModalVue> -->
-    <delModal ref="delModalRef" :del-data="delData" :del-text="delText" @reload-table="reloadTable"></delModal>
-    <updateCourse ref="updateModalRef" :update-data="updateData" @reload-table="reloadTable"></updateCourse>
+    <delModal
+      ref="delModalRef"
+      :del-data="delData"
+      :del-text="delText"
+      @reload-table="reloadTable"
+    ></delModal>
+    <updateCourse
+      ref="updateModalRef"
+      :update-data="updateData"
+      @reload-table="reloadTable"
+    ></updateCourse>
   </n-card>
 </template>
 
 <script lang="ts" setup>
-import { h, reactive, ref } from 'vue';
-import { CascaderOption, useMessage } from 'naive-ui';
-import { PlusOutlined } from '@vicons/antd';
-import { useCourseStore } from '@/store';
-import { useRouterPush } from '@/composables';
-import { searchCouserInfo } from '@/service';
-import { getUserInfo } from '@/utils';
-import { TablePro, TableAction } from '@/components/TablePro';
-import { FormPro, useForm } from '@/components/FormPro';
-import { columns } from './columns';
-import { schemas } from './schemas';
-import delModal from './components/delModal.vue';
-import addOrEditModalVue from './components/addOrEditModal.vue';
+import { h, reactive, ref } from "vue";
+import { CascaderOption, useMessage } from "naive-ui";
+import { PlusOutlined } from "@vicons/antd";
+import { useCourseStore } from "@/store";
+import { useRouterPush } from "@/composables";
+import { searchCouserInfo } from "@/service";
+import { getUserInfo } from "@/utils";
+import { TablePro, TableAction } from "@/components/TablePro";
+import { FormPro, useForm } from "@/components/FormPro";
+import { columns } from "./columns";
+import { schemas } from "./schemas";
+import delModal from "./components/delModal.vue";
+import addOrEditModalVue from "./components/addOrEditModal.vue";
 // import editModalVue from './components/editModal.vue';
-import updateCourse from './components/updateCourse.vue';
-import { getCourseCategoryOptions, getCollegeLegistOptions, getStatusOptions, getChildren } from './getOptions';
+import updateCourse from "./components/updateCourse.vue";
+import {
+  getCourseCategoryOptions,
+  getCollegeLegistOptions,
+  getStatusOptions,
+  getChildren,
+} from "./getOptions";
 
 // 获取用户信息
 const { userRole } = getUserInfo();
@@ -81,66 +106,66 @@ const formData = ref({});
 const actionColumn = reactive({
   // Table操作列
   width: 350,
-  title: '操作',
-  key: 'action',
-  fixed: 'right',
+  title: "操作",
+  key: "action",
+  fixed: "right",
   render(record: Recordable<any>) {
     if (record.status === 1) {
       return h(TableAction as any, {
-        style: 'button',
+        style: "button",
         actions: [
           {
-            label: '编辑',
+            label: "编辑",
 
             // eslint-disable-next-line @typescript-eslint/no-use-before-define
-            onClick: handleEdit.bind(null, record)
+            onClick: handleEdit.bind(null, record),
           },
           {
-            label: '配置',
+            label: "配置",
             // eslint-disable-next-line @typescript-eslint/no-use-before-define
-            onClick: handleConfig.bind(null, record)
+            onClick: handleConfig.bind(null, record),
           },
           {
-            label: '预览',
+            label: "预览",
             // eslint-disable-next-line @typescript-eslint/no-use-before-define
-            onClick: handleDetail.bind(null, record)
-          }
-        ]
+            onClick: handleDetail.bind(null, record),
+          },
+        ],
       });
     }
     return h(TableAction as any, {
-      style: 'button',
+      style: "button",
       actions: [
         {
-          label: '删除',
-          icon: 'ic:outline-delete-outline',
+          label: "删除",
+          icon: "ic:outline-delete-outline",
           // eslint-disable-next-line @typescript-eslint/no-use-before-define
-          onClick: handleDelete.bind(null, record)
+          onClick: handleDelete.bind(null, record),
         },
         {
-          label: '编辑',
+          label: "编辑",
 
           // eslint-disable-next-line @typescript-eslint/no-use-before-define
-          onClick: handleEdit.bind(null, record)
+          onClick: handleEdit.bind(null, record),
         },
         {
-          label: '配置',
+          label: "配置",
           // eslint-disable-next-line @typescript-eslint/no-use-before-define
-          onClick: handleConfig.bind(null, record)
+          onClick: handleConfig.bind(null, record),
         },
         {
-          label: '预览',
+          label: "预览",
           // eslint-disable-next-line @typescript-eslint/no-use-before-define
-          onClick: handleDetail.bind(null, record)
+          onClick: handleDetail.bind(null, record),
         },
         {
-          label: '定时上架',
+          label: "定时上架",
           // eslint-disable-next-line @typescript-eslint/no-use-before-define
-          onClick: handUpdateStatus.bind(null, record)
-        }
-      ]
+          onClick: handUpdateStatus.bind(null, record),
+        },
+      ],
     });
-  }
+  },
 });
 
 // 院系和所属类别的下拉查询逻辑
@@ -155,7 +180,7 @@ const getOption = async () => {
 };
 getOption();
 const handleLoad = (option: CascaderOption) => {
-  return new Promise<void>(resolve => {
+  return new Promise<void>((resolve) => {
     window.setTimeout(() => {
       cascaderOptions.value.children = getChildren(option);
       resolve();
@@ -165,10 +190,10 @@ const handleLoad = (option: CascaderOption) => {
 
 const [register] = useForm({
   // 查询FORM
-  gridProps: { cols: '1 s:1 m:2 l:3 xl:4 2xl:4' },
+  gridProps: { cols: "1 s:1 m:2 l:3 xl:4 2xl:4" },
   labelWidth: 80,
   showAdvancedButton: false,
-  schemas
+  schemas,
 });
 /**
  * @author: ZHENG
@@ -178,7 +203,7 @@ const [register] = useForm({
 const loadDataTable = async (res: any) => {
   const Param = {
     pageSize: res.size,
-    current: res.current
+    current: res.current,
   };
   const { data: result } = await searchCouserInfo({ ...formData.value, ...Param });
   return result;
@@ -199,11 +224,11 @@ const handleSubmit = (values: Recordable) => {
 // 删除逻辑
 const delModalRef = ref();
 const delData = ref<number>(0); // 删除数据的ID
-const delText = ref(''); // 删除的文字
+const delText = ref(""); // 删除的文字
 // eslint-disable-next-line consistent-return
 const handleDelete = (record: Recordable) => {
-  if (record.status === '0') {
-    return message.warning('只有下架状态课程才能删除');
+  if (record.status === "0") {
+    return message.warning("只有下架状态课程才能删除");
   }
   delText.value = record.courseName;
   delData.value = record.id;
@@ -245,7 +270,7 @@ const { routerPush } = useRouterPush();
  */
 const handleDetail = (record: Recordable) => {
   courseStore.setCourseInfo(record.id);
-  routerPush({ name: 'course_courseDetail', query: { id: record.id } });
+  routerPush({ name: "course_courseDetail", query: { id: record.id } });
 };
 
 /**
@@ -256,7 +281,7 @@ const handleDetail = (record: Recordable) => {
  */
 const handleConfig = (record: Recordable) => {
   courseStore.setCourseInfo(record.id);
-  routerPush({ name: 'course_courseInfo' });
+  routerPush({ name: "course_courseInfo" });
 };
 </script>
 <style scoped></style>

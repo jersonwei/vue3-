@@ -349,22 +349,22 @@ export const routeModel: Record<Auth.RoleType, AuthRoute.Route[]> = {
             icon: 'gg:calendar-today'
           }
         },
+				{
+          name: 'test_examType',
+          path: '/test/examType',
+          component: 'self',
+          meta: {
+            title: '试卷分类',
+            requiresAuth: true,
+            icon: 'gg:calendar-today'
+          }
+        },
         {
           name: 'test_examManager',
           path: '/test/examManager',
           component: 'self',
           meta: {
             title: '试卷管理',
-            requiresAuth: true,
-            icon: 'gg:calendar-today'
-          }
-        },
-        {
-          name: 'test_examType',
-          path: '/test/examType',
-          component: 'self',
-          meta: {
-            title: '试卷分类',
             requiresAuth: true,
             icon: 'gg:calendar-today'
           }
@@ -614,22 +614,22 @@ export const routeModel: Record<Auth.RoleType, AuthRoute.Route[]> = {
             icon: 'gg:calendar-today'
           }
         },
+				{
+          name: 'test_examType',
+          path: '/test/examType',
+          component: 'self',
+          meta: {
+            title: '试卷分类',
+            requiresAuth: true,
+            icon: 'gg:calendar-today'
+          }
+        },
         {
           name: 'test_examManager',
           path: '/test/examManager',
           component: 'self',
           meta: {
             title: '试卷管理',
-            requiresAuth: true,
-            icon: 'gg:calendar-today'
-          }
-        },
-        {
-          name: 'test_examType',
-          path: '/test/examType',
-          component: 'self',
-          meta: {
-            title: '试卷分类',
             requiresAuth: true,
             icon: 'gg:calendar-today'
           }
@@ -650,6 +650,84 @@ export const routeModel: Record<Auth.RoleType, AuthRoute.Route[]> = {
         title: '测评管理',
         icon: 'gg:calendar-today',
         order: 8
+      }
+    },
+    {
+      name: 'learnAnalysis',
+      path: '/learnAnalysis',
+      component: 'basic',
+      children: [
+        {
+          name: 'learnAnalysis_testAnalysis',
+          path: '/learnAnalysis/testAnalysis',
+          component: 'multi',
+          children: [
+            {
+              name: 'learnAnalysis_testAnalysis_personalTest',
+              path: '/learnAnalysis/testAnalysis/personalTest',
+              component: 'self',
+              meta: {
+                title: '个人实验分析',
+                requiresAuth: true,
+                icon: 'ic:outline-menu'
+              }
+            }
+          ],
+          meta: {
+            title: '实验分析',
+            requiresAuth: true,
+            icon: 'icon-park-outline:analysis'
+          }
+        },
+        {
+          name: 'learnAnalysis_questAnalysis',
+          path: '/learnAnalysis/questAnalysis',
+          component: 'multi',
+          children: [
+            {
+              name: 'learnAnalysis_questAnalysis_personalTest',
+              path: '/learnAnalysis/questAnalysis/personalTest',
+              component: 'self',
+              meta: {
+                title: '个人习题分析',
+                requiresAuth: true,
+                icon: 'ic:outline-menu'
+              }
+            }
+          ],
+          meta: {
+            title: '习题分析',
+            requiresAuth: true,
+            icon: 'icon-park-outline:analysis'
+          }
+        },
+        {
+          name: 'learnAnalysis_examAnalysis',
+          path: '/learnAnalysis/examAnalysis',
+          component: 'multi',
+          children: [
+            {
+              name: 'learnAnalysis_examAnalysis_personalTest',
+              path: '/learnAnalysis/examAnalysis/personalTest',
+              component: 'self',
+              meta: {
+                title: '个人考试分析',
+                requiresAuth: true,
+                icon: 'ic:outline-menu'
+              }
+            }
+          ],
+          meta: {
+            title: '考试分析',
+            requiresAuth: true,
+            icon: 'icon-park-outline:analysis'
+          }
+        }
+      ],
+      meta: {
+        title: '学情分析',
+        icon: 'carbon:dashboard',
+        order: 1
       }
     },
     {

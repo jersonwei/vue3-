@@ -18,7 +18,12 @@
 
           <!--判断插槽-->
           <template v-if="schema.slot">
-            <slot :name="schema.slot" :model="formModel" :field="schema.field" :value="formModel[schema.field]"></slot>
+            <slot
+              :name="schema.slot"
+              :model="formModel"
+              :field="schema.field"
+              :value="formModel[schema.field]"
+            ></slot>
           </template>
 
           <!--NCheckbox-->
@@ -39,7 +44,11 @@
           <template v-else-if="schema.component === 'NRadioGroup'">
             <n-radio-group v-model:value="formModel[schema.field]">
               <n-space>
-                <n-radio v-for="item in schema?.componentProps?.options" :key="item.value" :value="item.value">
+                <n-radio
+                  v-for="item in schema?.componentProps?.options"
+                  :key="item.value"
+                  :value="item.value"
+                >
                   {{ item.label }}
                 </n-radio>
               </n-space>
@@ -137,9 +146,12 @@
             @click="handleSubmit"
             >{{ getProps.submitButtonText }}</n-button
           >
-          <n-button v-if="getProps.showResetButton" v-bind="getResetBtnOptions" @click="resetFields">{{
-            getProps.resetButtonText
-          }}</n-button>
+          <n-button
+            v-if="getProps.showResetButton"
+            v-bind="getResetBtnOptions"
+            @click="resetFields"
+            >{{ getProps.resetButtonText }}</n-button
+          >
           <n-button
             v-if="isInline && getProps.showAdvancedButton"
             type="primary"
@@ -155,7 +167,7 @@
                 <UpOutlined />
               </n-icon>
             </template>
-            {{ overflow ? '展开' : '收起' }}
+            {{ overflow ? "展开" : "收起" }}
           </n-button>
         </n-space>
       </n-gi>
@@ -164,25 +176,25 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, ref, computed, unref, onMounted, watch } from 'vue';
-import type { Ref } from 'vue';
-import { DownOutlined, UpOutlined, QuestionCircleOutlined } from '@vicons/antd';
-import type { GridProps } from 'naive-ui/lib/grid';
-import { usePermission } from '@/composables';
-import { deepMerge, isArray } from '@/utils';
-import { createPlaceholderMessage } from './helper';
-import { useFormEvents } from './hooks/useFormEvents';
-import { useFormValues } from './hooks/useFormValues';
-import { basicProps } from './props';
-import type { FormSchema, FormProps, FormActionType } from './types/form';
+import { defineComponent, reactive, ref, computed, unref, onMounted, watch } from "vue";
+import type { Ref } from "vue";
+import { DownOutlined, UpOutlined, QuestionCircleOutlined } from "@vicons/antd";
+import type { GridProps } from "naive-ui/lib/grid";
+import { usePermission } from "@/composables";
+import { deepMerge, isArray } from "@/utils";
+import { createPlaceholderMessage } from "./helper";
+import { useFormEvents } from "./hooks/useFormEvents";
+import { useFormValues } from "./hooks/useFormValues";
+import { basicProps } from "./props";
+import type { FormSchema, FormProps, FormActionType } from "./types/form";
 
 export default defineComponent({
-  name: 'BasicUpload',
+  name: "BasicUpload",
   components: { DownOutlined, UpOutlined, QuestionCircleOutlined },
   props: {
-    ...basicProps
+    ...basicProps,
   },
-  emits: ['reset', 'submit', 'register'],
+  emits: ["reset", "submit", "register"],
   setup(props, { emit, attrs }) {
     const defaultFormModel = ref<Recordable>({});
     const formModel = reactive<Recordable>({});
@@ -196,16 +208,16 @@ export default defineComponent({
     const getSubmitBtnOptions = computed(() => {
       return {
         size: props.size,
-        type: 'primary',
-        ...props.submitButtonOptions
+        type: "primary",
+        ...props.submitButtonOptions,
       };
     });
 
     const getResetBtnOptions = computed(() => {
       return {
         size: props.size,
-        type: 'default',
-        ...props.resetButtonOptions
+        type: "default",
+        ...props.resetButtonOptions,
       };
     });
 
@@ -215,39 +227,45 @@ export default defineComponent({
       return {
         clearable: true,
         placeholder: createPlaceholderMessage(unref(component)),
-        ...compProps
+        ...compProps,
       };
     }
 
-    const getProps = computed((): FormProps => {
-      const formProps = { ...props, ...unref(propsRef) } as FormProps;
-      const rulesObj: any = {
-        rules: {}
-      };
-      const schemas: any = formProps.schemas || [];
-      schemas.forEach(item => {
-        if (item.rules && isArray(item.rules)) {
-          rulesObj.rules[item.field] = item.rules;
-        }
-      });
-      return { ...formProps, ...unref(rulesObj) };
-    });
+    const getProps = computed(
+      (): FormProps => {
+        const formProps = { ...props, ...unref(propsRef) } as FormProps;
+        const rulesObj: any = {
+          rules: {},
+        };
+        const schemas: any = formProps.schemas || [];
+        schemas.forEach((item) => {
+          if (item.rules && isArray(item.rules)) {
+            rulesObj.rules[item.field] = item.rules;
+          }
+        });
+        return { ...formProps, ...unref(rulesObj) };
+      }
+    );
 
     const isInline = computed(() => {
       const { layout } = unref(getProps);
-      return layout === 'inline';
+      return layout === "inline";
     });
 
-    const getGrid = computed((): GridProps => {
-      const { gridProps } = unref(getProps);
-      return {
-        ...gridProps,
-        collapsed: isInline.value ? gridCollapsed.value : false,
-        responsive: 'screen'
-      };
-    });
+    const getGrid = computed(
+      (): GridProps => {
+        const { gridProps } = unref(getProps);
+        return {
+          ...gridProps,
+          collapsed: isInline.value ? gridCollapsed.value : false,
+          responsive: "screen",
+        };
+      }
+    );
 
-    const getBindValue = computed(() => ({ ...attrs, ...props, ...unref(getProps) } as Recordable));
+    const getBindValue = computed(
+      () => ({ ...attrs, ...props, ...unref(getProps) } as Recordable)
+    );
 
     const getSchema = computed((): FormSchema[] => {
       const { hasPermission } = usePermission();
@@ -275,10 +293,17 @@ export default defineComponent({
       getProps,
       defaultFormModel,
       getSchema,
-      formModel
+      formModel,
     });
 
-    const { handleSubmit, validate, resetFields, getFieldsValue, clearValidate, setFieldsValue } = useFormEvents({
+    const {
+      handleSubmit,
+      validate,
+      resetFields,
+      getFieldsValue,
+      clearValidate,
+      setFieldsValue,
+    } = useFormEvents({
       emit,
       getProps,
       formModel,
@@ -286,7 +311,7 @@ export default defineComponent({
       formElRef: formElRef as Ref<FormActionType>,
       defaultFormModel,
       loadingSub,
-      handleFormValues
+      handleFormValues,
     });
 
     function unfoldToggle() {
@@ -304,12 +329,12 @@ export default defineComponent({
       validate,
       clearValidate,
       setProps,
-      submit: handleSubmit
+      submit: handleSubmit,
     };
 
     watch(
       () => getSchema.value,
-      schema => {
+      (schema) => {
         if (unref(isUpdateDefaultRef)) {
           return;
         }
@@ -322,7 +347,7 @@ export default defineComponent({
 
     onMounted(() => {
       initDefault();
-      emit('register', formActionType);
+      emit("register", formActionType);
     });
 
     return {
@@ -339,9 +364,9 @@ export default defineComponent({
       loadingSub,
       isInline,
       getComponentProps,
-      unfoldToggle
+      unfoldToggle,
     };
-  }
+  },
 });
 </script>
 

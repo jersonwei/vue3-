@@ -94,7 +94,7 @@ const actionColumn = reactive({
           label: '编辑',
           // eslint-disable-next-line @typescript-eslint/no-use-before-define
           onClick: handleEdit.bind(null, record)
-        },
+        }
 
         // {
         //   label: '预览',

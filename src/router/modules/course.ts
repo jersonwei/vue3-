@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-04-30 08:41:04
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-21 09:49:18
+ * @LastEditTime: 2022-06-06 08:43:06
  * @FilePath: \work\src\router\modules\course.ts
  * @Description:
  */

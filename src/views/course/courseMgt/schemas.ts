@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-05-12 17:48:09
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-23 11:30:40
+ * @LastEditTime: 2022-06-06 10:55:46
  * @FilePath: \work\src\views\course\courseMgt\schemas.ts
  * @Description:
  */
@@ -18,7 +18,7 @@ export const schemas = [
   },
   {
     field: 'courseCategory',
-    label: '所属类别',
+    label: '课程类别',
     slot: 'courseCategorySlot'
   },
   {
