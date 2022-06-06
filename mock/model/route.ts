@@ -660,10 +660,15 @@ export const routeModel: Record<Auth.RoleType, AuthRoute.Route[]> = {
         {
           name: 'learnAnalysis_testAnalysis',
           path: '/learnAnalysis/testAnalysis',
-          component: 'multi',
-          children: [
-            {
-              name: 'learnAnalysis_testAnalysis_personalTest',
+          component: 'self',
+          meta: {
+            title: '实验分析',
+            requiresAuth: true,
+            icon: 'icon-park-outline:analysis'
+          }
+        },
+				{
+          name: 'learnAnalysis_testAnalysis_personalTest',
               path: '/learnAnalysis/testAnalysis/personalTest',
               component: 'self',
               meta: {
@@ -671,13 +676,6 @@ export const routeModel: Record<Auth.RoleType, AuthRoute.Route[]> = {
                 requiresAuth: true,
                 icon: 'ic:outline-menu'
               }
-            }
-          ],
-          meta: {
-            title: '实验分析',
-            requiresAuth: true,
-            icon: 'icon-park-outline:analysis'
-          }
         },
         {
           name: 'learnAnalysis_questAnalysis',

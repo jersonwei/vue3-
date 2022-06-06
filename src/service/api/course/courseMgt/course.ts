@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-05-04 09:02:06
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-30 10:59:38
+ * @LastEditTime: 2022-06-06 17:33:36
  * @FilePath: \work\src\service\api\course\courseMgt\course.ts
  * @Description:
  */
@@ -89,6 +89,12 @@ export function getCouserInfo(params) {
 
 export function getCollegeLegistt() {
   const res = request.get(`/college/getList`);
+  return res;
+}
+
+export function getMajorList(params) {
+	const query = paramsToQuery(params);
+  const res = request.get(`/major/getList${query}`);
   return res;
 }
 
