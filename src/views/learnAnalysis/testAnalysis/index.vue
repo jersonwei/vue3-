@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-06-06 08:53:26
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-06-07 16:40:20
+ * @LastEditTime: 2022-06-07 17:17:43
  * @FilePath: \work\src\views\learnAnalysis\testAnalysis\index.vue
  * @Description:
 -->
@@ -32,10 +32,14 @@
                 <n-input-group>
                   <n-input v-model:value="searchForm.courseName" placeholder="课程名称" />
                 </n-input-group>
-                <n-button-group style="width: 100%">
-                  <n-button style="width: 50%" type="info" @click="search">搜索</n-button>
-                  <n-button style="width: 50%" @click="refresh">重置</n-button>
-                </n-button-group>
+
+                <div style="display: flex">
+                  <n-button style="width: 40%" type="info" @click="search">搜索</n-button>
+                  <n-button style="width: 40%; margin-left: auto" @click="refresh"
+                    >重置</n-button
+                  >
+                </div>
+
                 <div class="py-3 menu-list">
                   <template v-if="loading">
                     <div class="flex items-center justify-center py-4">
@@ -120,12 +124,11 @@
               @update:value="updateClassId"
             />
           </n-form-item>
-          <n-grid x-gap="12" :cols="2" :x-gap="20">
-            "
+          <n-grid style="margin-top: 10px" x-gap="12" :cols="2" :x-gap="20">
             <n-gi>
               <n-card title="实验报告成绩分析" embedded>
-                <div class="w-full h-160px">
-                  <n-space vertical class="flex">
+                <div class="w-full h-180px">
+                  <n-space vertical class="flex" style="padding-top: 30px">
                     <p class="flex-center" style="font-size: 20px">实验报告平均分</p>
                     <p class="flex-center font-600" style="font-size: 20px">
                       {{ analysis.avg }} 分
@@ -143,16 +146,17 @@
                 </div> </n-card
             ></n-gi>
             <n-gi
-              ><n-card title="学生课程实验报告完成进度" embedded>
+              ><n-card title="实验报告时长分析" embedded>
                 <template v-if="analysis.durationAnalysis.length">
-                  <n-scrollbar style="max-height: 160px">
+                  <n-scrollbar style="max-height: 180px" class="w-full h-180px">
                     <div v-for="(item, index) in analysis.durationAnalysis">
                       <n-space>
                         <n-avatar
                           round
+                          size="small"
                           :style="{
                             color: 'white',
-                            backgroundColor: 'red',
+                            backgroundColor: getBackGroundColor(index),
                           }"
                         >
                           {{ item.shortId }}
@@ -175,12 +179,18 @@
             </n-gi>
           </n-grid>
 
-          <n-card class="border" title="学生章节分析" :bordered="false">
+          <n-card
+            class="border"
+            style="margin-top: 10px"
+            title="报告成绩分布（班级）"
+            :bordered="false"
+            embedded
+          >
             <template v-if="analysis.durationAnalysis.length">
-              <div ref="pieRef" class="w-full h-300px" id="pieEcharts"></div>
+              <div ref="pieRef" class="w-full h-260px" id="pieEcharts"></div>
             </template>
             <template v-else>
-              <n-empty style="height: 300px" description="暂无数据"></n-empty
+              <n-empty style="height: 280px" description="暂无数据"></n-empty
             ></template>
           </n-card>
         </n-gi>
@@ -201,6 +211,10 @@ import * as echarts from "echarts/core";
 
 // 重写一下，咋感觉逻辑东一块西一块
 const message = useMessage();
+const getBackGroundColor = (index) => {
+  const page = ["rgb(255, 77, 79)", "rgb(255, 102, 0)","rgb(250, 169, 14)","rgb(99, 99, 99)","rgb(99, 99, 99)"];
+  return page[index]
+};
 // -------------左侧逻辑
 const searchForm = reactive({
   courseName: "",
@@ -272,7 +286,7 @@ const refresh = () => {
 };
 // 左侧的数据右侧查询章节课时
 const form = reactive({
-  classId: "",
+  classId: null,
 });
 const classOptions = ref();
 
@@ -350,7 +364,7 @@ const getTestReportGradeData = async (id: string) => {
       const options = {
         xAxis: {
           type: "category",
-          data: ["<60", "60-70", "70-80", "80-90", "90-100"],
+          data: ["<60", "60-69", "70-79", "80-89", "90-100"],
         },
         yAxis: {
           type: "value",
