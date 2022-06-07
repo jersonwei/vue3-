@@ -116,18 +116,14 @@ const actionColumn = reactive({
         actions: [
           {
             label: "编辑",
-
-            // eslint-disable-next-line @typescript-eslint/no-use-before-define
             onClick: handleEdit.bind(null, record),
           },
           {
             label: "配置",
-            // eslint-disable-next-line @typescript-eslint/no-use-before-define
             onClick: handleConfig.bind(null, record),
           },
           {
             label: "预览",
-            // eslint-disable-next-line @typescript-eslint/no-use-before-define
             onClick: handleDetail.bind(null, record),
           },
         ],
@@ -139,28 +135,23 @@ const actionColumn = reactive({
         {
           label: "删除",
           icon: "ic:outline-delete-outline",
-          // eslint-disable-next-line @typescript-eslint/no-use-before-define
           onClick: handleDelete.bind(null, record),
         },
         {
           label: "编辑",
 
-          // eslint-disable-next-line @typescript-eslint/no-use-before-define
           onClick: handleEdit.bind(null, record),
         },
         {
           label: "配置",
-          // eslint-disable-next-line @typescript-eslint/no-use-before-define
           onClick: handleConfig.bind(null, record),
         },
         {
           label: "预览",
-          // eslint-disable-next-line @typescript-eslint/no-use-before-define
           onClick: handleDetail.bind(null, record),
         },
         {
           label: "定时上架",
-          // eslint-disable-next-line @typescript-eslint/no-use-before-define
           onClick: handUpdateStatus.bind(null, record),
         },
       ],

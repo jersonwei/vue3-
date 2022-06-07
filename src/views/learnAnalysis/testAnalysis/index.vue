@@ -56,11 +56,15 @@
                               >
                               </n-avatar>
                             </template>
+                            <template #header-extra>
+                              <n-button size="small" text> 学生列表 </n-button>
+                            </template>
                             <template #header>
-                              <p style="color: rgb(0, 35, 255)">{{ item.courseName }}</p>
+                              <p>{{ item.courseName }}</p>
+                              <!-- style="color: rgb(0, 35, 255)" -->
                             </template>
                             <template #description>
-                              {{ itemcollegeName }} 网络工程专业（一班）
+                              {{ item.collegeName }} {{ item.className }}
                             </template>
                           </n-thing>
                         </div>
@@ -122,7 +126,7 @@ import { FormPro, FormSchema, useForm } from '@/components/FormPro';
 import { CaretUpOutlined,CaretDownFilled } from '@vicons/antd';
 import {schemas} from './schemas'
 import {getCollegeLegistOptions,getChildren} from './getOptions'
-import {searchCouserInfo} from '@/service'
+import {getCourseGradeVo} from '@/service'
 
 const Form = reactive({
   courseName: "",
@@ -151,15 +155,15 @@ const loadDataTable = async() => {
 	loading.value = true
 	const i = Form.majorId?.indexOf('-');
   const majorId = Form.majorId?.substring(i + 1);
-const Param = {
+	const Param = {
     pageSize: 10,
     current: pagination.value.current,
 		courseName: Form.courseName,
 		majorId
   };
-  const { data: result } = await searchCouserInfo({ ...Param });
-	courseList.value =result.records
-	console.log(courseList.value)
+  const { data: result } = await getCourseGradeVo({ ...Param });
+	courseList.value =result.records;
+	console.log(result.records)
 	pagination.value.pages = result.pages;
 	loading.value = false
 }

@@ -2,8 +2,8 @@
  * @Author: ZHENG
  * @Date: 2022-04-30 08:41:04
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-04 14:08:39
- * @FilePath: \e-class-admin\src\typings\business.d.ts
+ * @LastEditTime: 2022-06-07 08:46:22
+ * @FilePath: \work\src\typings\business.d.ts
  * @Description:
  */
 /** 用户相关模块 */
@@ -15,8 +15,8 @@ declare namespace Auth {
    * - teacher: 教师
    * - student: 学生(无权限路由)
    */
-  // | 'student'| 'admin'
-  type RoleType = 'super' | 'teacher';
+  // | 'student'
+  type RoleType = 'super'| 'admin' | 'teacher';
 
   /** 用户信息 */
   interface UserInfo {

@@ -4,7 +4,7 @@
  * @Author: ZHENG
  * @Date: 2022-05-02 21:49:42
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-23 11:53:26
+ * @LastEditTime: 2022-06-07 08:54:07
  * @FilePath: \work\src\components\TablePro\hooks\useColumns.ts
  * @Description:
  */
@@ -109,8 +109,9 @@ export function useColumns(propsRef: ComputedRef<BasicTableProps>) {
     const { actionColumn } = unref(propsRef);
 
     if (!actionColumn) return;
-    console.log(hasPermission());
-    if (!hasPermission()) return;
+		// 取消按钮权限的render--2022-06-07 经理说要查看权限，又注释掉
+    // console.log(hasPermission());
+    // if (!hasPermission()) return;
     // eslint-disable-next-line no-unused-expressions
     !columns.find(col => col.key === 'action') &&
       columns.push({
