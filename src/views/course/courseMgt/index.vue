@@ -110,25 +110,37 @@ const actionColumn = reactive({
   key: "action",
   fixed: "right",
   render(record: Recordable<any>) {
-    // if (record.status === 1) {
-    //   return h(TableAction as any, {
-    //     style: "button",
-    //     actions: [
-    //       {
-    //         label: "编辑",
-    //         onClick: handleEdit.bind(null, record),
-    //       },
-    //       {
-    //         label: "配置",
-    //         onClick: handleConfig.bind(null, record),
-    //       },
-    //       {
-    //         label: "预览",
-    //         onClick: handleDetail.bind(null, record),
-    //       },
-    //     ],
-    //   });
-    // }
+    if (record.status === 1) {
+      return h(TableAction as any, {
+        style: "button",
+        actions: [
+          {
+            label: "编辑",
+            onClick: handleEdit.bind(null, record),
+            // 根据业务控制是否显示 isShow 和 auth 是并且关系
+            ifShow: () => {
+              return true;
+            },
+            // 根据权限控制是否显示: 有权限，会显示，支持多个
+            auth: ["teacher"],
+          },
+          {
+            label: "配置",
+            onClick: handleConfig.bind(null, record),
+            // 根据业务控制是否显示 isShow 和 auth 是并且关系
+            ifShow: () => {
+              return true;
+            },
+            // 根据权限控制是否显示: 有权限，会显示，支持多个
+            auth: ["teacher"],
+          },
+          {
+            label: "预览",
+            onClick: handleDetail.bind(null, record),
+          },
+        ],
+      });
+    }
     return h(TableAction as any, {
       style: "button",
       actions: [
@@ -136,15 +148,33 @@ const actionColumn = reactive({
           label: "删除",
           icon: "ic:outline-delete-outline",
           onClick: handleDelete.bind(null, record),
+          // 根据业务控制是否显示 isShow 和 auth 是并且关系
+          ifShow: () => {
+            return true;
+          },
+          // 根据权限控制是否显示: 有权限，会显示，支持多个
+          auth: ["teacher"],
         },
         {
           label: "编辑",
 
           onClick: handleEdit.bind(null, record),
+          // 根据业务控制是否显示 isShow 和 auth 是并且关系
+          ifShow: () => {
+            return true;
+          },
+          // 根据权限控制是否显示: 有权限，会显示，支持多个
+          auth: ["teacher"],
         },
         {
           label: "配置",
           onClick: handleConfig.bind(null, record),
+          // 根据业务控制是否显示 isShow 和 auth 是并且关系
+          ifShow: () => {
+            return true;
+          },
+          // 根据权限控制是否显示: 有权限，会显示，支持多个
+          auth: ["teacher"],
         },
         {
           label: "预览",
@@ -153,6 +183,12 @@ const actionColumn = reactive({
         {
           label: "定时上架",
           onClick: handUpdateStatus.bind(null, record),
+          // 根据业务控制是否显示 isShow 和 auth 是并且关系
+          ifShow: () => {
+            return true;
+          },
+          // 根据权限控制是否显示: 有权限，会显示，支持多个
+          auth: ["teacher"],
         },
       ],
     });
@@ -172,10 +208,8 @@ const getOption = async () => {
 getOption();
 const handleLoad = (option: CascaderOption) => {
   return new Promise<void>((resolve) => {
-    window.setTimeout(() => {
-      cascaderOptions.value.children = getChildren(option);
-      resolve();
-    }, 1000);
+    cascaderOptions.value.children = getChildren(option);
+    resolve();
   });
 };
 

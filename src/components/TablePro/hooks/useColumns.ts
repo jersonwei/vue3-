@@ -4,14 +4,14 @@
  * @Author: ZHENG
  * @Date: 2022-05-02 21:49:42
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-06-07 09:04:48
+ * @LastEditTime: 2022-06-07 10:51:21
  * @FilePath: \work\src\components\TablePro\hooks\useColumns.ts
  * @Description:
  */
 import { ref, Ref, ComputedRef, unref, computed, watch, toRaw, h } from 'vue';
 import { NTooltip, NIcon } from 'naive-ui';
 import { isEqual, cloneDeep } from 'lodash-es';
-// import { FormOutlined } from '@vicons/antd';
+import { FormOutlined } from '@vicons/antd';
 import { usePermission } from '@/composables';
 import { isArray, isString, isBoolean, isFunction } from '@/utils';
 // import { usePermission } from '@/hooks/web/usePermission';
@@ -28,11 +28,12 @@ export function useColumns(propsRef: ComputedRef<BasicTableProps>) {
 
     // eslint-disable-next-line @typescript-eslint/no-use-before-define
     handleActionColumn(propsRef, columns);
+		console.log(columns)
     if (!columns) return [];
     return columns;
   });
 
-  const { hasPermission } = usePermission();
+  // const { hasBtnPermission } = usePermission();
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   function isIfShow(action: ActionItem): boolean {
@@ -60,13 +61,14 @@ export function useColumns(propsRef: ComputedRef<BasicTableProps>) {
   const getPageColumns = computed(() => {
     const pageColumns = unref(getColumnsRef);
     const columns = cloneDeep(pageColumns);
+
     return (
       columns
         // .filter(column => {
-        //   return hasPermission(column.auth as string[]) && isIfShow(column);
+				// 	console.log(column,hasBtnPermission(column?.auth as string[]))
+        //   return hasBtnPermission(column.auth as string[]) && isIfShow(column);
         // })
         .map(column => {
-					console.log(column)
           // 默认 ellipsis 为true
           column.ellipsis = typeof column.ellipsis === 'undefined' ? { tooltip: true } : false;
           const { edit } = column;
@@ -93,6 +95,7 @@ export function useColumns(propsRef: ComputedRef<BasicTableProps>) {
               };
             }
           }
+					console.log(column)
           return column;
         })
     );

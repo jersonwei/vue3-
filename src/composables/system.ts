@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-05-16 15:06:20
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-23 11:29:36
+ * @LastEditTime: 2022-06-07 10:56:52
  * @FilePath: \work\src\composables\system.ts
  * @Description:
  */
@@ -40,10 +40,9 @@ export function useDeviceInfo() {
 /** 权限判断 */
 export function usePermission() {
   const auth = useAuthStore();
+	const { userRole } = auth.userInfo;
 
   function hasPermission(permission: Auth.RoleType | Auth.RoleType[]) {
-    const { userRole } = auth.userInfo;
-
     let has = userRole === 'teacher';
     if (!has) {
       if (isArray(permission)) {
@@ -56,7 +55,26 @@ export function usePermission() {
     return has;
   }
 
+	/**
+   * 检查权限
+   * @param accesses
+   */
+	 function _somePermissions(accesses: string[]) {
+    return accesses.some((item) => {
+      return accesses.includes(userRole);
+    });
+  }
+	 /**
+   * 判断是否存在权限
+   * 可用于 v-if 显示逻辑
+   * */
+		function hasBtnPermission(accesses: string[]): boolean {
+			if (!accesses || !accesses.length) return true;
+			return _somePermissions(accesses);
+		}
+
   return {
-    hasPermission
+    hasPermission,
+		hasBtnPermission
   };
 }
