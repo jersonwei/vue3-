@@ -26,3 +26,5 @@ export * from './unitPracticeAnswers/unitPracticeAnswers';
 export * from './courseMark/courseMark';
 
 export * from './question/index';
+
+export * from './user/index'

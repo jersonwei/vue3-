@@ -45,6 +45,9 @@ declare namespace AuthRoute {
     | 'system'
     | 'system_menu'
     | 'system_dictionary'
+    | 'user'
+    | 'user_student'
+    | 'user_teacher'
     | 'about';
 
   /** 路由的path */
