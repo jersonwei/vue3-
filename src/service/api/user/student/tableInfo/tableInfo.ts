@@ -15,7 +15,7 @@ export function getStudentTableInfo(params) {
 }
 // 新增学生/student
 export function addStudent(params) {
-  const res = request.post(`/student`, params);
+  const res = request.post(`/student/`, params);
   return res;
 }
 // 编辑学生

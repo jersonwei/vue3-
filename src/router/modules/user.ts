@@ -23,7 +23,17 @@ const user: AuthRoute.Route = {
         requiresAuth: true,
         icon: 'ic:baseline-web-asset-off'
       }
-    }
+    },
+		{
+			name: 'user_toLead',
+			path: '/user/toLead',
+			component: 'self',
+			meta: {
+				title: '学生导入',
+				requiresAuth: true,
+				icon: 'ic:baseline-block'
+			}
+		}
   ],
   meta: {
     title: '用户管理',

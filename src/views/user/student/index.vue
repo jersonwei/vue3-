@@ -1,5 +1,5 @@
 <template>
-  <n-card class="relative" :bordered="false">
+  <n-card class="relative" h-full :bordered="false">
     <!-- 上方搜索栏 -->
     <FormPro @register="register" @submit="handleSubmit" @reset="reloadTable">
       <template #genderSlot="{ model, field }">
@@ -83,11 +83,10 @@
         </n-button>
       </template>
     </TablePro>
-    <!-- <addStudentModalVue ref="addOrEditModalRef" @reload-table="reloadTable"></addStudentModalVue> -->
-    <addStudentModalVue
+    <addOrEditModalVue
       ref="addOrEditModalRef"
       @reload-table="reloadTable"
-    ></addStudentModalVue>
+    ></addOrEditModalVue>
     <delModal
       ref="delModalRef"
       :del-data="delData"
@@ -101,15 +100,15 @@
 import { h, reactive, ref } from "vue";
 // import { useRouter } from 'vue-router';
 import { PlusOutlined } from "@vicons/antd";
-// import { useRouterPush } from '@/composables';
+import { useRouterPush } from "@/composables";
 import { getStudentTableInfo } from "@/service";
 import { getUserInfo } from "@/utils";
 import { TablePro, TableAction } from "@/components/TablePro";
 import { FormPro, useForm } from "@/components/FormPro";
 import { columns } from "./columns";
 import { schemas } from "./schemas";
-// import addOrEditModalVue from './components/addOrEditModal.vue';
-import addStudentModalVue from "./components/addStudentModal.vue";
+import addOrEditModalVue from "./components/addOrEditModal.vue";
+
 // 删除学生
 import delModal from "./components/delModal.vue";
 // 导入获取头部下拉框接口
@@ -142,7 +141,7 @@ const actionColumn = reactive({
           {
             label: "编辑",
             // eslint-disable-next-line @typescript-eslint/no-use-before-define
-            // onClick: handleEdit.bind(null, record)
+            onClick: handleEdit.bind(null, record),
           },
           {
             label: "删除",
@@ -212,14 +211,18 @@ const [register] = useForm({
 });
 // 新建和编辑弹窗
 const addOrEditModalRef = ref();
-const addStudentModalRef = ref();
 // 新建
 const addStudent = () => {
   addOrEditModalRef.value.showModalFn();
-  addStudentModalRef.value.showModalFn();
+  // addStudentModalRef.value.showModalFn();
+};
+// 编辑
+const handleEdit = (record: Recordable) => {
+  addOrEditModalRef.value.editModalFn(record);
 };
 // 导入
 const importStudent = () => {
+  routerPush({ name: "user_toLead" });
   console.log("daoru");
 };
 // 导出
@@ -259,7 +262,11 @@ const loadDataTable = async (res: any) => {
   console.log(result);
   return result;
 };
-// const { routerPush } = useRouterPush();
+const { routerPush } = useRouterPush();
+// 批量导入
+const toLead = () => {
+  routerPush({ name: "user_toLead" });
+};
 
 // 档案跳转
 const recordSee = () => {

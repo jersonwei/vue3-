@@ -164,6 +164,18 @@ export const routeModel: Record<Auth.RoleType, AuthRoute.Route[]> = {
             requiresAuth: true,
             icon: 'ic:baseline-block'
           }
+        },
+				{
+          name: 'user_toLead',
+          path: '/user/toLead',
+          component: 'self',
+          meta: {
+            title: '学生导入',
+            requiresAuth: true,
+            hide: true,
+            keepAlive: true,
+            icon: 'ic:baseline-block'
+          }
         }
       ],
       meta: {
@@ -442,6 +454,18 @@ export const routeModel: Record<Auth.RoleType, AuthRoute.Route[]> = {
           meta: {
             title: '教师管理',
             requiresAuth: true,
+            icon: 'ic:baseline-block'
+          }
+        },
+				{
+          name: 'user_toLead',
+          path: '/user/toLead',
+          component: 'self',
+          meta: {
+            title: '学生导入',
+						requiresAuth: true,
+            hide: true,
+            keepAlive: true,
             icon: 'ic:baseline-block'
           }
         }
@@ -815,6 +839,18 @@ export const routeModel: Record<Auth.RoleType, AuthRoute.Route[]> = {
           meta: {
             title: '教师管理',
             requiresAuth: true,
+            icon: 'ic:baseline-block'
+          }
+        },
+				{
+          name: 'user_toLead',
+          path: '/user/toLead',
+          component: 'self',
+          meta: {
+            title: '学生导入',
+            requiresAuth: true,
+            hide: true,
+            keepAlive: true,
             icon: 'ic:baseline-block'
           }
         }
