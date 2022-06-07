@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-04-30 15:51:30
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-06-07 11:12:07
+ * @LastEditTime: 2022-06-07 11:33:47
  * @FilePath: \work\src\views\course\courseMgt\columns.ts
  * @Description:
  */
@@ -138,12 +138,17 @@ export const columns = [
 		title: '定时上架时间',
     key: 'launchTime',
     width: 150,
-		render(row: { launchTime: string }) {
+		render(row: { status: number,launchTime: string }) {
 			const toDate = format(new Date(), 'yyyy-MM-dd HH:mm:ss')
 			const date = format(new Date(row.launchTime), 'yyyy-MM-dd HH:mm:ss')
 			console.log(toDate,date)
-			// const tags = format(date, 'yyyy-MM-dd')
-			return date;
+      if(row.status === 1){
+        return '';
+      }
+			else{
+        return date;
+      }
+
 	}
 	}
 ];

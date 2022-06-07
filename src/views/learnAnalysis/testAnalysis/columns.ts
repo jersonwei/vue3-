@@ -2,14 +2,14 @@
  * @Author: ZHENG
  * @Date: 2022-06-06 10:41:27
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-06-06 10:42:28
- * @FilePath: \work\src\views\learnAnalysis\testAnalysis\personalTest\column.ts
+ * @LastEditTime: 2022-06-07 13:34:20
+ * @FilePath: \work\src\views\learnAnalysis\testAnalysis\columns.ts
  * @Description:
  */
 export const columns = [
   {
-    title: '章节/课时名称',
-    key: 'Name',
+    title: '序号',
+    key: 'shortId',
     width: 100,
   },
 

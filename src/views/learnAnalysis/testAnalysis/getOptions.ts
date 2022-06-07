@@ -2,12 +2,12 @@
  * @Author: ZHENG
  * @Date: 2022-06-06 16:34:56
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-06-06 17:44:53
+ * @LastEditTime: 2022-06-07 15:16:22
  * @FilePath: \work\src\views\learnAnalysis\testAnalysis\getOptions.ts
  * @Description:
  */
 
-import { getCollegeLegistt, getMajorList } from "@/service";
+import { getChapterList, getCollegeLegistt, getMajorList, getUnitList } from "@/service";
 import { CascaderOption } from "naive-ui";
 
 /**
@@ -35,3 +35,13 @@ export async function getChildren(option: CascaderOption) {
     option.children = newList;
   }
 }
+
+// 获取章节数据
+export async function getChapter(params) {
+  const {data:result} = await getChapterList(params)
+	const newList = result.map(item => {
+    return { value: item.id, label: item.chapterName, depth: 1, isLeaf: false};
+  });
+	return newList
+}
+

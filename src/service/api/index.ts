@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-04-30 08:41:04
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-25 08:35:11
+ * @LastEditTime: 2022-06-07 16:45:32
  * @FilePath: \work\src\service\api\index.ts
  * @Description:
  */
@@ -23,8 +23,8 @@ export * from './testReport/testReport';
 
 export * from './unitPracticeAnswers/unitPracticeAnswers';
 
-export * from './courseMark/courseMark';
 
 export * from './question/index';
 
+export * from './learnAnalysis/learnAnalysis'
 export * from './user/index'

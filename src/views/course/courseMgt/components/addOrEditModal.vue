@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-05-12 17:34:13
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-28 21:15:49
+ * @LastEditTime: 2022-06-07 17:57:20
  * @FilePath: \work\src\views\course\courseMgt\components\addOrEditModal.vue
  * @Description:
 -->
@@ -26,15 +26,43 @@
         class="m-2 py-4"
       >
         <n-form-item label="课程名称" path="courseName">
-          <n-input v-model:value="formParams.courseName" placeholder="请输入课程名称" />
+          <n-input
+            v-model:value="formParams.courseName"
+            maxlength="30"
+            show-count
+            clearable
+            placeholder="请输入课程名称"
+          />
         </n-form-item>
-        <n-form-item label="所属类别" path="courseCategory">
-          <n-select v-model:value="formParams.courseCategory" clearable :options="form.courseCategory" />
+        <n-form-item label="课程类别" path="courseCategory">
+          <n-select
+            v-model:value="formParams.courseCategory"
+            clearable
+            :options="form.courseCategory"
+            placeholder="请选择课程类别"
+          />
         </n-form-item>
         <n-form-item label="所属班级" path="classList">
-          <n-select v-model:value="formParams.classList" clearable multiple :options="form.majorId" />
+          <n-select
+            v-model:value="formParams.classList"
+            clearable
+            multiple
+            placeholder="请选择所属班级"
+            :options="form.majorId"
+          />
         </n-form-item>
         <n-form-item label="课程标签" path="labelList">
+          <template #label>
+            课程标签
+            <n-tooltip trigger="hover">
+              <template #trigger>
+                <n-icon size="18" class="cursor-pointer text-gray-400">
+                  <QuestionCircleOutlined />
+                </n-icon>
+              </template>
+              如果没有所需标签可以输入,可多选
+            </n-tooltip>
+          </template>
           <n-select
             v-model:value="formParams.labelList"
             filterable
@@ -43,12 +71,30 @@
             tag
             :options="form.label"
             @create="createLabel"
+            placeholder="请选择课程标签"
           />
         </n-form-item>
         <n-form-item label="课程介绍" path="note">
-          <n-input v-model:value="formParams.note" type="textarea" placeholder="课程介绍" />
+          <n-input
+            v-model:value="formParams.note"
+            type="textarea"
+            placeholder="请输入课程介绍"
+          />
         </n-form-item>
         <n-form-item label="课程封面" path="uploadIMage">
+          <template #label>
+            课程封面
+            <n-tooltip trigger="hover">
+              <template #trigger>
+                <n-icon size="18" class="cursor-pointer text-gray-400">
+                  <QuestionCircleOutlined />
+                </n-icon>
+              </template>
+              上传png或者jpg文件,尺寸为 1080*720 或 3:2，请上传jpg、png格式的图片,
+              建议图片大小不超过2MB。
+            </n-tooltip>
+          </template>
+
           <n-upload
             v-model:file-list="formParams.uploadIMage"
             :action="`${getServiceEnv}/uploadIMage`"
@@ -59,6 +105,17 @@
           />
         </n-form-item>
         <n-form-item label="课程大纲" path="text">
+          <template #label>
+            课程大纲
+            <n-tooltip trigger="hover">
+              <template #trigger>
+                <n-icon size="18" class="cursor-pointer text-gray-400">
+                  <QuestionCircleOutlined />
+                </n-icon>
+              </template>
+              上传pdf文件
+            </n-tooltip>
+          </template>
           <n-upload
             v-model:file-list="formParams.uploadOutline"
             :action="`${getServiceEnv}/uploadOutline`"
@@ -66,13 +123,24 @@
             :max="1"
             @before-upload="beforeOutLineUpload"
           >
-            <n-button>上传文件</n-button>
+            <n-button
+              ><template #icon>
+                <n-icon>
+                  <UploadOutlined />
+                </n-icon> </template
+              >上传文件</n-button
+            >
           </n-upload>
         </n-form-item>
         <n-form-item label="创建虚拟机" path="robot">
           <n-radio-group v-model:value="formParams.robot" name="radiogroup">
             <n-space>
-              <n-radio v-for="song in form.songs" :key="song.value" :value="song.value" @change="handleChange">
+              <n-radio
+                v-for="song in form.songs"
+                :key="song.value"
+                :value="song.value"
+                @change="handleChange"
+              >
                 {{ song.label }}
               </n-radio>
             </n-space>
@@ -87,13 +155,19 @@
             />
           </n-form-item>
           <n-form-item label="子虚拟机数量" path="courseName">
-            <n-input-number v-model:value="formParams.virtualNumber" placeholder="子虚拟机数量" />
+            <n-input-number
+              v-model:value="formParams.virtualNumber"
+              placeholder="子虚拟机数量"
+            />
           </n-form-item>
         </template>
         <template v-if="showForm === false">
           <view v-for="(item, index) in local" :key="index">
             <n-form-item :label="`本地虚拟机镜像${index + 1}`" path="courseName">
-              <n-input v-model:value="formParams.local[index]" placeholder="请输入课程名称" />
+              <n-input
+                v-model:value="formParams.local[index]"
+                placeholder="请输入课程名称"
+              />
               <n-button v-if="index > 0" tertiary circle type="primary" @click="cutLocal">
                 <template #icon>
                   <n-icon>
@@ -103,7 +177,10 @@
               </n-button>
             </n-form-item>
             <n-form-item :label="`本地虚拟机快照${index + 1}`" path="courseName">
-              <n-input v-model:value="formParams.localName[index]" placeholder="请输入课程名称" />
+              <n-input
+                v-model:value="formParams.localName[index]"
+                placeholder="请输入课程名称"
+              />
             </n-form-item>
           </view>
           <n-form-item>
@@ -123,20 +200,34 @@
     <template #action>
       <n-space>
         <n-button @click="() => ((showModal = false), (showForm = null))">取消</n-button>
-        <n-button type="info" :loading="formBtnLoading" @click="confirmForm">确定</n-button>
+        <n-button type="info" :loading="formBtnLoading" @click="confirmForm"
+          >确定</n-button
+        >
       </n-space>
     </template>
   </n-modal>
 </template>
 <script lang="ts" setup>
-import { reactive, ref } from 'vue';
-import { UploadCustomRequestOptions, UploadFileInfo, useMessage } from 'naive-ui';
-import { MinusCircleOutlined } from '@vicons/antd';
-import { useDebounceFn } from '@vueuse/core';
-import { useAuthStore } from '@/store';
-import { addCourse, saveOrUpdateLabel, updateCourseInfo } from '@/service';
-import { fileTypeOfImage, fileTypeOfOutLine, getServiceEnv, deafultFormParams } from '@/utils';
-import { getCourseCategoryOptions, getClassListOptions, getLabelsOptions } from '../getOptions';
+import { reactive, ref } from "vue";
+import { UploadCustomRequestOptions, UploadFileInfo, useMessage } from "naive-ui";
+import {
+  MinusCircleOutlined,
+  QuestionCircleOutlined,
+  UploadOutlined,
+} from "@vicons/antd";
+import { useDebounceFn } from "@vueuse/core";
+import { addCourse, saveOrUpdateLabel, updateCourseInfo } from "@/service";
+import {
+  fileTypeOfImage,
+  fileTypeOfPdf,
+  getServiceEnv,
+  deafultFormParams,
+} from "@/utils";
+import {
+  getCourseCategoryOptions,
+  getClassListOptions,
+  getLabelsOptions,
+} from "../getOptions";
 
 const showModal = ref(false);
 const addOrEdit = ref(false); // true 新增，false修改
@@ -147,22 +238,22 @@ const formRef = ref();
 const message = useMessage();
 
 let Form = new FormData();
-const emits = defineEmits(['reloadTable']);
+const emits = defineEmits(["reloadTable"]);
 const formParams = reactive({
-  courseName: '',
-  courseCategory: '',
-  majorId: '',
-  note: '',
+  courseName: "",
+  courseCategory: null,
+  majorId: "",
+  note: "",
   label: [],
-  robot: '',
-  virtualRobot: '',
+  robot: "",
+  virtualRobot: "",
   virtualNumber: 0,
   classList: [],
   labelList: [],
   local: [],
   localName: [],
   uploadIMage: [],
-  uploadOutline: []
+  uploadOutline: [],
 });
 
 const showModalFn = () => {
@@ -176,8 +267,7 @@ const editID = ref();
 const serviceEnv = getServiceEnv();
 // const labelList = ref([]);
 // const classList = ref([]);
-const editModalFn = record => {
-  console.log(record);
+const editModalFn = (record) => {
   Form = new FormData();
   editID.value = record.id;
   formParams.labelList = [];
@@ -185,17 +275,17 @@ const editModalFn = record => {
   const formData = {
     courseCategory: record.courseCategory,
     courseName: record.courseName,
-    label: record?.labelId?.split(','),
+    label: record?.labelId?.split(","),
     labelName: record.listLabelName,
-    majorId: record?.eclassId?.split(','),
+    majorId: record?.eclassId?.split(","),
     note: record.note,
     uploadIMage: [
       {
-        status: 'finished',
-        url: `${serviceEnv}${record.coverPic}`
-      }
+        status: "finished",
+        url: `${serviceEnv}${record.coverPic}`,
+      },
     ],
-    uploadOutline: []
+    uploadOutline: [],
     // local: []
     // localName: []
     // robot: ""
@@ -205,16 +295,22 @@ const editModalFn = record => {
   for (let i = 0; i < formData.label?.length; i++) {
     formParams.labelList.push(parseInt(formData.label[i], 10));
   }
-  console.log('formData.majorId', formData.majorId);
+  console.log("formData.majorId", formData.majorId);
   for (let i = 0; i < formData.majorId?.length; i++) {
     formParams.classList.push(parseInt(formData.majorId[i], 10));
   }
   formData.label = formParams.labelList;
   formData.majorId = formParams.classList;
   if (record.courseOutline) {
-    const outLineIndexOf = record.courseOutline.indexOf('outline/');
+    const outLineIndexOf = record.courseOutline.indexOf("outline/");
     const outLineName = record.courseOutline.slice(outLineIndexOf + 8);
-    formData.uploadOutline = [{ name: outLineName, status: 'finished', url: `${serviceEnv}${record.courseOutline}` }];
+    formData.uploadOutline = [
+      {
+        name: outLineName,
+        status: "finished",
+        url: `${serviceEnv}${record.courseOutline}`,
+      },
+    ];
   }
   // eslint-disable-next-line @typescript-eslint/no-use-before-define
   Object.assign(formParams, formData);
@@ -226,17 +322,17 @@ const editModalFn = record => {
 const rules = {
   courseName: {
     required: true,
-    trigger: ['blur', 'input'],
-    message: '请输入名称'
+    trigger: ["blur", "input"],
+    message: "请输入名称",
   },
   courseCategory: {
     required: true,
-    message: '请选择所属分类'
+    message: "请选择所属分类",
   },
   classList: {
     required: true,
-    message: '请选择所属班级'
-  }
+    message: "请选择所属班级",
+  },
   // labelList: {
   //   required: true,
   //   message: '请选择课程标签'
@@ -249,32 +345,32 @@ const form = reactive({
   label: [],
   virtualRobot: [
     {
-      label: 'Ubunto',
-      value: '0'
+      label: "Ubunto",
+      value: "0",
     },
     {
-      label: 'centos',
-      value: '1'
+      label: "centos",
+      value: "1",
     },
     {
-      label: 'jq',
-      value: '2'
-    }
+      label: "jq",
+      value: "2",
+    },
   ],
   songs: [
     {
-      value: '云端虚拟机',
-      label: '云端虚拟机'
+      value: "云端虚拟机",
+      label: "云端虚拟机",
     },
     {
-      value: '本地虚拟机',
-      label: '本地虚拟机'
-    }
-  ].map(s => {
+      value: "本地虚拟机",
+      label: "本地虚拟机",
+    },
+  ].map((s) => {
     // eslint-disable-next-line no-param-reassign
     s.value = s.value.toLowerCase();
     return s;
-  })
+  }),
 });
 
 const getList = async () => {
@@ -285,9 +381,9 @@ const getList = async () => {
 getList();
 
 const handleChange = () => {
-  if (formParams.robot === '云端虚拟机') {
+  if (formParams.robot === "云端虚拟机") {
     showForm.value = true;
-  } else if (formParams.robot === '本地虚拟机') {
+  } else if (formParams.robot === "本地虚拟机") {
     // eslint-disable-next-line @typescript-eslint/no-use-before-define
     addLocal();
     showForm.value = false;
@@ -305,7 +401,7 @@ const cutLocal = () => {
 const createLabel = useDebounceFn(async (label: string) => {
   const params = {
     labelName: label,
-    note: ''
+    note: "",
   };
   const { data: result } = await saveOrUpdateLabel(params);
   form.label.push({ label: result.labelName, value: result.id });
@@ -313,7 +409,6 @@ const createLabel = useDebounceFn(async (label: string) => {
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const confirmForm = (e: { preventDefault: () => void }) => {
-  const auth = useAuthStore();
   // e.preventDefault();
   formBtnLoading.value = true;
   formRef.value.validate((errors: any) => {
@@ -322,32 +417,32 @@ const confirmForm = (e: { preventDefault: () => void }) => {
         if (addOrEdit.value === true) {
           // Form.append('file', (fileImage[0] as File) || '');
           // Form.append('outLine', (outLine[0] as File) || '');
-          Form.append('courseName', formParams.courseName);
-          Form.append('courseCategory', formParams.courseCategory);
+          Form.append("courseName", formParams.courseName);
+          Form.append("courseCategory", formParams.courseCategory);
           if (formParams.classList) {
-            Form.append('eclassId', formParams.classList);
+            Form.append("eclassId", formParams.classList);
           }
           if (formParams.note) {
-            Form.append('note', formParams.note);
+            Form.append("note", formParams.note);
           }
           if (formParams.labelList.length) {
-            Form.append('labelId', formParams.labelList);
+            Form.append("labelId", formParams.labelList);
           }
           // const { userId } = auth.userInfo;
           // Form.append('lecturer', userId);
           const result = await addCourse(Form);
           if (!result.error) {
-            message.success(`新建成功`);
+            message.success(`新建课程成功`);
           }
         }
         if (addOrEdit.value === false) {
-          Form.append('id', editID.value);
-          Form.append('courseName', formParams.courseName);
-          Form.append('courseCategory', formParams.courseCategory);
-          Form.append('eclassId', formParams.classList);
-          Form.append('note', formParams.note);
+          Form.append("id", editID.value);
+          Form.append("courseName", formParams.courseName);
+          Form.append("courseCategory", formParams.courseCategory);
+          Form.append("eclassId", formParams.classList);
+          Form.append("note", formParams.note);
           if (formParams.labelList.length) {
-            Form.append('labelId', formParams.labelList);
+            Form.append("labelId", formParams.labelList);
           }
 
           // const { userId } = auth.userInfo;
@@ -355,16 +450,16 @@ const confirmForm = (e: { preventDefault: () => void }) => {
           const result = await updateCourseInfo(Form);
           console.log(result);
           if (!result.error) {
-            message.success(`修改成功`);
+            message.success(`修改课程成功`);
           }
         }
 
-        emits('reloadTable');
+        emits("reloadTable");
         showModal.value = false;
       });
       showForm.value = null;
     } else {
-      message.error('请填写完整信息');
+      message.error("请填写完整信息");
     }
     formBtnLoading.value = false;
   });
@@ -372,31 +467,37 @@ const confirmForm = (e: { preventDefault: () => void }) => {
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const customRequestIMage = ({ file, data }: UploadCustomRequestOptions) => {
-  Form.delete('file');
-  Form.append('file', file.file || '');
+  Form.delete("file");
+  Form.append("file", file.file || "");
 };
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const customRequestOutline = ({ file, data }: UploadCustomRequestOptions) => {
-  console.log('上传的文件', file.file);
-  Form.delete('outLine');
-  Form.append('outLine', file.file || '');
+  console.log("上传的文件", file.file);
+  Form.delete("outLine");
+  Form.append("outLine", file.file || "");
 };
 // 上传图片直接判断是否为
-const beforeUpload = async (data: { file: UploadFileInfo; fileList: UploadFileInfo[] }): Promise<boolean> => {
+const beforeUpload = async (data: {
+  file: UploadFileInfo;
+  fileList: UploadFileInfo[];
+}): Promise<boolean> => {
   const result = fileTypeOfImage(data);
   if (result === false) {
-    message.error('只能上传png或jpg格式的图片文件，请重新上传');
+    message.error("只能上传png或jpg格式的图片文件，请重新上传");
     return false;
   }
   return true;
 };
 
 // 上传图片直接判断是否为
-const beforeOutLineUpload = async (data: { file: UploadFileInfo; fileList: UploadFileInfo[] }): Promise<boolean> => {
-  const result = fileTypeOfOutLine(data);
+const beforeOutLineUpload = async (data: {
+  file: UploadFileInfo;
+  fileList: UploadFileInfo[];
+}): Promise<boolean> => {
+  const result = fileTypeOfPdf(data);
   if (result === false) {
-    message.error('只能上传ppt或pdf格式的图片文件，请重新上传');
+    message.error("只能上传pdf格式的文件，请重新上传");
     return false;
   }
   return true;
