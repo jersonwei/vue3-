@@ -138,6 +138,39 @@ export const routeModel: Record<Auth.RoleType, AuthRoute.Route[]> = {
         icon: 'fluent:book-information-24-regular',
         order: 8
       }
+    }
+		,
+    {
+      name: 'user',
+      path: '/user',
+      component: 'basic',
+      children: [
+        {
+          name: 'user_student',
+          path: '/user/student',
+          component: 'self',
+          meta: {
+            title: '学生管理',
+            requiresAuth: true,
+            icon: 'ic:baseline-block'
+          }
+        },
+        {
+          name: 'user_teacher',
+          path: '/user/teacher',
+          component: 'self',
+          meta: {
+            title: '教师管理',
+            requiresAuth: true,
+            icon: 'ic:baseline-block'
+          }
+        }
+      ],
+      meta: {
+        title: '用户管理',
+        icon: 'fluent:book-information-24-regular',
+        order: 8
+      }
     },
     {
       name: 'about',
@@ -384,6 +417,38 @@ export const routeModel: Record<Auth.RoleType, AuthRoute.Route[]> = {
       meta: {
         title: '测评管理',
         icon: 'gg:calendar-today',
+        order: 8
+      }
+    },
+    {
+      name: 'user',
+      path: '/user',
+      component: 'basic',
+      children: [
+        {
+          name: 'user_student',
+          path: '/user/student',
+          component: 'self',
+          meta: {
+            title: '学生管理',
+            requiresAuth: true,
+            icon: 'ic:baseline-block'
+          }
+        },
+        {
+          name: 'user_teacher',
+          path: '/user/teacher',
+          component: 'self',
+          meta: {
+            title: '教师管理',
+            requiresAuth: true,
+            icon: 'ic:baseline-block'
+          }
+        }
+      ],
+      meta: {
+        title: '用户管理',
+        icon: 'fluent:book-information-24-regular',
         order: 8
       }
     },
@@ -726,6 +791,38 @@ export const routeModel: Record<Auth.RoleType, AuthRoute.Route[]> = {
         title: '学情分析',
         icon: 'carbon:dashboard',
         order: 1
+      }
+    },
+    {
+      name: 'user',
+      path: '/user',
+      component: 'basic',
+      children: [
+        {
+          name: 'user_student',
+          path: '/user/student',
+          component: 'self',
+          meta: {
+            title: '学生管理',
+            requiresAuth: true,
+            icon: 'ic:baseline-block'
+          }
+        },
+        {
+          name: 'user_teacher',
+          path: '/user/teacher',
+          component: 'self',
+          meta: {
+            title: '教师管理',
+            requiresAuth: true,
+            icon: 'ic:baseline-block'
+          }
+        }
+      ],
+      meta: {
+        title: '用户管理',
+        icon: 'fluent:book-information-24-regular',
+        order: 8
       }
     },
     {

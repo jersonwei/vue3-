@@ -11,7 +11,8 @@ module.exports = {
     TMap: 'readonly'
   },
   parser: 'vue-eslint-parser',
-	quotes: [2, 'single', {
+	// quotes: [1, "single"],
+	quotes: [1, 'single', {
     'avoidEscape': true, // 允许字符串使用单引号或双引号，只要字符串包含必须被转义的引号即可
     'allowTemplateLiterals': true // 允许字符串使用反引号
     }],
