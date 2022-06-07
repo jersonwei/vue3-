@@ -3,12 +3,12 @@
  * @Author: ZHENG
  * @Date: 2022-05-16 15:42:23
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-17 09:12:52
+ * @LastEditTime: 2022-06-07 10:24:38
  * @FilePath: \work\src\components\TablePro\components\editable\index.ts
  * @Description:
  */
 import { h, Ref } from 'vue';
-import type { BasicColumn } from '@/components/Table/src/types/table';
+import type { BasicColumn } from '@/components/TablePro/types/table';
 import EditableCell from './EditableCell.vue';
 
 export function renderEditCell(column: BasicColumn) {

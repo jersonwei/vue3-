@@ -7,8 +7,19 @@
  * @Description:
 -->
 <template>
-  <n-modal v-model:show="showUpdateModal" :mask-closable="false" preset="dialog" title="确认上架时间">
-    <n-form ref="formRef" :model="formParams" label-placement="left" :label-width="120" class="m-2 py-4">
+  <n-modal
+    v-model:show="showUpdateModal"
+    :mask-closable="false"
+    preset="dialog"
+    title="确认上架时间"
+  >
+    <n-form
+      ref="formRef"
+      :model="formParams"
+      label-placement="left"
+      :label-width="120"
+      class="m-2 py-4"
+    >
       <n-form-item label="定时上架时间" path="time">
         <n-date-picker
           v-model:value="formParams.time"
@@ -21,28 +32,30 @@
     <template #action>
       <n-space>
         <n-button @click="() => (showUpdateModal = false)">取消</n-button>
-        <n-button type="info" :loading="formBtnLoading" @click="onPositiveClick">确定</n-button>
+        <n-button type="info" :loading="formBtnLoading" @click="onPositiveClick"
+          >确定</n-button
+        >
       </n-space>
     </template>
   </n-modal>
 </template>
 <script lang="ts" setup>
-import { ref, reactive } from 'vue';
-import { useMessage } from 'naive-ui';
-import { format } from 'date-fns';
-import { updateCourseStatusAuto } from '@/service';
-import { disablePreviousDate } from '@/utils';
+import { ref, reactive } from "vue";
+import { useMessage } from "naive-ui";
+import { format } from "date-fns";
+import { updateCourseStatusAuto } from "@/service";
+import { disablePreviousDate } from "@/utils";
 
 const formParams = reactive({
-  time: Date.now()
+  time: Date.now(),
 });
 const message = useMessage();
 const showUpdateModal = ref(false);
 interface Props {
-  updateData: number;
+  updateData: Object;
 }
 const props = defineProps<Props>();
-const emits = defineEmits(['reloadTable']);
+const emits = defineEmits(["reloadTable"]);
 
 defineExpose({ showUpdateModal });
 
@@ -52,17 +65,17 @@ const onPositiveClick = async () => {
   const params = {
     id: props.updateData.id,
     status: 1,
-    launchTime: format(formParams.time, 'yyyy-MM-dd HH:mm:ss')
+    launchTime: format(formParams.time, "yyyy-MM-dd HH:mm:ss"),
   };
   if (formParams.time <= Date.now()) {
-    return message.error('时间异常，不允许定时当前时间');
+    return message.error("时间异常，不允许定时当前时间");
   }
   const result = await updateCourseStatusAuto(params);
 
   if (!result.error) {
-    message.success('定时上架成功');
+    message.success("定时上架成功");
   }
   showUpdateModal.value = false;
-  emits('reloadTable');
+  emits("reloadTable");
 };
 </script>
