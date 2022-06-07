@@ -8,7 +8,7 @@
  */
 
 import { paramsToQuery } from '@/utils';
-import { request } from '../../request';
+import { request } from '../../../request';
 
 /** 获取课程信息 */
 export function getCourseGradeVo(params) {
