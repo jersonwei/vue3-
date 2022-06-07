@@ -4,7 +4,7 @@
  * @Author: ZHENG
  * @Date: 2022-05-02 21:49:42
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-06-07 08:54:07
+ * @LastEditTime: 2022-06-07 09:04:48
  * @FilePath: \work\src\components\TablePro\hooks\useColumns.ts
  * @Description:
  */
@@ -66,6 +66,7 @@ export function useColumns(propsRef: ComputedRef<BasicTableProps>) {
         //   return hasPermission(column.auth as string[]) && isIfShow(column);
         // })
         .map(column => {
+					console.log(column)
           // 默认 ellipsis 为true
           column.ellipsis = typeof column.ellipsis === 'undefined' ? { tooltip: true } : false;
           const { edit } = column;

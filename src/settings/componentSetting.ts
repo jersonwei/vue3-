@@ -2,8 +2,8 @@
  * @Author: ZHENG
  * @Date: 2022-05-02 22:19:36
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-06 09:29:58
- * @FilePath: \e-class-admin\src\settings\componentSetting.ts
+ * @LastEditTime: 2022-06-07 09:12:08
+ * @FilePath: \work\src\settings\componentSetting.ts
  * @Description:
  */
 export default {
@@ -21,7 +21,7 @@ export default {
       totalField: 'pages'
     },
     // 默认分页数量
-    defaultPageSize: 10,
+    defaultPageSize: 20,
     // 可切换每页数量集合
     pageSizes: [10, 20, 30, 40, 50]
   },

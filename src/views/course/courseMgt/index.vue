@@ -7,7 +7,7 @@
  * @Description:
 -->
 <template>
-  <n-card class="relative" :bordered="false">
+  <n-card class="h-full shadow-sm rounded-16px" :bordered="false">
     <FormPro @register="register" @submit="handleSubmit" @reset="reloadTable">
       <template #courseCategorySlot="{ model, field }">
         <n-select
@@ -110,25 +110,25 @@ const actionColumn = reactive({
   key: "action",
   fixed: "right",
   render(record: Recordable<any>) {
-    if (record.status === 1) {
-      return h(TableAction as any, {
-        style: "button",
-        actions: [
-          {
-            label: "编辑",
-            onClick: handleEdit.bind(null, record),
-          },
-          {
-            label: "配置",
-            onClick: handleConfig.bind(null, record),
-          },
-          {
-            label: "预览",
-            onClick: handleDetail.bind(null, record),
-          },
-        ],
-      });
-    }
+    // if (record.status === 1) {
+    //   return h(TableAction as any, {
+    //     style: "button",
+    //     actions: [
+    //       {
+    //         label: "编辑",
+    //         onClick: handleEdit.bind(null, record),
+    //       },
+    //       {
+    //         label: "配置",
+    //         onClick: handleConfig.bind(null, record),
+    //       },
+    //       {
+    //         label: "预览",
+    //         onClick: handleDetail.bind(null, record),
+    //       },
+    //     ],
+    //   });
+    // }
     return h(TableAction as any, {
       style: "button",
       actions: [

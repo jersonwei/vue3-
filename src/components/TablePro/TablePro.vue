@@ -38,7 +38,12 @@
       <n-tooltip trigger="hover">
         <template #trigger>
           <div class="table-toolbar-right-icon">
-            <n-dropdown v-model:value="tableSize" trigger="click" :options="densityOptions" @select="densitySelect">
+            <n-dropdown
+              v-model:value="tableSize"
+              trigger="click"
+              :options="densityOptions"
+              @select="densitySelect"
+            >
               <n-icon size="18">
                 <ColumnHeightOutlined />
               </n-icon>
@@ -68,36 +73,50 @@
 </template>
 
 <script lang="ts">
-import { ref, defineComponent, reactive, unref, toRaw, computed, toRefs, onMounted, nextTick } from 'vue';
-import { ReloadOutlined, ColumnHeightOutlined, QuestionCircleOutlined } from '@vicons/antd';
-import { isBoolean } from '@/utils';
-import { getViewportOffset } from '@/utils/domUtils';
-import { useWindowSizeFn } from '@/hooks/event/useWindowSizeFn';
-import { createTableContext } from './hooks/useTableContext';
-import ColumnSetting from './components/settings/ColumnSetting.vue';
-import { useLoading } from './hooks/useLoading';
-import { useColumns } from './hooks/useColumns';
-import { useDataSource } from './hooks/useDataSource';
-import { usePagination } from './hooks/usePagination';
-import { basicProps } from './props';
-import { BasicTableProps } from './types/table';
+import {
+  ref,
+  defineComponent,
+  reactive,
+  unref,
+  toRaw,
+  computed,
+  toRefs,
+  onMounted,
+  nextTick,
+} from "vue";
+import {
+  ReloadOutlined,
+  ColumnHeightOutlined,
+  QuestionCircleOutlined,
+} from "@vicons/antd";
+import { isBoolean } from "@/utils";
+import { getViewportOffset } from "@/utils/domUtils";
+import { useWindowSizeFn } from "@/hooks/event/useWindowSizeFn";
+import { createTableContext } from "./hooks/useTableContext";
+import ColumnSetting from "./components/settings/ColumnSetting.vue";
+import { useLoading } from "./hooks/useLoading";
+import { useColumns } from "./hooks/useColumns";
+import { useDataSource } from "./hooks/useDataSource";
+import { usePagination } from "./hooks/usePagination";
+import { basicProps } from "./props";
+import { BasicTableProps } from "./types/table";
 
 const densityOptions = [
   {
-    type: 'menu',
-    label: '紧凑',
-    key: 'small'
+    type: "menu",
+    label: "紧凑",
+    key: "small",
   },
   {
-    type: 'menu',
-    label: '默认',
-    key: 'medium'
+    type: "menu",
+    label: "默认",
+    key: "medium",
   },
   {
-    type: 'menu',
-    label: '宽松',
-    key: 'large'
-  }
+    type: "menu",
+    label: "宽松",
+    key: "large",
+  },
 ];
 
 export default defineComponent({
@@ -105,19 +124,19 @@ export default defineComponent({
     ReloadOutlined,
     ColumnHeightOutlined,
     ColumnSetting,
-    QuestionCircleOutlined
+    QuestionCircleOutlined,
   },
   props: {
-    ...basicProps
+    ...basicProps,
   },
   emits: [
-    'fetch-success',
-    'fetch-error',
-    'update:checked-row-keys',
-    'edit-end',
-    'edit-cancel',
-    'edit-row-end',
-    'edit-change'
+    "fetch-success",
+    "fetch-error",
+    "update:checked-row-keys",
+    "edit-end",
+    "edit-cancel",
+    "edit-row-end",
+    "edit-change",
   ],
   setup(props, { emit }) {
     const deviceHeight = ref(150);
@@ -142,16 +161,22 @@ export default defineComponent({
         getPaginationInfo,
         setPagination,
         tableData,
-        setLoading
+        setLoading,
       },
       emit
     );
 
-    const { getPageColumns, setColumns, getColumns, getCacheColumns, setCacheColumnsField } = useColumns(getProps);
+    const {
+      getPageColumns,
+      setColumns,
+      getColumns,
+      getCacheColumns,
+      setCacheColumnsField,
+    } = useColumns(getProps);
 
     const state = reactive({
-      tableSize: unref(getProps as any).size || 'medium',
-      isColumnSetting: false
+      tableSize: unref(getProps as any).size || "medium",
+      isColumnSetting: false,
     });
 
     // 页码切换
@@ -174,7 +199,7 @@ export default defineComponent({
     // 选中行
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     function updateCheckedRowKeys(rowKeys) {
-      emit('update:checked-row-keys', rowKeys);
+      emit("update:checked-row-keys", rowKeys);
     }
 
     // 获取表格大小
@@ -184,7 +209,7 @@ export default defineComponent({
     const getBindValues = computed(() => {
       // eslint-disable-next-line @typescript-eslint/no-shadow
       const tableData = unref(getDataSourceRef);
-      const maxHeight = tableData.length ? `${unref(deviceHeight)}px` : 'auto';
+      const maxHeight = tableData.length ? `${unref(deviceHeight)}px` : "auto";
       return {
         ...unref(getProps),
         loading: unref(getLoading),
@@ -193,7 +218,7 @@ export default defineComponent({
         data: tableData,
         size: unref(getTableSize),
         remote: true,
-        'max-height': maxHeight
+        "max-height": maxHeight,
       };
     });
 
@@ -214,7 +239,7 @@ export default defineComponent({
       getPageColumns,
       getCacheColumns,
       setCacheColumnsField,
-      emit
+      emit,
     };
 
     const getCanResize = computed(() => {
@@ -227,13 +252,14 @@ export default defineComponent({
       if (!table) return;
       if (!unref(getCanResize)) return;
       const tableEl: any = table?.$el;
-      const headEl = tableEl.querySelector('.n-data-table-thead ');
+      const headEl = tableEl.querySelector(".n-data-table-thead ");
       const { bottomIncludeBody } = getViewportOffset(headEl);
       const headerH = 64;
       let paginationH = 2;
       const marginH = 24;
+      const footerH = 54;
       if (!isBoolean(pagination)) {
-        paginationEl = tableEl.querySelector('.n-data-table__pagination') as HTMLElement;
+        paginationEl = tableEl.querySelector(".n-data-table__pagination") as HTMLElement;
         if (paginationEl) {
           const { offsetHeight } = paginationEl;
           paginationH += offsetHeight || 0;
@@ -241,7 +267,11 @@ export default defineComponent({
           paginationH += 28;
         }
       }
-      let height = bottomIncludeBody - (headerH + paginationH + marginH + (props.resizeHeightOffset || 0));
+      console.log(bottomIncludeBody);
+      let height =
+        bottomIncludeBody -
+        (headerH + paginationH + marginH + (props.resizeHeightOffset || 0)) -
+        footerH;
       const { maxHeight } = props;
       height = maxHeight && maxHeight < height ? maxHeight : height;
       deviceHeight.value = height;
@@ -268,9 +298,9 @@ export default defineComponent({
       updatePage,
       updatePageSize,
       pagination,
-      tableAction
+      tableAction,
     };
-  }
+  },
 });
 </script>
 <style lang="scss" scoped>

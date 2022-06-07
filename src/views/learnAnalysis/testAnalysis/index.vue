@@ -8,114 +8,112 @@
 -->
 <template>
   <div class="h-full">
-    <div class="h-full">
-      <n-card class="h-full shadow-sm rounded-16px">
-        <n-grid class="mt-4" cols="12" responsive="screen" :x-gap="12">
-          <n-gi span="4">
-            <n-card
-              title="实验分析-课程列表"
-              :bordered="false"
-              class="wh-full border"
-              size="small"
-            >
-              <div class="wh-full">
-                <n-space vertical>
-                  <n-cascader
-                    v-model:value="Form.majorId"
-                    clearable
-                    placeholder="课程院系/专业"
-                    :options="majorOptions"
-                    :check-strategy="'child'"
-                    :show-path="true"
-                    remote
-                    :on-load="handleLoad"
-                  />
-                  <n-input-group>
-                    <n-input v-model:value="Form.courseName" placeholder="课程名称" />
-                  </n-input-group>
-                  <n-button-group style="width: 100%">
-                    <n-button style="width: 50%" type="info" @click="loadDataTable"
-                      >搜索</n-button
-                    >
-                    <n-button style="width: 50%" @click="refresh">重置</n-button>
-                  </n-button-group>
-                  <div class="py-3 menu-list">
-                    <template v-if="loading">
-                      <div class="flex items-center justify-center py-4">
-                        <n-spin size="medium" style="height: 520px; overflow: hidden" />
+    <n-card class="h-full shadow-sm rounded-16px">
+      <n-grid class="mt-4" cols="12" responsive="screen" :x-gap="12">
+        <n-gi span="4">
+          <n-card
+            title="实验分析-课程列表"
+            :bordered="false"
+            class="wh-full border"
+            size="small"
+          >
+            <div class="wh-full">
+              <n-space vertical>
+                <n-cascader
+                  v-model:value="Form.majorId"
+                  clearable
+                  placeholder="课程院系/专业"
+                  :options="majorOptions"
+                  :check-strategy="'child'"
+                  :show-path="true"
+                  remote
+                  :on-load="handleLoad"
+                />
+                <n-input-group>
+                  <n-input v-model:value="Form.courseName" placeholder="课程名称" />
+                </n-input-group>
+                <n-button-group style="width: 100%">
+                  <n-button style="width: 50%" type="info" @click="loadDataTable"
+                    >搜索</n-button
+                  >
+                  <n-button style="width: 50%" @click="refresh">重置</n-button>
+                </n-button-group>
+                <div class="py-3 menu-list">
+                  <template v-if="loading">
+                    <div class="flex items-center justify-center py-4">
+                      <n-spin size="medium" style="height: 520px; overflow: hidden" />
+                    </div>
+                  </template>
+                  <template v-else>
+                    <n-scrollbar style="max-height: 520px">
+                      <div v-for="(item, index) in courseList">
+                        <n-thing>
+                          <template #avatar>
+                            <n-avatar
+                              size="large"
+                              src="https://img02.mockplus.cn/image/2022-06-02/f94421b0-e247-11ec-8ddc-a1881342a2a2.jpg"
+                            >
+                            </n-avatar>
+                          </template>
+                          <template #header-extra>
+                            <n-button size="small" text> 学生列表 </n-button>
+                          </template>
+                          <template #header>
+                            <p>{{ item.courseName }}</p>
+                            <!-- style="color: rgb(0, 35, 255)" -->
+                          </template>
+                          <template #description>
+                            {{ item.collegeName }} {{ item.className }}
+                          </template>
+                        </n-thing>
                       </div>
-                    </template>
-                    <template v-else>
-                      <n-scrollbar style="max-height: 520px">
-                        <div v-for="(item, index) in courseList">
-                          <n-thing>
-                            <template #avatar>
-                              <n-avatar
-                                size="large"
-                                src="https://img02.mockplus.cn/image/2022-06-02/f94421b0-e247-11ec-8ddc-a1881342a2a2.jpg"
-                              >
-                              </n-avatar>
-                            </template>
-                            <template #header-extra>
-                              <n-button size="small" text> 学生列表 </n-button>
-                            </template>
-                            <template #header>
-                              <p>{{ item.courseName }}</p>
-                              <!-- style="color: rgb(0, 35, 255)" -->
-                            </template>
-                            <template #description>
-                              {{ item.collegeName }} {{ item.className }}
-                            </template>
-                          </n-thing>
-                        </div>
-                      </n-scrollbar>
-                      <n-pagination
-                        v-model:page="pagination.current"
-                        :page-count="pagination.pages"
-                        :page-slot="5"
-                        @update:page="updatePage"
-                      />
-                    </template>
-                  </div>
-                </n-space>
-              </div>
-            </n-card>
-          </n-gi>
-          <n-gi span="8">
-            <n-grid x-gap="12" :cols="2" :x-gap="20">
-              <n-gi
-                ><n-card title="实验报告成绩分析" embedded>
-                  <div class="w-full h-160px">
-                    <n-space vertical class="flex">
-                      <p class="flex-center" style="font-size: 20px">实验报告平均分</p>
-                      <p class="flex-center font-600" style="font-size: 20px">60 分</p>
-                      <p class="flex-center" style="font-size: 20px">
-                        最高分：80分
-                        <n-icon color="green">
-                          <CaretUpOutlined />
-                        </n-icon>
-                        | 最低分：40分<n-icon color="red">
-                          <CaretDownFilled />
-                        </n-icon>
-                      </p>
-                    </n-space>
-                  </div> </n-card
-              ></n-gi>
-              <n-gi
-                ><n-card title="学生课程实验报告完成进度" embedded>
-                  <n-progress type="circle" :percentage="80" :offset-degree="90" />
-                  <!-- <div ref="pieRef" class="w-full h-160px"></div> -->
-                </n-card>
-              </n-gi>
-            </n-grid>
+                    </n-scrollbar>
+                    <n-pagination
+                      v-model:page="pagination.current"
+                      :page-count="pagination.pages"
+                      :page-slot="5"
+                      @update:page="updatePage"
+                    />
+                  </template>
+                </div>
+              </n-space>
+            </div>
+          </n-card>
+        </n-gi>
+        <n-gi span="8">
+          <n-grid x-gap="12" :cols="2" :x-gap="20">
+            <n-gi
+              ><n-card title="实验报告成绩分析" embedded>
+                <div class="w-full h-160px">
+                  <n-space vertical class="flex">
+                    <p class="flex-center" style="font-size: 20px">实验报告平均分</p>
+                    <p class="flex-center font-600" style="font-size: 20px">60 分</p>
+                    <p class="flex-center" style="font-size: 20px">
+                      最高分：80分
+                      <n-icon color="green">
+                        <CaretUpOutlined />
+                      </n-icon>
+                      | 最低分：40分<n-icon color="red">
+                        <CaretDownFilled />
+                      </n-icon>
+                    </p>
+                  </n-space>
+                </div> </n-card
+            ></n-gi>
+            <n-gi
+              ><n-card title="学生课程实验报告完成进度" embedded>
+                <n-progress type="circle" :percentage="80" :offset-degree="90" />
+                <!-- <div ref="pieRef" class="w-full h-160px"></div> -->
+              </n-card>
+            </n-gi>
+          </n-grid>
 
-            <n-card title="学生章节分析" :bordered="false">
-              <div ref="pieRef" class="w-full h-360px"></div>
-            </n-card>
-          </n-gi>
-        </n-grid>
-      </n-card>
-    </div>
+          <n-card title="学生章节分析" :bordered="false">
+            <div ref="pieRef" class="w-full h-360px"></div>
+          </n-card>
+        </n-gi>
+      </n-grid>
+    </n-card>
   </div>
 </template>
 

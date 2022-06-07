@@ -1,3 +1,11 @@
+<!--
+ * @Author: ZHENG
+ * @Date: 2022-05-16 15:06:20
+ * @LastEditors: ZHENG
+ * @LastEditTime: 2022-06-07 09:26:59
+ * @FilePath: \work\src\layouts\BasicLayout\index.vue
+ * @Description:
+-->
 <template>
   <admin-layout
     :mode="mode"
@@ -21,7 +29,7 @@
     <template #sider>
       <global-sider />
     </template>
-    <global-content />
+    <global-content @hide-main-overflow="setAddMainOverflowHidden" />
     <template #footer>
       <global-footer />
     </template>
@@ -30,14 +38,29 @@
 </template>
 
 <script setup lang="ts">
-import AdminLayout from '@soybeanjs/vue-admin-layout';
-import { useAppStore, useThemeStore } from '@/store';
-import { useBasicLayout } from '@/composables';
-import { SettingDrawer, GlobalHeader, GlobalTab, GlobalSider, GlobalContent, GlobalFooter } from '../common';
+import AdminLayout from "@soybeanjs/vue-admin-layout";
+import { useAppStore, useThemeStore } from "@/store";
+import { useBoolean } from "@/hooks";
+import { useBasicLayout } from "@/composables";
+import {
+  SettingDrawer,
+  GlobalHeader,
+  GlobalTab,
+  GlobalSider,
+  GlobalContent,
+  GlobalFooter,
+} from "../common";
 
 const app = useAppStore();
 const theme = useThemeStore();
 
-const { mode, headerProps, siderVisible, siderWidth, siderCollapsedWidth } = useBasicLayout();
+const {
+  mode,
+  headerProps,
+  siderVisible,
+  siderWidth,
+  siderCollapsedWidth,
+} = useBasicLayout();
+const { bool: addMainOverflowHidden, setBool: setAddMainOverflowHidden } = useBoolean();
 </script>
 <style scoped></style>
