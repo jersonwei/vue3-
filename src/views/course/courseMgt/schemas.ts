@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-05-12 17:48:09
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-06-06 10:55:46
+ * @LastEditTime: 2022-06-07 17:42:07
  * @FilePath: \work\src\views\course\courseMgt\schemas.ts
  * @Description:
  */
@@ -26,35 +26,10 @@ export const schemas = [
     label: '所属专业',
     slot: 'majorIdSlot',
     auth: ['basic']
-    // component: 'NCascader',
-    // componentProps: {
-    //   placeholder: '请选择类别',
-    //   options: [],
-    //   checkStrategy: 'all',
-    //   showPath: true
-    // }
   },
   {
     field: 'status',
-    // component: 'NSelect',
-    label: '状态',
+    label: '课程状态',
     slot: 'statusSlot'
-    // componentProps: {
-    //   placeholder: '请选择课程状态',
-    //   options: [
-    //     {
-    //       label: '上架',
-    //       value: 1
-    //     },
-    //     {
-    //       label: '定时',
-    //       value: 2
-    //     },
-    //     {
-    //       label: '下架',
-    //       value: 3
-    //     }
-    //   ]
-    // }
   }
 ];

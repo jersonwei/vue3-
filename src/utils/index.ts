@@ -71,6 +71,13 @@ export function fileTypeOfImage(data: { file: UploadFileInfo; fileList: UploadFi
   }
   return false;
 }
+// 上传文件pdf或者md或者pptx
+export function fileTypeOfPdf(data: { file: UploadFileInfo; fileList: UploadFileInfo[] }) {
+  if (data.file.file?.type === 'application/pdf') {
+    return true;
+  }
+  return false;
+}
 
 // 上传文件pdf或者md或者pptx
 export function fileTypeOfOutLine(data: { file: UploadFileInfo; fileList: UploadFileInfo[] }) {

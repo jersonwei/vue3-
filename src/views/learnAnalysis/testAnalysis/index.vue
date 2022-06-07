@@ -150,7 +150,7 @@
                 <template v-if="analysis.durationAnalysis.length">
                   <n-scrollbar style="max-height: 180px" class="w-full h-180px">
                     <div v-for="(item, index) in analysis.durationAnalysis">
-                      <n-space>
+                      <n-space style="width: 100%">
                         <n-avatar
                           round
                           size="small"
@@ -162,9 +162,7 @@
                           {{ item.shortId }}
                         </n-avatar>
                         <div style="width: 80px">{{ item.studentName }}</div>
-                        <div style="width: 220px; padding-left: 20px">
-                          {{ item.testDate }}
-                        </div>
+                        <div style="width: 220px">提交时间：{{ item.testDate }}</div>
                         <div style="width: 80px">
                           周{{ numberfilter(getDay(new Date(item.testDate))) }}
                         </div>
@@ -190,7 +188,7 @@
               <div ref="pieRef" class="w-full h-260px" id="pieEcharts"></div>
             </template>
             <template v-else>
-              <n-empty style="height: 280px" description="暂无数据"></n-empty
+              <n-empty style="height: 260px" description="暂无数据"></n-empty
             ></template>
           </n-card>
         </n-gi>
@@ -212,8 +210,14 @@ import * as echarts from "echarts/core";
 // 重写一下，咋感觉逻辑东一块西一块
 const message = useMessage();
 const getBackGroundColor = (index) => {
-  const page = ["rgb(255, 77, 79)", "rgb(255, 102, 0)","rgb(250, 169, 14)","rgb(99, 99, 99)","rgb(99, 99, 99)"];
-  return page[index]
+  const page = [
+    "rgb(255, 77, 79)",
+    "rgb(255, 102, 0)",
+    "rgb(250, 169, 14)",
+    "rgb(99, 99, 99)",
+    "rgb(99, 99, 99)",
+  ];
+  return page[index];
 };
 // -------------左侧逻辑
 const searchForm = reactive({
@@ -262,6 +266,7 @@ const loadDataTable = async () => {
   courseList.value = result.records;
   console.log(result.records);
   pagination.value.pages = result.pages;
+  form.classId = null;
   analysis.avg = 0;
   analysis.max = 0;
   analysis.min = 0;

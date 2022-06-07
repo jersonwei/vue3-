@@ -13,6 +13,7 @@
         <n-select
           v-model:value="model[field]"
           placeholder="请选择课程类别"
+          clearable
           :options="courseCategoryOptions"
         />
       </template>
@@ -32,6 +33,7 @@
         <n-select
           v-model:value="model[field]"
           placeholder="请选择课程状态"
+          clearable
           :options="courseStatusOptions"
         />
       </template>
