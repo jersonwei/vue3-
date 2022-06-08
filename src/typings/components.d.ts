@@ -6,6 +6,7 @@ import '@vue/runtime-core'
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
     BetterScroll: typeof import('./../components/custom/BetterScroll.vue')['default']
+    CitySelector: typeof import('./../components/common/CitySelector.vue')['default']
     ColumnSetting: typeof import('./../components/TablePro/components/settings/ColumnSetting.vue')['default']
     CountTo: typeof import('./../components/custom/CountTo.vue')['default']
     DarkModeContainer: typeof import('./../components/common/DarkModeContainer.vue')['default']

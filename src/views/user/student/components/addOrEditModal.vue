@@ -9,10 +9,10 @@
     :title="`${addOrEdit ? '新建' : '编辑'}学生`"
   >
     <n-scrollbar ref="scrollRef" style="max-height: 750px">
+      <!-- :rules="rules" -->
       <n-form
         ref="formRef"
         :model="formParams"
-        :rules="rules"
         label-placement="left"
         :label-width="80"
         class="m-2 py-4"
@@ -34,7 +34,7 @@
         </n-form-item>
         <n-form-item label="院系" path="collegeList">
           <n-select
-            v-model:value="formParams.collegeList"
+            v-model:value="formParams.collegeId"
             :options="form.collegeId"
             clearable
             placeholder="请选择院系"
@@ -42,7 +42,7 @@
         </n-form-item>
         <n-form-item label="专业" path="majorList">
           <n-select
-            v-model:value="formParams.majorList"
+            v-model:value="formParams.majorId"
             :options="form.majorId"
             clearable
             placeholder="请选择专业"
@@ -50,7 +50,7 @@
         </n-form-item>
         <n-form-item label="班级" path="classList">
           <n-select
-            v-model:value="formParams.classList"
+            v-model:value="formParams.classId"
             :options="form.classId"
             clearable
             placeholder="请选择班级"
@@ -72,9 +72,13 @@
           <n-date-picker v-model="formParams.startTime" type="date" clearable />
         </n-form-item>
         <n-form-item label="地址" path="address">
+          <CitySelector
+            data-type="pcas"
+            check-strategy="child"
+            @update:value="onSelectItem"
+          />
           <!-- <div><VDistpicker></VDistpicker></div> -->
           <!-- <n-select v-model:value="formParams.address"></n-select> -->
-          <n-input style="500px" v-model:value="formParams.address"></n-input>
         </n-form-item>
       </n-form>
     </n-scrollbar>
@@ -92,7 +96,7 @@
 import { reactive, ref } from "vue";
 import { useMessage } from "naive-ui";
 // import { useDebounceFn } from "@vueuse/core";
-import { useAuthStore } from "@/store";
+// import { useAuthStore } from "@/store";
 import { addStudent } from "@/service";
 import { deafultFormParams } from "@/utils";
 import {
@@ -100,9 +104,12 @@ import {
   getCollegeLegistOptions,
   getMajorListOptions,
 } from "../getOptions";
-// 省市区插件
-// import VDistpicker from "v-distpicker";
-
+// 选择省市区
+const currentItem = ref("");
+function onSelectItem(item: any) {
+  currentItem.value = item;
+  formParams.address = JSON.stringify(currentItem);
+}
 const showModal = ref(false);
 const addOrEdit = ref(false); // true 新增，false修改
 const formBtnLoading = ref(false);
@@ -118,21 +125,11 @@ const formParams = reactive({
   classId: "", // 班级
   majorId: "", // 专业
   collegeId: "", // 学院
-  sexList: [],
-  collegeList: [],
-  majorList: [],
-  classList: [],
   phone: "",
   email: "",
   idCard: "",
   startTime: "",
   address: "",
-  // createTime: '',
-  // classId: 1,
-  // id: '',
-  // sex: 1,
-  // majorId: '',
-  // status: 1
 });
 
 // 下拉
@@ -148,7 +145,6 @@ const getOption = async () => {
   stuDepartmentIdOptions.value = await getCollegeLegistOptions();
   stuClassIdOptions.value = await getClassListOptions();
   stuMajorIdOptions.value = await getMajorListOptions();
-  // console.log(stuMajorIdOptions.value);
 };
 getOption();
 
@@ -158,129 +154,50 @@ const showModalFn = () => {
   addOrEdit.value = true;
   showModal.value = true;
 };
-// 编辑
-const editID = ref();
-// 获取url
-// const serviceEnv = getServiceEnv();
-// const labelList = ref([]);
-// const classList = ref([]);
-const editModalFn = (record) => {
-  // console.log(record);
-  Form = new FormData();
-  editID.value = record.id;
-  formParams.sexList = [];
-  formParams.collegeList = [];
-  formParams.majorList = [];
-  formParams.classList = [];
-  const formData = {
-    userName: record.userName,
-    stunu: record.stunu,
-    sex: record.sex,
-    classId: record.classId,
-    majorId: record.majorId,
-    collegeId: record.collegeId,
-    sexList: record.sexList,
-    collegeList: record.collegeList,
-    majorList: record.majorList,
-    classList: record.classList,
-    phone: record.phone,
-    email: record.email,
-    idCard: record.idCard,
-    startTime: record.startTime,
-    address: record.address,
-    // : record.courseCategory,
-    // label: record?.labelId?.split(','),
-    // labelName: record.listLabelName,
-    // majorId: record?.eclassId?.split(','),
-    // note: record.note,
-    // uploadIMage: [
-    //   {
-    //     status: 'finished',
-    //     url: `${serviceEnv}${record.coverPic}`
-    //   }
-    // ],
-    // uploadOutline: []
-    // local: []
-    // localName: []
-    // robot: ""
-    // virtualNumber: 0
-    // virtualRobot: ""
-  };
-  // for (let i = 0; i < formData.label?.length; i++) {
-  //   formParams.labelList.push(parseInt(formData.label[i], 10));
-  // }
-  // console.log('formData.majorId', formData.majorId);
-  // for (let i = 0; i < formData.majorId?.length; i++) {
-  //   formParams.classList.push(parseInt(formData.majorId[i], 10));
-  // }
-  // formData.label = formParams.labelList;
-  // formData.majorId = formParams.classList;
-  // if (record.courseOutline) {
-  //   const outLineIndexOf = record.courseOutline.indexOf('outline/');
-  //   const outLineName = record.courseOutline.slice(outLineIndexOf + 8);
-  //   formData.uploadOutline = [{ name: outLineName, status: 'finished', url: `${serviceEnv}${record.courseOutline}` }];
-  // }
-  // eslint-disable-next-line @typescript-eslint/no-use-before-define
-  Object.assign(formParams, formData);
-  addOrEdit.value = false;
-  showModal.value = true;
-};
 // 新增修改的Form
-const rules = {
-  userName: {
-    required: true,
-    trigger: ["blur", "change"],
-    message: "请输入正确的姓名",
-    pattern: /[\u4e00-\u9fa5]/gm,
-  },
-  stunu: {
-    required: true,
-    trigger: ["blur", "change"],
-    message: "请输入正确的学号",
-    pattern: /^\d+$/,
-  },
-  // sexList: { required: true, trigger: ['blur', 'change'], message: '请选择性别' },
-  collegeList: { required: true, trigger: ["blur", "change"], message: "请选择院系" },
-  majorList: { required: true, trigger: ["blur", "change"], message: "请选择专业" },
-  // classList: { required: true, trigger: ['blur', 'change'], message: '请选择班级' },
-  phone: {
-    required: true,
-    trigger: ["blur", "change"],
-    message: "请输入正确的手机号码",
-    pattern: /^(0|86|17951)?(13[0-9]|15[012356789]|166|17[3678]|18[0-9]|14[57])[0-9]{8}$/,
-  },
-  email: {
-    required: true,
-    trigger: ["blur", "change"],
-    message: "请输入正确的邮箱",
-    pattern: /\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/,
-  },
-  idCard: {
-    required: true,
-    trigger: ["blur", "change"],
-    message: "请输入正确的身份证号",
-    pattern: /^(^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$)|(^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])((\d{4})|\d{3}[Xx])$)$/,
-  },
-  // startTime: { required: true, trigger: ['blur', 'change'], message: '请选择入学日期' },
-  // address: { required: true, trigger: ['blur', 'change'], message: '请填写地址' },
-};
+// const rules = {
+//   userName: {
+//     required: true,
+//     trigger: ["blur", "change"],
+//     message: "请输入正确的姓名",
+//     pattern: /[\u4e00-\u9fa5]/gm,
+//   },
+//   stunu: {
+//     required: true,
+//     trigger: ["blur", "change"],
+//     message: "请输入正确的学号",
+//     pattern: /^\d+$/,
+//   },
+//   // sexList: { required: true, trigger: ['blur', 'change'], message: '请选择性别' },
+//   collegeList: { required: true, trigger: ["blur", "change"], message: "请选择院系" },
+//   majorList: { required: true, trigger: ["blur", "change"], message: "请选择专业" },
+//   // classList: { required: true, trigger: ['blur', 'change'], message: '请选择班级' },
+//   phone: {
+//     required: true,
+//     trigger: ["blur", "change"],
+//     message: "请输入正确的手机号码",
+//     pattern: /^(0|86|17951)?(13[0-9]|15[012356789]|166|17[3678]|18[0-9]|14[57])[0-9]{8}$/,
+//   },
+//   email: {
+//     required: true,
+//     trigger: ["blur", "change"],
+//     message: "请输入正确的邮箱",
+//     pattern: /\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/,
+//   },
+//   idCard: {
+//     required: true,
+//     trigger: ["blur", "change"],
+//     message: "请输入正确的身份证号",
+//     pattern: /^(^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$)|(^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])((\d{4})|\d{3}[Xx])$)$/,
+//   },
+//   // startTime: { required: true, trigger: ['blur', 'change'], message: '请选择入学日期' },
+//   // address: { required: true, trigger: ['blur', 'change'], message: '请填写地址' },
+// };
 
 const form = reactive({
-  userName: [],
-  stunu: [],
-  sex: [],
   classId: [],
   majorId: [],
   collegeId: [],
-  sexList: [],
-  collegeList: [],
-  majorList: [],
-  classList: [],
-  phone: [],
-  email: [],
-  idCard: [],
-  startTime: [],
-  address: [],
 });
 
 const getList = async () => {
@@ -294,42 +211,50 @@ const getList = async () => {
 getList();
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const confirmForm = (e: { preventDefault: () => void }) => {
-  const auth = useAuthStore();
+  e.preventDefault();
+  // const auth = useAuthStore();
   // e.preventDefault();
   formBtnLoading.value = true;
   formRef.value.validate((errors: any) => {
     if (!errors) {
       setTimeout(async () => {
         if (addOrEdit.value === true) {
-          // Form.append('file', (fileImage[0] as File) || '');
-          // Form.append('outLine', (outLine[0] as File) || '');
-          Form.append("userName", formParams.userName);
-          Form.append("stunu", formParams.stunu);
-          Form.append("sex", formParams.sex);
-          Form.append("classId", formParams.classId);
-          Form.append("majorId", formParams.majorId);
-          Form.append("collegeId", formParams.collegeId);
-          Form.append("phone", formParams.phone);
-          Form.append("email", formParams.email);
-          Form.append("idCard", formParams.idCard);
-          Form.append("address", formParams.address);
-          Form.append("startTime", formParams.startTime);
-          // if (formParams.classList) {
-          //   Form.append('eclassId', formParams.classList);
-          // }
-          // if (formParams.note) {
-          //   Form.append('note', formParams.note);
-          // }
-          // if (formParams.labelList.length) {
-          //   Form.append('labelId', formParams.labelList);
-          // }
-          console.log(Form);
-          const { userId } = auth.userInfo;
-          Form.append("lecturer", userId);
-          const result = await addStudent(Form);
+          const {
+            userName,
+            stunu,
+            sex,
+            classId,
+            majorId,
+            collegeId,
+            phone,
+            email,
+            idCard,
+            address,
+            startTime,
+          } = formParams;
+          const params = {
+            userName,
+            stunu,
+            sex,
+            classId,
+            majorId,
+            collegeId,
+            phone,
+            email,
+            idCard,
+            address,
+            startTime,
+          };
+          const result = await addStudent(params);
           if (!result.error) {
-            message.success(`新建成功`);
+            message.success("新建成功");
           }
+          // const { userId } = auth.userInfo;
+          // Form.append("lecturer", userId);
+          // const result = await addStudent(Form);
+          // if (!result.error) {
+          //   message.success(`新建成功`);
+          // }
         }
         // if (addOrEdit.value === false) {
         //   Form.append('id', editID.value);
@@ -355,7 +280,8 @@ const confirmForm = (e: { preventDefault: () => void }) => {
     formBtnLoading.value = false;
   });
 };
-defineExpose({ showModalFn, editModalFn });
+// defineExpose({ showModalFn, editModalFn });
+defineExpose({ showModalFn });
 </script>
 
 <style scoped>
