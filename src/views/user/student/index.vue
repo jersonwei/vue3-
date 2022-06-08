@@ -264,9 +264,9 @@ const loadDataTable = async (res: any) => {
 };
 const { routerPush } = useRouterPush();
 // 批量导入
-const toLead = () => {
-  routerPush({ name: "user_toLead" });
-};
+// const toLead = () => {
+//   routerPush({ name: "user_toLead" });
+// };
 
 // 档案跳转
 const recordSee = () => {

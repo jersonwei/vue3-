@@ -1,12 +1,23 @@
 <template>
   <n-card title="学生管理/学生导入">
-    <div class="left">
-      <n-form>
-        <n-form-item label="下载模板">
-          <n-button @click="exportClick"></n-button
-        ></n-form-item>
-        <n-form-item label="课程大纲" path="text">
-          <n-input placeholder="仅限xls,xlsx文件"></n-input>
+    <div style="display: flex">
+      <div class="left">
+        <div class="title" style="font-size: 14px; margin-top: 60px">
+          <span style="margin-left: 20px">下载模板:</span>&nbsp;&nbsp;&nbsp;&nbsp;<a
+            href="@/static/登录相关.txt"
+            download
+            style="text-decoration: underline; color: #6266eb; margin-left: 38px"
+            >学生信息导入模板</a
+          >
+        </div>
+        <div class="choose" style="display: flex; margin: 20px">
+          <div style="width: 180px; line-height: 34px">选择导入文件 :</div>
+          <n-input
+            autosize
+            placeholder="仅限xls,xlsx文件"
+            style="height: 34px; width: 300px"
+            type="text"
+          ></n-input>
           <n-upload
             v-model:file-list="formParams.uploadOutline"
             :action="`${getServiceEnv}/uploadOutline`"
@@ -14,61 +25,68 @@
             :max="1"
             @before-upload="beforeOutLineUpload"
           >
-            <n-button>上传文件</n-button>
+            <n-button>选择文件</n-button>
           </n-upload>
-        </n-form-item>
-      </n-form>
-    </div>
-    <div class="right">
-      <span>123</span>
+        </div>
+        <div style="margin-left: 20px; letter-spacing: 2px">
+          <h3 style="font-size: 16px; margin-bottom: 12px">注意事项：</h3>
+          <h4 style="font-size: 14px; margin-bottom: 8px">1. * 为必填信息；</h4>
+          <h4 style="font-size: 14px; margin-bottom: 8px">
+            2. 字段类型为下拉选择项的，请使用下拉选项内容；
+          </h4>
+          <h4 style="font-size: 14px; margin-bottom: 8px">
+            3.若存在数据重复情况，系统将自动过滤已存在数据；
+          </h4>
+          <h4 style="font-size: 14px; margin-bottom: 8px">
+            4.导入结束后，系统会提示导入失败条数，以及失败原因；
+          </h4>
+        </div>
+      </div>
+      <div class="right">
+        <div style="margin-left: 80px; letter-spacing: 2px">
+          导入学生学生信息<span style="color: #019f11; font-size: 16px">成功200条</span
+          >，<span style="color: #f70909; font-size: 16px">失败12条</span>，失败原因如下：
+        </div>
+      </div>
     </div>
   </n-card>
 </template>
 
 <script setup lang="ts">
 // 导出插件
-import { reactive, ref } from "vue";
-import XLXS from "xlsx";
-import FileSaver from "file-saver";
+import { reactive } from "vue";
+import { UploadCustomRequestOptions, UploadFileInfo, useMessage } from "naive-ui";
+import { fileTypeOfPdf } from "@/utils";
 const formParams = reactive({
   uploadOutline: [],
 });
-const exportClick = () => {
-  // 导出文件名
-  const filename = "导出.xlsx";
-  // 导出表格加id,通过id获取要导出的表单
-  const wb = XLXS.utils.table_to_book(document.getElementById("table"));
-  const wbout = XLXS.write(wb, {
-    bookType: "xlsx",
-    bookSST: true,
-    type: "array",
-  });
-  try {
-    FileSaver.saveAs(
-      new Blob([wbout], {
-        type: "application/octet-stream",
-      }),
-      filename
-    );
-  } catch (e) {
-    console.log(e);
-  }
-  return wbout;
+const message = useMessage();
+let Form = new FormData();
+const formData = {
+  uploadOutline: [],
 };
-
-// const customRequestOutline = ({ file, data }: UploadCustomRequestOptions) => {
-//   console.log("上传的文件", file.file);
-//   Form.delete("outLine");
-//   Form.append("outLine", file.file || "");
-// };
-
+// const outLineIndexOf = record.courseOutline.indexOf("outline/");
+// const outLineName = record.courseOutline.slice(outLineIndexOf + 8);
+// formData.uploadOutline = [
+//   {
+//     // name: outLineName,
+//     // status: "finished",
+//     // url: `${serviceEnv}${record.courseOutline}`,
+//   },
+// ];
+const customRequestOutline = ({ file, data }: UploadCustomRequestOptions) => {
+  console.log("上传的文件", file.file);
+  Form.delete("outLine");
+  Form.append("outLine", file.file || "");
+};
+// 上传图片直接判断是否为
 const beforeOutLineUpload = async (data: {
   file: UploadFileInfo;
   fileList: UploadFileInfo[];
 }): Promise<boolean> => {
-  const result = fileTypeOfOutLine(data);
+  const result = fileTypeOfPdf(data);
   if (result === false) {
-    message.error("只能上传ppt或pdf格式的图片文件，请重新上传");
+    message.error("只能上传xls或xlsx格式的文件，请重新上传");
     return false;
   }
   return true;
@@ -78,16 +96,11 @@ const beforeOutLineUpload = async (data: {
 <style scoped lang="scss">
 .n-card {
   display: flex;
-  // flex-direction: row;
-  // flex-wrap: nowrap;
-  color: #71747b;
   font-size: 18px;
-  font-weight: 700;
   .left {
     border-right: 1px solid black;
     width: 800px;
     height: 500px;
-    // flex: 0.5;
   }
   .right {
     width: 500px;
