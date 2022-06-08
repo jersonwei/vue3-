@@ -162,6 +162,17 @@
           </n-upload>
         </n-form-item>
         <n-form-item label="开发环境必需" path="development">
+          <template #label>
+            开发环境必需
+            <n-tooltip trigger="hover">
+              <template #trigger>
+                <n-icon size="18" class="cursor-pointer text-gray-400">
+                  <QuestionCircleOutlined />
+                </n-icon>
+              </template>
+              开发环境必需,可以录入环境需要的其他文件来源
+            </n-tooltip>
+          </template>
           <n-input
             v-model:value="formParams.development"
             type="textarea"
@@ -404,7 +415,7 @@ const showAddModal = (record) => {
   fileType.length = 0;
   addOrEdit.value = true;
   showModal.value = true;
-  formParams.enableReport = form.enableReport === 1;
+  formParams.enableReport = formParams.enableReport === 1;
 };
 const showEditUnitModal = (form) => {
   quType.value = false;
