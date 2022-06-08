@@ -48,6 +48,7 @@ declare namespace AuthRoute {
     | 'user'
     | 'user_student'
     | 'user_teacher'
+    | 'user_toLead'
     | 'about';
 
   /** 路由的path */

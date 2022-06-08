@@ -1,20 +1,12 @@
-<!--
- * @Author: ZHENG
- * @Date: 2022-05-12 17:34:13
- * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-28 21:15:49
- * @FilePath: \work\src\views\course\courseMgt\components\addOrEditModal.vue
- * @Description:
--->
 <template>
   <n-modal
     ref="newModalRef"
     v-model:show="showModal"
     :mask-closable="false"
-    style="width: 650px"
+    style="width: 800px"
     :show-icon="false"
     preset="dialog"
-    :title="`${addOrEdit ? '新建' : '编辑'}课程`"
+    :title="`${addOrEdit ? '新建' : '编辑'}学生`"
   >
     <n-scrollbar ref="scrollRef" style="max-height: 750px">
       <n-form
@@ -22,148 +14,143 @@
         :model="formParams"
         :rules="rules"
         label-placement="left"
-        :label-width="120"
+        :label-width="80"
         class="m-2 py-4"
+        style="display: flex; flex-wrap: wrap"
       >
-        <n-form-item label="课程名称" path="courseName">
-          <n-input v-model:value="formParams.courseName" placeholder="请输入课程名称" />
+        <n-form-item label="姓名" path="userName">
+          <n-input v-model:value="formParams.userName" placeholder="请输入姓名"></n-input>
         </n-form-item>
-        <n-form-item label="所属类别" path="courseCategory">
-          <n-select v-model:value="formParams.courseCategory" clearable :options="form.courseCategory" />
+        <n-form-item label="学号" path="stunu">
+          <n-input v-model:value="formParams.stunu" placeholder="请输入学号"></n-input>
         </n-form-item>
-        <n-form-item label="所属班级" path="classList">
-          <n-select v-model:value="formParams.classList" clearable multiple :options="form.majorId" />
-        </n-form-item>
-        <n-form-item label="课程标签" path="labelList">
+        <n-form-item label="性别" path="sexList">
           <n-select
-            v-model:value="formParams.labelList"
-            filterable
+            v-model:value="formParams.sex"
             clearable
-            multiple
-            tag
-            :options="form.label"
-            @create="createLabel"
-          />
+            placeholder="请选择性别"
+            :options="sex"
+          ></n-select>
         </n-form-item>
-        <n-form-item label="课程介绍" path="note">
-          <n-input v-model:value="formParams.note" type="textarea" placeholder="课程介绍" />
+        <n-form-item label="院系" path="collegeList">
+          <n-select
+            v-model:value="formParams.collegeList"
+            :options="form.collegeId"
+            clearable
+            placeholder="请选择院系"
+          ></n-select>
         </n-form-item>
-        <n-form-item label="课程封面" path="uploadIMage">
-          <n-upload
-            v-model:file-list="formParams.uploadIMage"
-            :action="`${getServiceEnv}/uploadIMage`"
-            list-type="image-card"
-            :max="1"
-            :custom-request="customRequestIMage"
-            @before-upload="beforeUpload"
-          />
+        <n-form-item label="专业" path="majorList">
+          <n-select
+            v-model:value="formParams.majorList"
+            :options="form.majorId"
+            clearable
+            placeholder="请选择专业"
+          ></n-select>
         </n-form-item>
-        <n-form-item label="课程大纲" path="text">
-          <n-upload
-            v-model:file-list="formParams.uploadOutline"
-            :action="`${getServiceEnv}/uploadOutline`"
-            :custom-request="customRequestOutline"
-            :max="1"
-            @before-upload="beforeOutLineUpload"
-          >
-            <n-button>上传文件</n-button>
-          </n-upload>
+        <n-form-item label="班级" path="classList">
+          <n-select
+            v-model:value="formParams.classList"
+            :options="form.classId"
+            clearable
+            placeholder="请选择班级"
+          ></n-select>
         </n-form-item>
-        <n-form-item label="创建虚拟机" path="robot">
-          <n-radio-group v-model:value="formParams.robot" name="radiogroup">
-            <n-space>
-              <n-radio v-for="song in form.songs" :key="song.value" :value="song.value" @change="handleChange">
-                {{ song.label }}
-              </n-radio>
-            </n-space>
-          </n-radio-group>
+        <n-form-item label="手机号" path="phone">
+          <n-input v-model:value="formParams.phone" placeholder="请输入手机号"></n-input>
         </n-form-item>
-        <template v-if="showForm === true">
-          <n-form-item label="虚拟机组模板" path="virtualRobot">
-            <n-select
-              v-model:value="formParams.virtualRobot"
-              placeholder="请选择虚拟机组模板"
-              :options="form.virtualRobot"
-            />
-          </n-form-item>
-          <n-form-item label="子虚拟机数量" path="courseName">
-            <n-input-number v-model:value="formParams.virtualNumber" placeholder="子虚拟机数量" />
-          </n-form-item>
-        </template>
-        <template v-if="showForm === false">
-          <view v-for="(item, index) in local" :key="index">
-            <n-form-item :label="`本地虚拟机镜像${index + 1}`" path="courseName">
-              <n-input v-model:value="formParams.local[index]" placeholder="请输入课程名称" />
-              <n-button v-if="index > 0" tertiary circle type="primary" @click="cutLocal">
-                <template #icon>
-                  <n-icon>
-                    <MinusCircleOutlined />
-                  </n-icon>
-                </template>
-              </n-button>
-            </n-form-item>
-            <n-form-item :label="`本地虚拟机快照${index + 1}`" path="courseName">
-              <n-input v-model:value="formParams.localName[index]" placeholder="请输入课程名称" />
-            </n-form-item>
-          </view>
-          <n-form-item>
-            <n-button type="success" @click="addLocal">
-              <template #icon>
-                <n-icon>
-                  <MinusCircleOutlined />
-                </n-icon>
-              </template>
-              添加 本地虚拟机
-            </n-button>
-          </n-form-item>
-        </template>
+        <n-form-item label="邮箱" path="email">
+          <n-input v-model:value="formParams.email" placeholder="请输入邮箱"></n-input>
+        </n-form-item>
+        <n-form-item label="身份证号" path="idCard">
+          <n-input
+            v-model:value="formParams.idCard"
+            placeholder="请输入身份证号"
+          ></n-input>
+        </n-form-item>
+        <n-form-item label="入学时间" path="startTime">
+          <n-date-picker v-model="formParams.startTime" type="date" clearable />
+        </n-form-item>
+        <n-form-item label="地址" path="address">
+          <!-- <div><VDistpicker></VDistpicker></div> -->
+          <!-- <n-select v-model:value="formParams.address"></n-select> -->
+          <n-input style="500px" v-model:value="formParams.address"></n-input>
+        </n-form-item>
       </n-form>
     </n-scrollbar>
-
     <template #action>
       <n-space>
         <n-button @click="() => ((showModal = false), (showForm = null))">取消</n-button>
-        <n-button type="info" :loading="formBtnLoading" @click="confirmForm">确定</n-button>
+        <n-button type="info" :loading="formBtnLoading" @click="confirmForm"
+          >确定</n-button
+        >
       </n-space>
     </template>
   </n-modal>
 </template>
 <script lang="ts" setup>
-import { reactive, ref } from 'vue';
-import { UploadCustomRequestOptions, UploadFileInfo, useMessage } from 'naive-ui';
-import { MinusCircleOutlined } from '@vicons/antd';
-import { useDebounceFn } from '@vueuse/core';
-import { useAuthStore } from '@/store';
-import { addCourse, saveOrUpdateLabel, updateCourseInfo } from '@/service';
-import { fileTypeOfImage, fileTypeOfOutLine, getServiceEnv, deafultFormParams } from '@/utils';
-import { getCourseCategoryOptions, getClassListOptions, getLabelsOptions } from '../getOptions';
+import { reactive, ref } from "vue";
+import { useMessage } from "naive-ui";
+// import { useDebounceFn } from "@vueuse/core";
+import { useAuthStore } from "@/store";
+import { addStudent } from "@/service";
+import { deafultFormParams } from "@/utils";
+import {
+  getClassListOptions,
+  getCollegeLegistOptions,
+  getMajorListOptions,
+} from "../getOptions";
+// 省市区插件
+// import VDistpicker from "v-distpicker";
 
 const showModal = ref(false);
 const addOrEdit = ref(false); // true 新增，false修改
-const showForm = ref<boolean | null>(null); // 展示虚拟机页面
 const formBtnLoading = ref(false);
-const local = ref(0);
-const formRef = ref();
-const message = useMessage();
+const formRef = ref(); // 表单双向绑定
+const message = useMessage(); // 轻提示
 
 let Form = new FormData();
-const emits = defineEmits(['reloadTable']);
+const emits = defineEmits(["reloadTable"]);
 const formParams = reactive({
-  courseName: '',
-  courseCategory: '',
-  majorId: '',
-  note: '',
-  label: [],
-  robot: '',
-  virtualRobot: '',
-  virtualNumber: 0,
+  userName: "",
+  stunu: "",
+  sex: "",
+  classId: "", // 班级
+  majorId: "", // 专业
+  collegeId: "", // 学院
+  sexList: [],
+  collegeList: [],
+  majorList: [],
   classList: [],
-  labelList: [],
-  local: [],
-  localName: [],
-  uploadIMage: [],
-  uploadOutline: []
+  phone: "",
+  email: "",
+  idCard: "",
+  startTime: "",
+  address: "",
+  // createTime: '',
+  // classId: 1,
+  // id: '',
+  // sex: 1,
+  // majorId: '',
+  // status: 1
 });
+
+// 下拉
+const sex = ref([
+  { value: 1, label: "男" },
+  { value: 0, label: "女" },
+]);
+// 获取院系 专业  班级 下拉框的值
+const stuDepartmentIdOptions = ref([]);
+const stuMajorIdOptions = ref([]);
+const stuClassIdOptions = ref([]);
+const getOption = async () => {
+  stuDepartmentIdOptions.value = await getCollegeLegistOptions();
+  stuClassIdOptions.value = await getClassListOptions();
+  stuMajorIdOptions.value = await getMajorListOptions();
+  // console.log(stuMajorIdOptions.value);
+};
+getOption();
 
 const showModalFn = () => {
   deafultFormParams(formParams);
@@ -171,146 +158,140 @@ const showModalFn = () => {
   addOrEdit.value = true;
   showModal.value = true;
 };
-
+// 编辑
 const editID = ref();
-const serviceEnv = getServiceEnv();
+// 获取url
+// const serviceEnv = getServiceEnv();
 // const labelList = ref([]);
 // const classList = ref([]);
-const editModalFn = record => {
-  console.log(record);
+const editModalFn = (record) => {
+  // console.log(record);
   Form = new FormData();
   editID.value = record.id;
-  formParams.labelList = [];
+  formParams.sexList = [];
+  formParams.collegeList = [];
+  formParams.majorList = [];
   formParams.classList = [];
   const formData = {
-    courseCategory: record.courseCategory,
-    courseName: record.courseName,
-    label: record?.labelId?.split(','),
-    labelName: record.listLabelName,
-    majorId: record?.eclassId?.split(','),
-    note: record.note,
-    uploadIMage: [
-      {
-        status: 'finished',
-        url: `${serviceEnv}${record.coverPic}`
-      }
-    ],
-    uploadOutline: []
+    userName: record.userName,
+    stunu: record.stunu,
+    sex: record.sex,
+    classId: record.classId,
+    majorId: record.majorId,
+    collegeId: record.collegeId,
+    sexList: record.sexList,
+    collegeList: record.collegeList,
+    majorList: record.majorList,
+    classList: record.classList,
+    phone: record.phone,
+    email: record.email,
+    idCard: record.idCard,
+    startTime: record.startTime,
+    address: record.address,
+    // : record.courseCategory,
+    // label: record?.labelId?.split(','),
+    // labelName: record.listLabelName,
+    // majorId: record?.eclassId?.split(','),
+    // note: record.note,
+    // uploadIMage: [
+    //   {
+    //     status: 'finished',
+    //     url: `${serviceEnv}${record.coverPic}`
+    //   }
+    // ],
+    // uploadOutline: []
     // local: []
     // localName: []
     // robot: ""
     // virtualNumber: 0
     // virtualRobot: ""
   };
-  for (let i = 0; i < formData.label?.length; i++) {
-    formParams.labelList.push(parseInt(formData.label[i], 10));
-  }
-  console.log('formData.majorId', formData.majorId);
-  for (let i = 0; i < formData.majorId?.length; i++) {
-    formParams.classList.push(parseInt(formData.majorId[i], 10));
-  }
-  formData.label = formParams.labelList;
-  formData.majorId = formParams.classList;
-  if (record.courseOutline) {
-    const outLineIndexOf = record.courseOutline.indexOf('outline/');
-    const outLineName = record.courseOutline.slice(outLineIndexOf + 8);
-    formData.uploadOutline = [{ name: outLineName, status: 'finished', url: `${serviceEnv}${record.courseOutline}` }];
-  }
+  // for (let i = 0; i < formData.label?.length; i++) {
+  //   formParams.labelList.push(parseInt(formData.label[i], 10));
+  // }
+  // console.log('formData.majorId', formData.majorId);
+  // for (let i = 0; i < formData.majorId?.length; i++) {
+  //   formParams.classList.push(parseInt(formData.majorId[i], 10));
+  // }
+  // formData.label = formParams.labelList;
+  // formData.majorId = formParams.classList;
+  // if (record.courseOutline) {
+  //   const outLineIndexOf = record.courseOutline.indexOf('outline/');
+  //   const outLineName = record.courseOutline.slice(outLineIndexOf + 8);
+  //   formData.uploadOutline = [{ name: outLineName, status: 'finished', url: `${serviceEnv}${record.courseOutline}` }];
+  // }
   // eslint-disable-next-line @typescript-eslint/no-use-before-define
   Object.assign(formParams, formData);
   addOrEdit.value = false;
   showModal.value = true;
 };
-
 // 新增修改的Form
 const rules = {
-  courseName: {
+  userName: {
     required: true,
-    trigger: ['blur', 'input'],
-    message: '请输入名称'
+    trigger: ["blur", "change"],
+    message: "请输入正确的姓名",
+    pattern: /[\u4e00-\u9fa5]/gm,
   },
-  courseCategory: {
+  stunu: {
     required: true,
-    message: '请选择所属分类'
+    trigger: ["blur", "change"],
+    message: "请输入正确的学号",
+    pattern: /^\d+$/,
   },
-  classList: {
+  // sexList: { required: true, trigger: ['blur', 'change'], message: '请选择性别' },
+  collegeList: { required: true, trigger: ["blur", "change"], message: "请选择院系" },
+  majorList: { required: true, trigger: ["blur", "change"], message: "请选择专业" },
+  // classList: { required: true, trigger: ['blur', 'change'], message: '请选择班级' },
+  phone: {
     required: true,
-    message: '请选择所属班级'
-  }
-  // labelList: {
-  //   required: true,
-  //   message: '请选择课程标签'
-  // }
+    trigger: ["blur", "change"],
+    message: "请输入正确的手机号码",
+    pattern: /^(0|86|17951)?(13[0-9]|15[012356789]|166|17[3678]|18[0-9]|14[57])[0-9]{8}$/,
+  },
+  email: {
+    required: true,
+    trigger: ["blur", "change"],
+    message: "请输入正确的邮箱",
+    pattern: /\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/,
+  },
+  idCard: {
+    required: true,
+    trigger: ["blur", "change"],
+    message: "请输入正确的身份证号",
+    pattern: /^(^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$)|(^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])((\d{4})|\d{3}[Xx])$)$/,
+  },
+  // startTime: { required: true, trigger: ['blur', 'change'], message: '请选择入学日期' },
+  // address: { required: true, trigger: ['blur', 'change'], message: '请填写地址' },
 };
 
 const form = reactive({
-  courseCategory: [],
+  userName: [],
+  stunu: [],
+  sex: [],
+  classId: [],
   majorId: [],
-  label: [],
-  virtualRobot: [
-    {
-      label: 'Ubunto',
-      value: '0'
-    },
-    {
-      label: 'centos',
-      value: '1'
-    },
-    {
-      label: 'jq',
-      value: '2'
-    }
-  ],
-  songs: [
-    {
-      value: '云端虚拟机',
-      label: '云端虚拟机'
-    },
-    {
-      value: '本地虚拟机',
-      label: '本地虚拟机'
-    }
-  ].map(s => {
-    // eslint-disable-next-line no-param-reassign
-    s.value = s.value.toLowerCase();
-    return s;
-  })
+  collegeId: [],
+  sexList: [],
+  collegeList: [],
+  majorList: [],
+  classList: [],
+  phone: [],
+  email: [],
+  idCard: [],
+  startTime: [],
+  address: [],
 });
 
 const getList = async () => {
-  form.courseCategory = await getCourseCategoryOptions();
-  form.majorId = await getClassListOptions();
-  form.label = await getLabelsOptions();
+  form.classId = await getClassListOptions();
+  form.collegeId = await getCollegeLegistOptions();
+  form.majorId = await getMajorListOptions();
+  // form.courseCategory = await getCourseCategoryOptions();
+  // form.majorId = await getClassListOptions();
+  // form.label = await getLabelsOptions();
 };
 getList();
-
-const handleChange = () => {
-  if (formParams.robot === '云端虚拟机') {
-    showForm.value = true;
-  } else if (formParams.robot === '本地虚拟机') {
-    // eslint-disable-next-line @typescript-eslint/no-use-before-define
-    addLocal();
-    showForm.value = false;
-  }
-};
-const addLocal = () => {
-  formParams.local = [];
-  formParams.localName = [];
-  local.value++;
-};
-const cutLocal = () => {
-  local.value--;
-};
-
-const createLabel = useDebounceFn(async (label: string) => {
-  const params = {
-    labelName: label,
-    note: ''
-  };
-  const { data: result } = await saveOrUpdateLabel(params);
-  form.label.push({ label: result.labelName, value: result.id });
-}, 1000);
-
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const confirmForm = (e: { preventDefault: () => void }) => {
   const auth = useAuthStore();
@@ -322,85 +303,72 @@ const confirmForm = (e: { preventDefault: () => void }) => {
         if (addOrEdit.value === true) {
           // Form.append('file', (fileImage[0] as File) || '');
           // Form.append('outLine', (outLine[0] as File) || '');
-          Form.append('courseName', formParams.courseName);
-          Form.append('courseCategory', formParams.courseCategory);
-          if (formParams.classList) {
-            Form.append('eclassId', formParams.classList);
-          }
-          if (formParams.note) {
-            Form.append('note', formParams.note);
-          }
-          if (formParams.labelList.length) {
-            Form.append('labelId', formParams.labelList);
-          }
-          // const { userId } = auth.userInfo;
-          // Form.append('lecturer', userId);
-          const result = await addCourse(Form);
+          Form.append("userName", formParams.userName);
+          Form.append("stunu", formParams.stunu);
+          Form.append("sex", formParams.sex);
+          Form.append("classId", formParams.classId);
+          Form.append("majorId", formParams.majorId);
+          Form.append("collegeId", formParams.collegeId);
+          Form.append("phone", formParams.phone);
+          Form.append("email", formParams.email);
+          Form.append("idCard", formParams.idCard);
+          Form.append("address", formParams.address);
+          Form.append("startTime", formParams.startTime);
+          // if (formParams.classList) {
+          //   Form.append('eclassId', formParams.classList);
+          // }
+          // if (formParams.note) {
+          //   Form.append('note', formParams.note);
+          // }
+          // if (formParams.labelList.length) {
+          //   Form.append('labelId', formParams.labelList);
+          // }
+          console.log(Form);
+          const { userId } = auth.userInfo;
+          Form.append("lecturer", userId);
+          const result = await addStudent(Form);
           if (!result.error) {
             message.success(`新建成功`);
           }
         }
-        if (addOrEdit.value === false) {
-          Form.append('id', editID.value);
-          Form.append('courseName', formParams.courseName);
-          Form.append('courseCategory', formParams.courseCategory);
-          Form.append('eclassId', formParams.classList);
-          Form.append('note', formParams.note);
-          if (formParams.labelList.length) {
-            Form.append('labelId', formParams.labelList);
-          }
-
-          // const { userId } = auth.userInfo;
-          // Form.append('lecturer', userId);
-          const result = await updateCourseInfo(Form);
-          console.log(result);
-          if (!result.error) {
-            message.success(`修改成功`);
-          }
-        }
-
-        emits('reloadTable');
+        // if (addOrEdit.value === false) {
+        //   Form.append('id', editID.value);
+        //   Form.append('courseName', formParams.courseName);
+        //   Form.append('courseCategory', formParams.courseCategory);
+        //   Form.append('eclassId', formParams.classList);
+        //   Form.append('note', formParams.note);
+        //   // const { userId } = auth.userInfo;
+        //   // Form.append('lecturer', userId);
+        //   const result = await updateCourseInfo(Form);
+        //   console.log(result);
+        //   if (!result.error) {
+        //     message.success(`修改成功`);
+        //   }
+        // }
+        emits("reloadTable");
         showModal.value = false;
       });
-      showForm.value = null;
+      // showForm.value = null;
     } else {
-      message.error('请填写完整信息');
+      message.error("请填写完整信息");
     }
     formBtnLoading.value = false;
   });
 };
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const customRequestIMage = ({ file, data }: UploadCustomRequestOptions) => {
-  Form.delete('file');
-  Form.append('file', file.file || '');
-};
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const customRequestOutline = ({ file, data }: UploadCustomRequestOptions) => {
-  console.log('上传的文件', file.file);
-  Form.delete('outLine');
-  Form.append('outLine', file.file || '');
-};
-// 上传图片直接判断是否为
-const beforeUpload = async (data: { file: UploadFileInfo; fileList: UploadFileInfo[] }): Promise<boolean> => {
-  const result = fileTypeOfImage(data);
-  if (result === false) {
-    message.error('只能上传png或jpg格式的图片文件，请重新上传');
-    return false;
-  }
-  return true;
-};
-
-// 上传图片直接判断是否为
-const beforeOutLineUpload = async (data: { file: UploadFileInfo; fileList: UploadFileInfo[] }): Promise<boolean> => {
-  const result = fileTypeOfOutLine(data);
-  if (result === false) {
-    message.error('只能上传ppt或pdf格式的图片文件，请重新上传');
-    return false;
-  }
-  return true;
-};
-
 defineExpose({ showModalFn, editModalFn });
 </script>
+
+<style scoped>
+::v-deep(.n-form-item) {
+  width: 360px;
+}
+::v-deep(.n-form-item-blank) {
+  width: 230px;
+}
+::v-deep(.n-form-item:last-child) {
+  width: 600px !important;
+}
+::v-deep(.n-date-picker) {
+  width: 230px;
+}
+</style>
