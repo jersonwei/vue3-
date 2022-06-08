@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-04-25 20:43:55
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-06-08 08:45:21
+ * @LastEditTime: 2022-06-08 08:55:22
  * @FilePath: \work\src\views\system-view\login\components\PwdLogin\index.vue
  * @Description:
 -->
@@ -42,12 +42,12 @@
         </div>
       </div>
     </n-form-item>
-    <n-form-item>
+    <!-- <n-form-item>
       <n-space>
         <n-button @click="quickLogin('admin')">管理员登录</n-button>
         <n-button @click="quickLogin('teacher')">教师登录</n-button>
       </n-space>
-    </n-form-item>
+    </n-form-item> -->
     <LoginAgreement></LoginAgreement>
     <n-space :vertical="true" :size="24">
       <div class="flex-y-center justify-between">
@@ -69,6 +69,7 @@
           {{ EnumLoginModule['code-login'] }}
         </n-button>
       </div> -->
+      <other-account @login="loginOther" />
     </n-space>
     <!-- <other-login /> -->
   </n-form>
@@ -83,7 +84,7 @@ import { useAuthStore } from "@/store";
 import { useRouterPush } from "@/composables";
 import { useImageReady } from "@/hooks";
 import { formRules, getImgCodeRule, getServiceEnv } from "@/utils";
-import { OtherLogin, LoginAgreement } from "./components";
+import { OtherAccount, OtherLogin, LoginAgreement } from "./components";
 
 const auth = useAuthStore();
 const { login } = useAuthStore();
@@ -132,13 +133,9 @@ function handleSubmit(e: MouseEvent) {
   });
 }
 
-const quickLogin = (role: string) => {
-  if (role === "admin") {
-    login("ruizhibottom@169.com", "huang00aaA");
-  } else {
-    // 教师权限
-    login("ruizhibottom@163.com", "huang00aaA");
-  }
+const loginOther = (param: { userName: string; password: string }) => {
+  const { userName, password } = param;
+  login(userName, password);
 };
 </script>
 <style scoped></style>

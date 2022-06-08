@@ -51,7 +51,6 @@
           <iframe
             :src="`${courseOutLine}`"
             width="100%"
-            type="application/pdf"
             height="100%"
             style="height: 700px"
           />
