@@ -505,7 +505,7 @@ const beforeWordUpload = async (data: {
 }): Promise<boolean> => {
   const result = fileTypeOfDocx(data);
   if (result === false) {
-    message.error("只能上传ppt或pdf或MD格式的图片文件，请重新上传");
+    message.error("只能上传Word文件以docx结尾，请重新上传");
     return false;
   }
   return true;
