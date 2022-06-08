@@ -151,30 +151,18 @@ const handleQuConfig = (record: Recordable) => {
 
 const columns = [
   // {
-  //   title: '序号',
-  //   key: 'tableId',
-  //   width: 80,
+  //   title: "序号",
+  //   key: "tableId",
+  //   width: 50,
   //   render(row, index) {
-  //     return h('h1', index + 1);
-  //   }
+  //     return h("h1", index + 1);
+  //   },
   // },
   {
     title: "名称",
     key: "label",
-    width: 120,
+    width: 100,
   },
-  // {
-  //   title: '类型',
-  //   key: 'type',
-  //   width: 50,
-  //   render(row) {
-  //     if (row.type === 2) {
-  //       return h('p', '课时');
-  //     }
-  //     return h('p', '章节');
-  //   },
-  //   className: 'age'
-  // },
   {
     title: "描述",
     key: "note",
@@ -230,148 +218,6 @@ const columns = [
     },
   },
 ];
-
-// const updateisShowForm = () => {
-//   isShowForm.value = false;
-// };
-
-// const formParams = reactive({
-//   type: 1,
-//   label: '',
-//   note: '',
-//   chapterId: 0,
-//   unitId: 0
-// });
-
-// // 菜单后缀
-// // eslint-disable-next-line consistent-return
-// const renderSuffix = ({ option }: { option: TreeOption }) => {
-//   if (option.type === 0) {
-//     return [
-//       h('div', [
-//         h(
-//           'NButton',
-//           {
-//             props: {
-//               type: 'primary',
-//               size: 'small'
-//             },
-//             style: { marginRight: '5px' },
-//             onclick: () => {
-//               window.event.stopPropagation();
-//               // eslint-disable-next-line @typescript-eslint/no-use-before-define
-//               selectedTreeAdd('新建章节', option);
-//             }
-//           },
-//           {
-//             default: () => '新建章节'
-//           }
-//         )
-//       ])
-//     ];
-//   }
-//   if (option.type === 1) {
-//     return [
-//       h('div', [
-//         h(
-//           'NButton',
-//           {
-//             props: {
-//               type: 'primary',
-//               size: 'small'
-//             },
-//             style: { marginRight: '5px' },
-//             onclick: () => {
-//               window.event.stopPropagation();
-//               // eslint-disable-next-line @typescript-eslint/no-use-before-define
-//               selectedTreeAdd('新建课时', option);
-//             }
-//           },
-//           {
-//             default: () => '新建课时'
-//           }
-//         ),
-//         h(
-//           'NButton',
-//           {
-//             props: {
-//               type: 'primary',
-//               size: 'small'
-//             },
-//             style: { marginRight: '5px' },
-//             onclick: () => {
-//               window.event.stopPropagation();
-//               // eslint-disable-next-line @typescript-eslint/no-use-before-define
-//               selectedTreeAdd('编辑', option);
-//             }
-//           },
-//           {
-//             default: () => '编辑章节'
-//           }
-//         )
-//       ])
-//     ];
-//   }
-//   if (option.type === 2) {
-//     return [
-//       h('div', [
-//         h(
-//           'NButton',
-//           {
-//             props: {
-//               type: 'primary',
-//               size: 'small'
-//             },
-//             style: { marginRight: '5px' },
-//             onclick: () => {
-//               window.event.stopPropagation();
-//               // eslint-disable-next-line @typescript-eslint/no-use-before-define
-//               selectedTreeAdd('编辑', option);
-//             }
-//           },
-//           {
-//             default: () => '编辑课时'
-//           }
-//         )
-//       ])
-//     ];
-//   }
-// };
-// //  设置两个方法 新增房租组
-// const selectedTreeAdd = (type: string, option: Array<TreeOption | null>) => {
-//   // console.log(editFormRef);
-//   isShowForm.value = true;
-//   // addOrEdit.value = true;
-//   resetForm(formParams, ['type']);
-//   if (type === '新建章节' || type === '新建课时') {
-//     addOrEdit.value = true;
-//     formParams.type = type === '新建章节' ? 1 : 2;
-//     if (formParams.type === 1) {
-//       console.log('新建章节', option);
-//     } else {
-//       // 新建课时
-//       console.log('新建课时', option);
-//       formParams.chapterId = option?.id;
-//     }
-//   } else if (type === '编辑') {
-//     addOrEdit.value = false;
-//     formParams.type = option?.type === 1 ? 1 : 2;
-//     if (option?.type === 1) {
-//       console.log(option);
-//       formParams.chapterId = option?.id;
-//       formParams.label = option?.label;
-//       formParams.note = option?.note;
-//     } else {
-//       console.log(option);
-//       formParams.chapterId = option?.chapterId;
-//       formParams.id = option?.id;
-//       formParams.label = option?.label;
-//       formParams.note = option?.note;
-//       editFormRef.value.reloadPaperTable();
-//       // reloadPaperTable();
-//     }
-//   }
-// };
 </script>
 <style scoped>
 :deep(.age) {

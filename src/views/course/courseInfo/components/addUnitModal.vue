@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-05-21 11:21:27
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-28 10:43:17
+ * @LastEditTime: 2022-06-08 10:43:39
  * @FilePath: \work\src\views\course\courseInfo\components\addUnitModal.vue
  * @Description:
 -->
@@ -100,7 +100,7 @@
         </n-form-item>
         <n-form-item label="教学视频" path="studyVideo">
           <template #label>
-            教学内容文档
+            教学视频
             <n-tooltip trigger="hover">
               <template #trigger>
                 <n-icon size="18" class="cursor-pointer text-gray-400">
@@ -135,7 +135,7 @@
             v-model:file-list="formParams.studyPPT"
             :max="1"
             :custom-request="(options) => customRequestOutline(options, 2)"
-            @before-upload="beforeOutLineUpload"
+            @before-upload="beforePPTUpload"
           >
             <n-button>上传文件</n-button>
           </n-upload>
@@ -164,7 +164,6 @@
         <n-form-item label="开发环境必需" path="development">
           <n-input
             v-model:value="formParams.development"
-            :style="{ width: '33%' }"
             type="textarea"
             placeholder="请输入开发环境说明"
           />
@@ -324,7 +323,7 @@ import { saveOrUpdateUnit } from "@/service";
 import { deafultFormParams, fileTypeOfOutLine, fileTypeOfVideo } from "@/utils";
 // import { columns, paperColumns } from './columns';
 import paperTable from "./paperTable.vue";
-import { fileTypeOfPdf, fileTypeOfDocx } from "@/utils";
+import { fileTypeOfPdf, fileTypeOfDocx, fileTypeOfPPT } from "@/utils";
 
 const addOrEdit = ref(false);
 const showModal = ref(false);
@@ -405,6 +404,7 @@ const showAddModal = (record) => {
   fileType.length = 0;
   addOrEdit.value = true;
   showModal.value = true;
+  formParams.enableReport = form.enableReport === 1;
 };
 const showEditUnitModal = (form) => {
   quType.value = false;
@@ -523,7 +523,17 @@ const beforeOutLineUpload = async (data: {
   }
   return true;
 };
-
+const beforePPTUpload = async (data: {
+  file: UploadFileInfo;
+  fileList: UploadFileInfo[];
+}): Promise<boolean> => {
+  const result = fileTypeOfPPT(data);
+  if (result === false) {
+    message.error("只能上传PPT格式的文件，请重新上传");
+    return false;
+  }
+  return true;
+};
 const beforeVideoUpload = async (data: {
   file: UploadFileInfo;
   fileList: UploadFileInfo[];
