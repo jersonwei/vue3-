@@ -1,3 +1,11 @@
+<!--
+ * @Author: ZHENG
+ * @Date: 2022-05-16 15:06:21
+ * @LastEditors: ZHENG
+ * @LastEditTime: 2022-06-08 09:17:53
+ * @FilePath: \work\src\layouts\common\GlobalSider\components\VerticalMixSider\components\MixMenuDrawer.vue
+ * @Description:
+-->
 <template>
   <div
     class="relative h-full transition-width duration-300 ease-in-out"
@@ -7,9 +15,15 @@
       class="drawer-shadow absolute-lt flex-col-stretch h-full nowrap-hidden"
       :style="{ width: showDrawer ? theme.sider.mixChildMenuWidth + 'px' : '0px' }"
     >
-      <header class="header-height flex-y-center justify-between" :style="{ height: theme.header.height + 'px' }">
+      <header
+        class="header-height flex-y-center justify-between"
+        :style="{ height: theme.header.height + 'px' }"
+      >
         <h2 class="text-primary pl-8px text-16px font-bold">{{ title }}</h2>
-        <div class="px-8px text-16px text-gray-600 cursor-pointer" @click="app.toggleMixSiderFixed">
+        <div
+          class="px-8px text-16px text-gray-600 cursor-pointer"
+          @click="app.toggleMixSiderFixed"
+        >
           <icon-mdi-pin-off v-if="app.mixSiderFixed" />
           <icon-mdi-pin v-else />
         </div>
@@ -29,12 +43,12 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue';
-import { useRoute } from 'vue-router';
-import type { MenuOption } from 'naive-ui';
-import { useAppStore, useThemeStore } from '@/store';
-import { useAppInfo, useRouterPush } from '@/composables';
-import { getActiveKeyPathsOfMenus } from '@/utils';
+import { ref, computed, watch } from "vue";
+import { useRoute } from "vue-router";
+import type { MenuOption } from "naive-ui";
+import { useAppStore, useThemeStore } from "@/store";
+import { useAppInfo, useRouterPush } from "@/composables";
+import { getActiveKeyPathsOfMenus } from "@/utils";
 
 interface Props {
   /** 菜单抽屉可见性 */
@@ -51,9 +65,14 @@ const theme = useThemeStore();
 const { routerPush } = useRouterPush();
 const { title } = useAppInfo();
 
-const showDrawer = computed(() => (props.visible && props.menus.length) || app.mixSiderFixed);
+const showDrawer = computed(
+  () => (props.visible && props.menus.length) || app.mixSiderFixed
+);
 
-const activeKey = computed(() => route.name as string);
+// const activeKey = computed(() => route.name as string);
+const activeKey = computed(
+  () => (route.meta?.activeMenu ? route.meta.activeMenu : route.name) as string
+);
 const expandedKeys = ref<string[]>([]);
 
 function handleUpdateMenu(_key: string, item: MenuOption) {

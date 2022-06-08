@@ -24,12 +24,12 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue';
-import { useRoute } from 'vue-router';
-import type { MenuOption } from 'naive-ui';
-import { useAppStore, useThemeStore, useRouteStore } from '@/store';
-import { useRouterPush } from '@/composables';
-import { getActiveKeyPathsOfMenus } from '@/utils';
+import { computed, ref, watch } from "vue";
+import { useRoute } from "vue-router";
+import type { MenuOption } from "naive-ui";
+import { useAppStore, useThemeStore, useRouteStore } from "@/store";
+import { useRouterPush } from "@/composables";
+import { getActiveKeyPathsOfMenus } from "@/utils";
 
 const route = useRoute();
 const app = useAppStore();
@@ -37,7 +37,10 @@ const theme = useThemeStore();
 const routeStore = useRouteStore();
 const { routerPush } = useRouterPush();
 
-const activeKey = computed(() => route.name as string);
+// const activeKey = computed(() => route.name as string);
+const activeKey = computed(
+  () => (route.meta?.activeMenu ? route.meta.activeMenu : route.name) as string
+);
 const expandedKeys = ref<string[]>([]);
 
 function handleUpdateMenu(_key: string, item: MenuOption) {

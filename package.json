@@ -36,6 +36,7 @@
     "colord": "^2.9.2",
     "crypto-js": "^4.1.1",
     "echarts": "^5.3.2",
+    "file-saver": "^2.0.5",
     "form-data": "^4.0.0",
     "html2canvas": "^1.4.1",
     "js-base64": "3.6.0",
@@ -52,11 +53,10 @@
     "vditor": "^3.8.13",
     "vue": "3.2.33",
     "vue-json-excel": "^0.3.0",
-		"xlsx": "^0.17.4",
-		"file-saver": "^2.0.5",
     "vue-router": "^4.0.14",
     "vuedraggable": "4.1.0",
-    "xgplayer": "^2.31.6"
+    "xgplayer": "^2.31.6",
+    "xlsx": "^0.17.5"
   },
   "devDependencies": {
     "@amap/amap-jsapi-types": "^0.0.8",

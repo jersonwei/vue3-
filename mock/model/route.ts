@@ -524,7 +524,7 @@ export const routeModel: Record<Auth.RoleType, AuthRoute.Route[]> = {
           meta: {
             title: '菜单',
             requiresAuth: true,
-            icon: 'ic:baseline-block'
+            icon: 'ri:menu-3-fill'
           }
         },
         {
@@ -534,13 +534,13 @@ export const routeModel: Record<Auth.RoleType, AuthRoute.Route[]> = {
           meta: {
             title: '字典',
             requiresAuth: true,
-            icon: 'ic:baseline-block'
+            icon: 'arcticons:dictionary-cs-fr'
           }
         }
       ],
       meta: {
         title: '系统管理',
-        icon: 'fluent:book-information-24-regular',
+        icon: 'bi:gear-wide',
         order: 8
       }
     },
@@ -763,7 +763,8 @@ export const routeModel: Record<Auth.RoleType, AuthRoute.Route[]> = {
               meta: {
                 title: '个人实验分析',
                 requiresAuth: true,
-                icon: 'ic:outline-menu'
+                icon: 'ic:outline-menu',
+								activeMenu: 'learnAnalysis_testAnalysis',
               }
         },
         {

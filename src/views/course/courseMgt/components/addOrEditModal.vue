@@ -77,6 +77,8 @@
         <n-form-item label="课程介绍" path="note">
           <n-input
             v-model:value="formParams.note"
+            maxlength="255"
+            show-count
             type="textarea"
             placeholder="请输入课程介绍"
           />
