@@ -40,6 +40,7 @@
     </FormPro>
     <!-- 表格数据栏 -->
     <TablePro
+      id="exporttable"
       ref="actionRef"
       :columns="columns"
       :request="loadDataTable"
@@ -163,7 +164,7 @@ const actionColumn = reactive({
         {
           label: "档案",
           // eslint-disable-next-line @typescript-eslint/no-use-before-define
-          // onClick: handleEdit.bind(null, record)
+          onClick: recordSee.bind(null, record),
         },
         {
           label: "编辑",
@@ -223,7 +224,7 @@ const handleEdit = (record: Recordable) => {
 // 导入
 const importStudent = () => {
   routerPush({ name: "user_toLead" });
-  console.log("daoru");
+  // console.log("daoru");
 };
 // 导出
 const exportStudent = () => {
@@ -270,6 +271,7 @@ const { routerPush } = useRouterPush();
 
 // 档案跳转
 const recordSee = () => {
+  routerPush({ name: "user_recordSee" });
   // courseStore.setCourseInfo(record.id);
   // routerPush({ name: 'course_courseInfo' });
 };

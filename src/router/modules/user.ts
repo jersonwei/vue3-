@@ -25,6 +25,16 @@ const user: AuthRoute.Route = {
       }
     },
 		{
+			name: 'user_recordSee',
+			path: '/user/recordSee',
+			component: 'self',
+			meta: {
+				title: '学生档案',
+				requiresAuth: true,
+				icon: 'ic:baseline-block'
+			}
+		},
+		{
 			name: 'user_toLead',
 			path: '/user/toLead',
 			component: 'self',

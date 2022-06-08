@@ -174,6 +174,20 @@ export const routeModel: Record<Auth.RoleType, AuthRoute.Route[]> = {
             requiresAuth: true,
             hide: true,
             keepAlive: true,
+						activeMenu:'user_student',
+            icon: 'ic:baseline-block'
+          }
+        },
+				{
+          name: 'user_recordSee',
+          path: '/user/recordSee',
+          component: 'self',
+          meta: {
+            title: '学生档案',
+						requiresAuth: true,
+            hide: true,
+            keepAlive: true,
+						activeMenu:'user_student',
             icon: 'ic:baseline-block'
           }
         }
@@ -466,6 +480,21 @@ export const routeModel: Record<Auth.RoleType, AuthRoute.Route[]> = {
 						requiresAuth: true,
             hide: true,
             keepAlive: true,
+						activeMenu:'user_student',
+            icon: 'ic:baseline-block'
+          }
+        }
+				,
+				{
+          name: 'user_recordSee',
+          path: '/user/recordSee',
+          component: 'self',
+          meta: {
+            title: '学生档案',
+						requiresAuth: true,
+            hide: true,
+            keepAlive: true,
+						activeMenu:'user_student',
             icon: 'ic:baseline-block'
           }
         }
@@ -852,6 +881,20 @@ export const routeModel: Record<Auth.RoleType, AuthRoute.Route[]> = {
             requiresAuth: true,
             hide: true,
             keepAlive: true,
+						activeMenu:'user_student',
+            icon: 'ic:baseline-block'
+          }
+        },
+				{
+          name: 'user_recordSee',
+          path: '/user/recordSee',
+          component: 'self',
+          meta: {
+            title: '学生档案',
+						requiresAuth: true,
+            hide: true,
+            keepAlive: true,
+						activeMenu:'user_student',
             icon: 'ic:baseline-block'
           }
         }
