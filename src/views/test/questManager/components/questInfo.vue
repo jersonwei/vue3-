@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-05-31 08:35:01
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-06-04 10:52:30
+ * @LastEditTime: 2022-06-08 14:27:18
  * @FilePath: \work\src\views\test\questManager\components\questInfo.vue
  * @Description:
 -->
@@ -22,7 +22,7 @@
         <!-- <p style="text-indent: 2em; padding: 50px"> -->
         <!-- {{ questInfo.questionName }} -->
         <!-- </p> -->
-        <template v-if="questInfo.questionTypeName === '单选题'">
+        <!-- <template v-if="questInfo.questionTypeName === '单选题'">
           <n-radio-group :value="checkTagData.answerContent" disabled name="radiogroup">
             <n-space vertical>
               <n-radio v-for="song in checkTagData.questionOption" :key="song.value" :value="song.value">
@@ -30,8 +30,8 @@
               </n-radio>
             </n-space>
           </n-radio-group>
-        </template>
-        <n-form ref="formRef" :model="model" label-placement="left">
+        </template> -->
+        <n-form ref="formRef" label-placement="left">
           <n-grid :cols="24" :x-gap="24">
             <n-form-item-gi
               :span="7"
@@ -79,7 +79,7 @@
               :label-style="{ fontSize: '20px', fontWeight: 'bold' }"
               path="switchValue"
             >
-              <p>{{ questInfo.listPointRelatedName?.join(',') }}</p>
+              <p>{{ questInfo.listPointRelatedName?.join(",") }}</p>
             </n-form-item-gi>
             <n-form-item-gi
               :span="24"
@@ -109,42 +109,23 @@
   </n-modal>
 </template>
 <script lang="ts" setup>
-import { ref, reactive } from 'vue';
+import { ref, reactive } from "vue";
 
 const questInfo = ref({
-  questionTypeName: '',
-  questionName: '',
-  questionAnswer: '',
-  questionAnalyse: '',
-  difficultLevelName: '',
-  bankName: '',
-  listPointRelatedName: []
+  questionTypeName: "",
+  questionName: "",
+  questionAnswer: "",
+  questionAnalyse: "",
+  difficultLevelName: "",
+  bankName: "",
+  listPointRelatedName: [],
 });
 const showModal = ref(false);
-const showModalFn = record => {
+const showModalFn = (record) => {
   console.log(record);
   Object.assign(questInfo.value, record);
   showModal.value = true;
 };
 
-const model = reactive({
-  inputValue: null,
-  textareaValue: null,
-  selectValue: null,
-  multipleSelectValue: null,
-  datetimeValue: null,
-  nestedValue: {
-    path1: null,
-    path2: null
-  },
-  switchValue: false,
-  checkboxGroupValue: null,
-  radioGroupValue: null,
-  radioButtonGroupValue: null,
-  inputNumberValue: null,
-  timePickerValue: null,
-  sliderValue: 0,
-  transferValue: null
-});
 defineExpose({ showModalFn });
 </script>

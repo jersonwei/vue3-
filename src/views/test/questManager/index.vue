@@ -39,7 +39,7 @@
             <div class="py-3 menu-list">
               <template v-if="loading">
                 <div class="flex items-center justify-center py-4">
-                  <n-spin size="medium" style="height: 500px; overflow: hidden" />
+                  <n-spin size="medium" style="height: 460px; overflow: hidden" />
                 </div>
               </template>
               <template v-else>
@@ -52,13 +52,23 @@
                   label-field="label"
                   :data="treeData"
                   :node-props="nodeProps"
-                  style="height: 500px; overflow: hidden; font-size: 18px; line-height: 35px"
+                  style="
+                    height: 460px;
+                    overflow: hidden;
+                    font-size: 18px;
+                    line-height: 35px;
+                  "
                 />
               </template>
             </div>
           </div>
           <template #action>
-            <n-button style="width: 100%" ghost icon-placement="right" @click="addDataBaseModal">
+            <n-button
+              style="width: 100%"
+              ghost
+              icon-placement="right"
+              @click="addDataBaseModal"
+            >
               <template #icon>
                 <div class="flex items-center">
                   <n-icon size="14">
@@ -75,10 +85,18 @@
         <n-card :bordered="false">
           <FormPro @register="register" @submit="handleSubmit" @reset="reloadTable">
             <template #courseCategorySlot="{ model, field }">
-              <n-select v-model:value="model[field]" placeholder="请选择类别" :options="questionTypeoptions" />
+              <n-select
+                v-model:value="model[field]"
+                placeholder="请选择类别"
+                :options="questionTypeoptions"
+              />
             </template>
             <template #difficultySlot="{ model, field }">
-              <n-select v-model:value="model[field]" placeholder="请选择难易度" :options="difficultyoptions" />
+              <n-select
+                v-model:value="model[field]"
+                placeholder="请选择难易度"
+                :options="difficultyoptions"
+              />
             </template>
             <template #majorIdSlot="{ model, field }">
               <n-cascader
@@ -96,7 +114,7 @@
             ref="actionRef"
             :columns="columns"
             :request="loadDataTable"
-            :row-key="row => row.id"
+            :row-key="(row) => row.id"
             :action-column="actionColumn"
             key-field="id"
             label-field="label"
@@ -115,7 +133,12 @@
               </n-space>
             </template>
           </TablePro>
-          <delModal ref="delModalRef" :del-data="delData" :del-text="delText" @reload-table="reloadTable"></delModal>
+          <delModal
+            ref="delModalRef"
+            :del-data="delData"
+            :del-text="delText"
+            @reload-table="reloadTable"
+          ></delModal>
         </n-card>
       </n-gi>
     </n-grid>
@@ -125,23 +148,23 @@
 </template>
 
 <script lang="ts" setup>
-import { h, onMounted, reactive, ref } from 'vue';
-import { useRoute } from 'vue-router';
-import { CascaderOption, TreeOption, useMessage } from 'naive-ui';
-import { PlusOutlined } from '@vicons/antd';
-import { useTabStore, useExamStore } from '@/store';
-import { useRouterPush } from '@/composables';
-import { getQuestionBank, getPaperList } from '@/service';
-import { resetForm } from '@/utils';
-import { TablePro, TableAction } from '@/components/TablePro';
-import { FormPro, useForm } from '@/components/FormPro';
-import addDataBase from '../baseManager/components/addOrEditModal.vue';
-import { columns } from './columns';
-import { schemas } from './schemas';
-import delModal from './components/delModal.vue';
-import { getCategoryName, getChildren, getDictionary } from './getOptions';
-import { questionBankType } from './Type';
-import questInfo from './components/questInfo.vue';
+import { h, onMounted, reactive, ref } from "vue";
+import { useRoute } from "vue-router";
+import { CascaderOption, TreeOption, useMessage } from "naive-ui";
+import { PlusOutlined } from "@vicons/antd";
+import { useTabStore, useExamStore } from "@/store";
+import { useRouterPush } from "@/composables";
+import { getQuestionBank, getPaperList } from "@/service";
+import { resetForm } from "@/utils";
+import { TablePro, TableAction } from "@/components/TablePro";
+import { FormPro, useForm } from "@/components/FormPro";
+import addDataBase from "../baseManager/components/addOrEditModal.vue";
+import { columns } from "./columns";
+import { schemas } from "./schemas";
+import delModal from "./components/delModal.vue";
+import { getCategoryName, getChildren, getDictionary } from "./getOptions";
+import { questionBankType } from "./Type";
+import questInfo from "./components/questInfo.vue";
 
 const tab = useTabStore();
 const examStore = useExamStore();
@@ -155,8 +178,8 @@ const formData = ref({});
 const treeData = ref([]);
 const loading = ref(true);
 const propsFrom = reactive({
-  bankType: '',
-  bankName: ''
+  bankType: "",
+  bankName: "",
 });
 const bankTypeOptions = ref();
 const questionTypeoptions = ref();
@@ -170,7 +193,7 @@ const getOption = async () => {
 };
 getOption();
 const handleLoad = (option: CascaderOption) => {
-  return new Promise<void>(resolve => {
+  return new Promise<void>((resolve) => {
     window.setTimeout(() => {
       bankTypeOptions.value.children = getChildren(option);
       resolve();
@@ -194,13 +217,15 @@ const getQuestionBankData = async (from: { bankType: string; bankName: string })
     if (!from.bankName && !from.bankType) {
       questionBank.listQuestionBank.unshift({
         id: 0,
-        bankName: '全部题库',
-        questionCount: questionBank.count
+        bankName: "全部题库",
+        questionCount: questionBank.count,
       });
     }
-    treeData.value = questionBank.listQuestionBank.map((item: { id: any; bankName: any; questionCount: any }) => {
-      return { id: item.id, label: `${item.bankName} (${item.questionCount}道)` };
-    });
+    treeData.value = questionBank.listQuestionBank.map(
+      (item: { id: any; bankName: any; questionCount: any }) => {
+        return { id: item.id, label: `${item.bankName} (${item.questionCount}道)` };
+      }
+    );
   } else {
     treeData.value = [];
   }
@@ -217,39 +242,39 @@ const searchBank = () => {
 };
 onMounted(async () => {
   await getQuestionBankData(propsFrom);
-  tab.removeTab('/test/addQuest');
+  tab.removeTab("/test/addQuest");
 });
 
 const actionColumn = reactive({
   // Table操作列
   width: 160,
-  title: '操作',
-  key: 'action',
-  fixed: 'right',
+  title: "操作",
+  key: "action",
+  fixed: "right",
   render(record: Recordable<any>) {
     return h(TableAction as any, {
-      style: 'button',
+      style: "button",
       actions: [
         {
-          label: '详情',
+          label: "详情",
 
           // eslint-disable-next-line @typescript-eslint/no-use-before-define
-          onClick: handleInfo.bind(null, record)
+          onClick: handleInfo.bind(null, record),
         },
         {
-          label: '编辑',
+          label: "编辑",
 
           // eslint-disable-next-line @typescript-eslint/no-use-before-define
-          onClick: handleEdit.bind(null, record)
+          onClick: handleEdit.bind(null, record),
         },
         {
-          label: '删除',
+          label: "删除",
           // eslint-disable-next-line @typescript-eslint/no-use-before-define
-          onClick: handleDelete.bind(null, record)
-        }
-      ]
+          onClick: handleDelete.bind(null, record),
+        },
+      ],
     });
-  }
+  },
 });
 
 const nodeProps = ({ option }: { option: TreeOption }) => {
@@ -259,7 +284,7 @@ const nodeProps = ({ option }: { option: TreeOption }) => {
       // message.info(option.id);
       defaultSelectKeys.value[0] = option.id;
       reloadTable();
-    }
+    },
   };
 };
 
@@ -271,10 +296,10 @@ const addDataBaseModal = () => {
 // , {}
 const [register] = useForm({
   // 查询FORM
-  gridProps: { cols: '1 s:1 m:2 l:3 xl:4 2xl:4' },
+  gridProps: { cols: "1 s:1 m:2 l:3 xl:4 2xl:4" },
   labelWidth: 80,
   showAdvancedButton: false,
-  schemas
+  schemas,
 });
 /**
  * @author: ZHENG
@@ -288,12 +313,12 @@ const loadDataTable = async (res: any) => {
     param = {
       bankRelated: defaultSelectKeys.value[0],
       pageSize: res.size,
-      current: res.current
+      current: res.current,
     };
   } else {
     param = {
       pageSize: res.size,
-      current: res.current
+      current: res.current,
     };
   }
 
@@ -325,8 +350,8 @@ const handleInfo = (record: Recordable) => {
 const { routerPush } = useRouterPush();
 // 新建
 const addTable = () => {
-  examStore.setQuestionList('');
-  routerPush({ name: 'test_addQuest' });
+  examStore.setQuestionList("");
+  routerPush({ name: "test_addQuest" });
 };
 
 /**
@@ -337,20 +362,20 @@ const addTable = () => {
  */
 const handleEdit = (record: Recordable) => {
   if (record.quoteCount > 0) {
-    return message.warning('题目已被引用，不可编辑');
+    return message.warning("题目已被引用，不可编辑");
   }
   examStore.setQuestionList(record);
-  routerPush({ name: 'test_addQuest', query: record });
+  routerPush({ name: "test_addQuest", query: record });
   // editModalRef.value.editModalFn(record);
 };
 // 删除逻辑
 const delModalRef = ref();
 const delData = ref<number>(0); // 删除数据的ID
-const delText = ref(''); // 删除的文字
+const delText = ref(""); // 删除的文字
 // eslint-disable-next-line consistent-return
 const handleDelete = (record: Recordable) => {
   if (record.quoteCount > 0) {
-    return message.warning('题目已被引用，不可删除');
+    return message.warning("题目已被引用，不可删除");
   }
   delText.value = record.questionName;
   delData.value = record.id;
@@ -358,7 +383,8 @@ const handleDelete = (record: Recordable) => {
 };
 </script>
 <style scoped>
-:deep(.n-tree.n-tree--block-line .n-tree-node:not(.n-tree-node--disabled).n-tree-node--selected) {
+:deep(.n-tree.n-tree--block-line
+    .n-tree-node:not(.n-tree-node--disabled).n-tree-node--selected) {
   background-color: white !important;
 }
 :deep(.n-tree-node--selected .n-tree-node-content) {

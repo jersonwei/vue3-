@@ -156,7 +156,7 @@
       style="width: 1050px"
       title="确认"
       positive-text="确认"
-      negative-text="算了"
+      negative-text="取消"
     >
       <n-scrollbar ref="scrollRef" style="max-height: 750px">
         <!--  :rules="rules" -->

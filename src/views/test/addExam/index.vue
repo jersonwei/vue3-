@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-04-30 14:33:21
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-06-04 19:57:58
+ * @LastEditTime: 2022-06-08 16:32:29
  * @FilePath: \work\src\views\test\addExam\index.vue
  * @Description:
 -->
@@ -205,7 +205,7 @@
       title="确认"
       content="确认切换题目类型?会清空当前已选题目！"
       positive-text="确认"
-      negative-text="算了"
+      negative-text="取消"
       @positive-click="submitCallback"
       @negative-click="cancelCallback"
     />
@@ -217,7 +217,7 @@
       title="确认"
       content="确认切换题目类型?会清空当前已选题目！"
       positive-text="确认"
-      negative-text="算了"
+      negative-text="取消"
       @positive-click="submitQuestionSort"
     >
       <n-space>
@@ -572,18 +572,20 @@ const BaseFormRef = ref();
 const detailFormRef = ref();
 const saveDetail = async () => {
   console.log(paperList.value);
-  const ruleError = false;
-  await BaseFormRef.value.validate((errors: any) => {
-    console.log(errors);
-    if (!errors) {
-    } else {
-      return message.error("请填写完整信息");
-    }
-  });
-  BaseFormRef.value.restoreValidation();
+  // const ruleError = false;
+  if (BaseFormRef.value) {
+    await BaseFormRef.value.validate((errors: any) => {
+      console.log(errors);
+      if (!errors) {
+      } else {
+        return message.error("请填写完整信息");
+      }
+    });
+    // BaseFormRef.value.restoreValidation();
+  }
   for (let i = 0; i < detailFormRef?.value?.length; i++) {
     detailFormRef.value[i].validate((detailErrors: any) => {
-      if (!detailErrors && ruleError) {
+      if (!detailErrors) {
       } else {
         return message.error("请填写完整信息");
       }

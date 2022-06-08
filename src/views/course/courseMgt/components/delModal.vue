@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-05-12 17:34:13
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-18 08:49:05
+ * @LastEditTime: 2022-06-08 16:31:21
  * @FilePath: \work\src\views\course\courseMgt\components\delModal.vue
  * @Description:
 -->
@@ -11,11 +11,11 @@
     v-model:show="showDelModal"
     :mask-closable="false"
     preset="dialog"
-    type="error"
+    type="warning"
     title="确认"
-    :content="`确认删除课程${delText}`"
+    :content="`删除后，${delText}课程数据将无法恢复，确定要删除吗？`"
     positive-text="确认"
-    negative-text="算了"
+    negative-text="取消"
     @positive-click="onPositiveClick"
   />
 </template>

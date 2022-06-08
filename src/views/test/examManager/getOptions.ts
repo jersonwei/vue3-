@@ -2,12 +2,12 @@
  * @Author: ZHENG
  * @Date: 2022-05-23 09:52:31
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-23 13:39:08
- * @FilePath: \work\src\views\course\courseMgt\getOptions.ts
+ * @LastEditTime: 2022-06-08 13:34:06
+ * @FilePath: \work\src\views\test\examManager\getOptions.ts
  * @Description:
  */
 import { CascaderOption } from 'naive-ui';
-import { getClassList, getCollegeLegistt, getcourseCategoryList, getCourseStatus, getLabels } from '@/service';
+import { getClassList, getCollegeLegistt, getcourseCategoryList, getCourseStatus, getLabels, getPaperClassListInfo } from '@/service';
 
 /**
  * @author: ZHENG
@@ -20,6 +20,14 @@ export async function getCourseCategoryOptions() {
     return { value: item.id, label: item.categoryName };
   });
   return courseCategory;
+}
+
+export async function getPaperClassOptions () {
+	const { data: result } = await getPaperClassListInfo();
+  const newResult = result.map(item => {
+    return { value: item.id, label: item.categoryName };
+  });
+  return newResult;
 }
 /**
  * @author: ZHENG

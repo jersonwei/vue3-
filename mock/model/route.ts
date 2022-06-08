@@ -47,6 +47,16 @@ export const routeModel: Record<Auth.RoleType, AuthRoute.Route[]> = {
             icon: 'ic:baseline-block'
           }
         },
+				{
+          name: 'course_courseType',
+          path: '/course/courseType',
+          component: 'self',
+          meta: {
+            title: '课程分类',
+            requiresAuth: true,
+            icon: 'ic:baseline-block'
+          }
+        },
         {
           name: 'course_courseMark',
           path: '/course/courseMark',
@@ -561,6 +571,16 @@ export const routeModel: Record<Auth.RoleType, AuthRoute.Route[]> = {
             keepAlive: true
           }
         },
+				{
+          name: 'course_courseType',
+          path: '/course/courseType',
+          component: 'self',
+          meta: {
+            title: '课程分类',
+            requiresAuth: true,
+            icon: 'ic:baseline-block'
+          }
+        },
         {
           name: 'course_courseMark',
           path: '/course/courseMark',
@@ -602,7 +622,8 @@ export const routeModel: Record<Auth.RoleType, AuthRoute.Route[]> = {
             title: '课程预览',
             requiresAuth: true,
             hide: true,
-            keepAlive: true
+            keepAlive: true,
+						activeMenu: 'course_courseMgt',
           }
         },
         {
@@ -613,7 +634,8 @@ export const routeModel: Record<Auth.RoleType, AuthRoute.Route[]> = {
             title: '课时预览',
             requiresAuth: true,
             hide: true,
-            keepAlive: true
+            keepAlive: true,
+						activeMenu: 'course_courseMgt',
           }
         },
         {
@@ -624,7 +646,8 @@ export const routeModel: Record<Auth.RoleType, AuthRoute.Route[]> = {
             title: '课程报告成绩管理',
             requiresAuth: true,
             hide: true,
-            keepAlive: true
+            keepAlive: true,
+						activeMenu: 'course_courseMark',
           }
         },
         {
@@ -816,6 +839,72 @@ export const routeModel: Record<Auth.RoleType, AuthRoute.Route[]> = {
       ],
       meta: {
         title: '学情分析',
+        icon: 'carbon:dashboard',
+        order: 1
+      }
+    },
+		{
+      name: 'experiment',
+      path: '/experiment',
+      component: 'basic',
+      children: [
+        {
+          name: 'experiment_experimentManager',
+          path: '/experiment/experimentManager',
+          component: 'self',
+          meta: {
+            title: '实验课程列表',
+            requiresAuth: true,
+            icon: 'icon-park-outline:analysis'
+          }
+        },
+      ],
+      meta: {
+        title: '我的实验',
+        icon: 'carbon:dashboard',
+        order: 1
+      }
+    },
+		{
+      name: 'virtualizer',
+      path: '/virtualizer',
+      component: 'basic',
+      children: [
+        {
+          name: 'virtualizer_VMTemplateManage',
+          path: '/virtualizer/VMTemplateManage',
+          component: 'self',
+          meta: {
+            title: '虚拟机列表',
+            requiresAuth: true,
+            icon: 'icon-park-outline:analysis'
+          }
+        },
+      ],
+      meta: {
+        title: '我的虚拟机',
+        icon: 'carbon:dashboard',
+        order: 1
+      }
+    },
+		{
+      name: 'setting',
+      path: '/setting',
+      component: 'basic',
+      children: [
+        {
+          name: 'setting_baseSetting',
+          path: '/setting/baseSetting',
+          component: 'self',
+          meta: {
+            title: '个人信息',
+            requiresAuth: true,
+            icon: 'icon-park-outline:analysis'
+          }
+        },
+      ],
+      meta: {
+        title: '个人设置',
         icon: 'carbon:dashboard',
         order: 1
       }

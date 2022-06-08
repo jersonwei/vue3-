@@ -15,7 +15,7 @@
     title="确认"
     :content="`确认删除课程${delText}`"
     positive-text="确认"
-    negative-text="算了"
+    negative-text="取消"
     @positive-click="onPositiveClick"
   />
 </template>

@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-05-12 17:34:13
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-06-07 17:57:20
+ * @LastEditTime: 2022-06-08 17:59:14
  * @FilePath: \work\src\views\course\courseMgt\components\addOrEditModal.vue
  * @Description:
 -->
@@ -22,7 +22,7 @@
         :model="formParams"
         :rules="rules"
         label-placement="left"
-        :label-width="120"
+        :label-width="100"
         class="m-2 py-4"
       >
         <n-form-item label="课程名称" path="courseName">
@@ -43,6 +43,17 @@
           />
         </n-form-item>
         <n-form-item label="所属班级" path="classList">
+          <template #label>
+            所属班级
+            <n-tooltip trigger="hover">
+              <template #trigger>
+                <n-icon size="18" class="cursor-pointer text-gray-400">
+                  <QuestionCircleOutlined />
+                </n-icon>
+              </template>
+              课程可看班级,可多选
+            </n-tooltip>
+          </template>
           <n-select
             v-model:value="formParams.classList"
             clearable
@@ -75,6 +86,17 @@
           />
         </n-form-item>
         <n-form-item label="课程介绍" path="note">
+          <template #label>
+            课程介绍
+            <n-tooltip trigger="hover">
+              <template #trigger>
+                <n-icon size="18" class="cursor-pointer text-gray-400">
+                  <QuestionCircleOutlined />
+                </n-icon>
+              </template>
+              对课程介绍
+            </n-tooltip>
+          </template>
           <n-input
             v-model:value="formParams.note"
             maxlength="255"
@@ -115,7 +137,7 @@
                   <QuestionCircleOutlined />
                 </n-icon>
               </template>
-              上传pdf文件
+              上传pdf文件,仅用于学员在直播间学习
             </n-tooltip>
           </template>
           <n-upload
@@ -135,6 +157,17 @@
           </n-upload>
         </n-form-item>
         <n-form-item label="创建虚拟机" path="robot">
+          <template #label>
+            创建虚拟机
+            <n-tooltip trigger="hover">
+              <template #trigger>
+                <n-icon size="18" class="cursor-pointer text-gray-400">
+                  <QuestionCircleOutlined />
+                </n-icon>
+              </template>
+              创建虚拟机,跟随课程实验,不使用则不开启虚拟机实验
+            </n-tooltip>
+          </template>
           <n-radio-group v-model:value="formParams.robot" name="radiogroup">
             <n-space>
               <n-radio

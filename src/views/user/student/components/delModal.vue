@@ -2,8 +2,8 @@
  * @Author: ZHENG
  * @Date: 2022-05-12 17:34:13
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-18 08:49:05
- * @FilePath: \work\src\views\course\courseMgt\components\delModal.vue
+ * @LastEditTime: 2022-06-08 16:32:48
+ * @FilePath: \work\src\views\user\student\components\delModal.vue
  * @Description:
 -->
 <template>
@@ -15,7 +15,7 @@
     title="确认"
     :content="`确认删除学生${delText}`"
     positive-text="确认"
-    negative-text="算了"
+    negative-text="取消"
     @positive-click="onPositiveClick"
   />
 </template>

@@ -15,14 +15,14 @@
     title="确认"
     :content="`确认删除题目${delText}`"
     positive-text="确认"
-    negative-text="算了"
+    negative-text="取消"
     @positive-click="onPositiveClick"
   />
 </template>
 <script lang="ts" setup>
-import { ref } from 'vue';
-import { useMessage } from 'naive-ui';
-import { delStatusPaperQuestion } from '@/service';
+import { ref } from "vue";
+import { useMessage } from "naive-ui";
+import { delStatusPaperQuestion } from "@/service";
 
 const message = useMessage();
 const showDelModal = ref(false);
@@ -32,9 +32,9 @@ interface Props {
 }
 const props = withDefaults(defineProps<Props>(), {
   delData: 0,
-  delText: ''
+  delText: "",
 });
-const emits = defineEmits(['reloadTable']);
+const emits = defineEmits(["reloadTable"]);
 
 defineExpose({ showDelModal });
 
@@ -42,15 +42,15 @@ defineExpose({ showDelModal });
 // eslint-disable-next-line consistent-return
 const onPositiveClick = async () => {
   if (!props.delData) {
-    return message.error('删除数据异常');
+    return message.error("删除数据异常");
   }
   const param = {
-    id: props.delData
+    id: props.delData,
   };
   const result = await delStatusPaperQuestion(param);
-  if (result.data === '200') {
-    message.success('删除数据成功');
+  if (result.data === "200") {
+    message.success("删除数据成功");
   }
-  emits('reloadTable');
+  emits("reloadTable");
 };
 </script>
