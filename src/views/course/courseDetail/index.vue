@@ -2,25 +2,55 @@
  * @Author: ZHENG
  * @Date: 2022-05-12 14:54:50
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-06-06 13:46:06
+ * @LastEditTime: 2022-06-08 11:40:13
  * @FilePath: \work\src\views\course\courseDetail\index.vue
  * @Description:
 -->
 <template>
   <n-space :vertical="true" :size="16">
     <n-card :bordered="false">
-      <n-space justify="space-between">
-        <n-space vertical :size="20">
-          <div style="font-size: 24px">{{ courseDetail.label }}</div>
-          <div style="font-size: 18px">
-            课程介绍:
-            <span style="font-size: 15px">{{ courseDetail.note || "" }}</span>
-          </div>
+      <div class="w-full" style="font-size: 18px">
+        <n-space
+          >{{ courseDetail.label }}
+          <p
+            class="cursor-pointer text-gray-400"
+            style="font-size: 12px; margin-top: 10px"
+          >
+            <n-icon size="12"> <BookOutlined /> </n-icon>{{ sumChapter }} 章节
+          </p>
+          <p
+            class="cursor-pointer text-gray-400"
+            style="font-size: 12px; margin-top: 10px"
+          >
+            <n-icon size="12"> <ClockCircleTwotone /> </n-icon>{{ sumUnit }} 课时
+          </p>
         </n-space>
-        <div>
-          <n-image width="100" :src="courseDetail.coverPic" preview-disabled />
+        <div style="display: flex">
+          <div style="width: 80%">
+            课程介绍: <span style="font-size: 15px">{{ courseDetail.note || "" }}</span>
+          </div>
+
+          <n-image
+            style="justify-content: flex-end"
+            width="150"
+            :src="courseDetail.coverPic"
+            preview-disabled
+          />
         </div>
-      </n-space>
+        <!-- <n-grid cols="12" style="width: 100%" responsive="screen">
+              <n-gi span="9"
+                >
+              </n-gi>
+              <n-gi span="3"
+                ><n-image
+                  style="display: flex; justify-content: flex-end"
+                  width="200"
+                  :src="courseDetail.coverPic"
+                  preview-disabled
+              /></n-gi>
+            </n-grid> -->
+      </div>
+      <!-- <n-space style="width: 100%" vertical :size="20"> </n-space> -->
     </n-card>
     <!-- 明细 -->
     <n-card :bordered="false" size="small" class="shadow-sm rounded-16px">
@@ -78,16 +108,27 @@
   </n-space>
 </template>
 <script lang="ts" setup>
-import { h, onMounted, reactive, ref, watchEffect } from "vue";
+import { computed, h, onMounted, reactive, ref, watchEffect } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { TreeOption, useMessage } from "naive-ui";
 // import { FileOutlined } from '@vicons/antd';
-
+import { BookOutlined, ClockCircleTwotone } from "@vicons/antd";
 import { useCourseStore } from "@/store";
 import { getPreview } from "@/service";
 import { getServiceEnv } from "@/utils";
 
-const route = useRoute();
+const sumChapter = computed(() => {
+  return treeData.value.length;
+});
+
+const sumUnit = computed(() => {
+  let sumUnitNum = 0;
+  for (let i = 0; i < treeData?.value.length; i++) {
+    console.log(treeData.value[i].children);
+    sumUnitNum = sumUnitNum + treeData.value[i].children.length;
+  }
+  return sumUnitNum;
+});
 
 const router = useRouter();
 const message = useMessage();
@@ -226,19 +267,15 @@ watchEffect(async () => {
   //     url
   //   )}&officePreviewType=pdf`;
   // }
-  setTimeout(() => {
-    console.log(previewMd.value);
-  }, 2000);
-  console.log(previewMd.value);
 });
-const handleLoad = (option: CascaderOption) => {
-  return new Promise<void>((resolve) => {
-    window.setTimeout(() => {
-      getChildren(option);
-      resolve();
-    }, 500);
-  });
-};
+// const handleLoad = (option: CascaderOption) => {
+//   return new Promise<void>((resolve) => {
+//     window.setTimeout(() => {
+//       getChildren(option);
+//       resolve();
+//     }, 500);
+//   });
+// };
 </script>
 <style scoped>
 :deep(.n-tree-node-content__text) {

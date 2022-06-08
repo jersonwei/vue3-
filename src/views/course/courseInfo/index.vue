@@ -2,16 +2,27 @@
  * @Author: ZHENG
  * @Date: 2022-05-04 17:20:30
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-28 09:57:47
+ * @LastEditTime: 2022-06-08 10:14:54
  * @FilePath: \work\src\views\course\courseInfo\index.vue
  * @Description: 课程页面
 -->
 <template>
   <n-card :bordered="false" :title="courseName">
+    <template #header>
+      <n-space
+        >{{ courseName }}
+        <p class="cursor-pointer text-gray-400" style="font-size: 12px; margin-top: 5px">
+          <n-icon size="12"> <BookOutlined /> </n-icon>{{ sumChapter }} 章节
+        </p>
+        <p class="cursor-pointer text-gray-400" style="font-size: 12px; margin-top: 5px">
+          <n-icon size="12"> <ClockCircleTwotone /> </n-icon>{{ sumUnit }} 课时
+        </p>
+      </n-space>
+    </template>
     <n-space vertical :size="30">
       <n-button type="primary" @click="addChapter"> 新建章节 </n-button>
       <n-data-table
-        :row-key="row => row.id"
+        :row-key="(row) => row.id"
         :columns="columns"
         :style="{ height: `600px` }"
         flex-height
@@ -21,22 +32,26 @@
       />
     </n-space>
 
-    <addOrEditChapterModal ref="addOrEditChapterModalRef" @reset="loadDataTable"></addOrEditChapterModal>
+    <addOrEditChapterModal
+      ref="addOrEditChapterModalRef"
+      @reset="loadDataTable"
+    ></addOrEditChapterModal>
     <delChapterModal ref="delChapterModalRef" @reset="loadDataTable"></delChapterModal>
     <addUnitModal ref="addUnitModalRef" @reset="loadDataTable"></addUnitModal>
     <delUnitModal ref="delUnitModalRef" @reset="loadDataTable"></delUnitModal>
   </n-card>
 </template>
 <script lang="ts" setup>
-import { ref, h, onMounted, watchEffect } from 'vue';
-import { storeToRefs } from 'pinia';
-import { useCourseStore } from '@/store';
-import { getPreview } from '@/service';
-import { TableAction } from '@/components/TablePro';
-import addOrEditChapterModal from './components/addOrEditChapterModal.vue';
-import delChapterModal from './components/delChapterModal.vue';
-import addUnitModal from './components/addUnitModal.vue';
-import delUnitModal from './components/delUnitModal.vue';
+import { ref, h, onMounted, watchEffect, computed } from "vue";
+import { BookOutlined, ClockCircleTwotone } from "@vicons/antd";
+import { storeToRefs } from "pinia";
+import { useCourseStore } from "@/store";
+import { getPreview } from "@/service";
+import { TableAction } from "@/components/TablePro";
+import addOrEditChapterModal from "./components/addOrEditChapterModal.vue";
+import delChapterModal from "./components/delChapterModal.vue";
+import addUnitModal from "./components/addUnitModal.vue";
+import delUnitModal from "./components/delUnitModal.vue";
 
 // 刷新功能
 const courseStore = useCourseStore();
@@ -50,6 +65,17 @@ type RowData = {
   children?: RowData[];
 };
 const data: RowData[] = ref([]);
+const sumChapter = computed(() => {
+  return data?.value.length;
+});
+const sumUnit = computed(() => {
+  let sumUnitNum = 0;
+  for (let i = 0; i < data?.value.length; i++) {
+    console.log(data.value[i].children);
+    sumUnitNum = sumUnitNum + data.value[i].children.length;
+  }
+  return sumUnitNum;
+});
 const loadDataTable = async () => {
   // coutesInfoId.value
   const { data: result } = await getPreview({ id: coutesInfoId.value });
@@ -125,227 +151,73 @@ const handleQuConfig = (record: Recordable) => {
 
 const columns = [
   // {
-  //   title: '序号',
-  //   key: 'tableId',
-  //   width: 80,
-  //   render(row, index) {
-  //     return h('h1', index + 1);
-  //   }
-  // },
-  {
-    title: '名称',
-    key: 'label',
-    width: 120
-  },
-  // {
-  //   title: '类型',
-  //   key: 'type',
+  //   title: "序号",
+  //   key: "tableId",
   //   width: 50,
-  //   render(row) {
-  //     if (row.type === 2) {
-  //       return h('p', '课时');
-  //     }
-  //     return h('p', '章节');
+  //   render(row, index) {
+  //     return h("h1", index + 1);
   //   },
-  //   className: 'age'
   // },
   {
-    title: '描述',
-    key: 'note',
-    width: 120
+    title: "名称",
+    key: "label",
+    width: 100,
   },
   {
-    title: '操作',
-    key: 'action',
+    title: "描述",
+    key: "note",
     width: 120,
-    fixed: 'right',
+  },
+  {
+    title: "操作",
+    key: "action",
+    width: 120,
+    fixed: "right",
     render(record: Recordable<any>) {
       if (record.type === 2) {
         return h(TableAction as any, {
-          style: 'button',
+          style: "button",
           actions: [
             {
-              label: '删除课时',
-              icon: 'ic:outline-delete-outline',
+              label: "删除课时",
+              icon: "ic:outline-delete-outline",
               // eslint-disable-next-line @typescript-eslint/no-use-before-define
-              onClick: handleUnitDelete.bind(null, record)
+              onClick: handleUnitDelete.bind(null, record),
             },
             {
-              label: '编辑课时',
-              onClick: handleUnitEdit.bind(null, record)
+              label: "编辑课时",
+              onClick: handleUnitEdit.bind(null, record),
             },
             {
-              label: '配置习题',
+              label: "配置习题",
               // eslint-disable-next-line @typescript-eslint/no-use-before-define
-              onClick: handleQuConfig.bind(null, record)
-            }
-          ]
+              onClick: handleQuConfig.bind(null, record),
+            },
+          ],
         });
       }
       return h(TableAction as any, {
-        style: 'button',
+        style: "button",
         actions: [
           {
-            label: '删除章节',
-            icon: 'ic:outline-delete-outline',
+            label: "删除章节",
+            icon: "ic:outline-delete-outline",
             // eslint-disable-next-line @typescript-eslint/no-use-before-define
-            onClick: handleChapterDelete.bind(null, record)
+            onClick: handleChapterDelete.bind(null, record),
           },
           {
-            label: '编辑章节',
-            onClick: handleChapteEdit.bind(null, record)
+            label: "编辑章节",
+            onClick: handleChapteEdit.bind(null, record),
           },
           {
-            label: '新建课时',
-            onClick: handleUnitAdd.bind(null, record)
-          }
-        ]
+            label: "新建课时",
+            onClick: handleUnitAdd.bind(null, record),
+          },
+        ],
       });
-    }
-  }
+    },
+  },
 ];
-
-// const updateisShowForm = () => {
-//   isShowForm.value = false;
-// };
-
-// const formParams = reactive({
-//   type: 1,
-//   label: '',
-//   note: '',
-//   chapterId: 0,
-//   unitId: 0
-// });
-
-// // 菜单后缀
-// // eslint-disable-next-line consistent-return
-// const renderSuffix = ({ option }: { option: TreeOption }) => {
-//   if (option.type === 0) {
-//     return [
-//       h('div', [
-//         h(
-//           'NButton',
-//           {
-//             props: {
-//               type: 'primary',
-//               size: 'small'
-//             },
-//             style: { marginRight: '5px' },
-//             onclick: () => {
-//               window.event.stopPropagation();
-//               // eslint-disable-next-line @typescript-eslint/no-use-before-define
-//               selectedTreeAdd('新建章节', option);
-//             }
-//           },
-//           {
-//             default: () => '新建章节'
-//           }
-//         )
-//       ])
-//     ];
-//   }
-//   if (option.type === 1) {
-//     return [
-//       h('div', [
-//         h(
-//           'NButton',
-//           {
-//             props: {
-//               type: 'primary',
-//               size: 'small'
-//             },
-//             style: { marginRight: '5px' },
-//             onclick: () => {
-//               window.event.stopPropagation();
-//               // eslint-disable-next-line @typescript-eslint/no-use-before-define
-//               selectedTreeAdd('新建课时', option);
-//             }
-//           },
-//           {
-//             default: () => '新建课时'
-//           }
-//         ),
-//         h(
-//           'NButton',
-//           {
-//             props: {
-//               type: 'primary',
-//               size: 'small'
-//             },
-//             style: { marginRight: '5px' },
-//             onclick: () => {
-//               window.event.stopPropagation();
-//               // eslint-disable-next-line @typescript-eslint/no-use-before-define
-//               selectedTreeAdd('编辑', option);
-//             }
-//           },
-//           {
-//             default: () => '编辑章节'
-//           }
-//         )
-//       ])
-//     ];
-//   }
-//   if (option.type === 2) {
-//     return [
-//       h('div', [
-//         h(
-//           'NButton',
-//           {
-//             props: {
-//               type: 'primary',
-//               size: 'small'
-//             },
-//             style: { marginRight: '5px' },
-//             onclick: () => {
-//               window.event.stopPropagation();
-//               // eslint-disable-next-line @typescript-eslint/no-use-before-define
-//               selectedTreeAdd('编辑', option);
-//             }
-//           },
-//           {
-//             default: () => '编辑课时'
-//           }
-//         )
-//       ])
-//     ];
-//   }
-// };
-// //  设置两个方法 新增房租组
-// const selectedTreeAdd = (type: string, option: Array<TreeOption | null>) => {
-//   // console.log(editFormRef);
-//   isShowForm.value = true;
-//   // addOrEdit.value = true;
-//   resetForm(formParams, ['type']);
-//   if (type === '新建章节' || type === '新建课时') {
-//     addOrEdit.value = true;
-//     formParams.type = type === '新建章节' ? 1 : 2;
-//     if (formParams.type === 1) {
-//       console.log('新建章节', option);
-//     } else {
-//       // 新建课时
-//       console.log('新建课时', option);
-//       formParams.chapterId = option?.id;
-//     }
-//   } else if (type === '编辑') {
-//     addOrEdit.value = false;
-//     formParams.type = option?.type === 1 ? 1 : 2;
-//     if (option?.type === 1) {
-//       console.log(option);
-//       formParams.chapterId = option?.id;
-//       formParams.label = option?.label;
-//       formParams.note = option?.note;
-//     } else {
-//       console.log(option);
-//       formParams.chapterId = option?.chapterId;
-//       formParams.id = option?.id;
-//       formParams.label = option?.label;
-//       formParams.note = option?.note;
-//       editFormRef.value.reloadPaperTable();
-//       // reloadPaperTable();
-//     }
-//   }
-// };
 </script>
 <style scoped>
 :deep(.age) {

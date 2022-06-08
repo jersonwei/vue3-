@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-04-30 08:41:04
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-06-08 10:00:31
+ * @LastEditTime: 2022-06-08 10:44:27
  * @FilePath: \work\src\utils\index.ts
  * @Description:
  */
@@ -84,6 +84,15 @@ export function fileTypeOfDocx(data: { file: UploadFileInfo; fileList: UploadFil
 // 上传文件pdf或者md或者pptx
 export function fileTypeOfPdf(data: { file: UploadFileInfo; fileList: UploadFileInfo[] }) {
   if (data.file.file?.type === 'application/pdf') {
+    return true;
+  }
+  return false;
+}
+
+export function fileTypeOfPPT(data: { file: UploadFileInfo; fileList: UploadFileInfo[] }) {
+  // name
+  const verifyPptx = /.(pptx)$/i;
+  if ( verifyPptx.test(data.file.file?.name)) {
     return true;
   }
   return false;

@@ -54,7 +54,7 @@ export const routeModel: Record<Auth.RoleType, AuthRoute.Route[]> = {
           meta: {
             title: '课程成绩管理',
             requiresAuth: true,
-            icon: 'ic:baseline-web-asset-off'
+            icon: 'ic:baseline-web-asset-off',
           }
         },
         {
@@ -75,7 +75,8 @@ export const routeModel: Record<Auth.RoleType, AuthRoute.Route[]> = {
             title: '课程配置',
             requiresAuth: true,
             hide: true,
-            keepAlive: true
+            keepAlive: true,
+						activeMenu: 'course_courseMgt',
           }
         },
         {
@@ -618,7 +619,8 @@ export const routeModel: Record<Auth.RoleType, AuthRoute.Route[]> = {
           meta: {
             title: '课程配置',
             keepAlive: true,
-            hide: true
+            hide: true,
+						activeMenu: 'course_courseMgt',
           }
         },
         {
