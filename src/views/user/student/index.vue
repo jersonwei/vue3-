@@ -109,7 +109,6 @@ import { FormPro, useForm } from "@/components/FormPro";
 import { columns } from "./columns";
 import { schemas } from "./schemas";
 import addOrEditModalVue from "./components/addOrEditModal.vue";
-
 // 删除学生
 import delModal from "./components/delModal.vue";
 // 导入获取头部下拉框接口
@@ -169,7 +168,7 @@ const actionColumn = reactive({
         {
           label: "编辑",
           // eslint-disable-next-line @typescript-eslint/no-use-before-define
-          // onClick: handleEdit.bind(null, record)
+          onClick: handleEdit.bind(null, record),
         },
         {
           label: "删除",
@@ -215,7 +214,6 @@ const addOrEditModalRef = ref();
 // 新建
 const addStudent = () => {
   addOrEditModalRef.value.showModalFn();
-  // addStudentModalRef.value.showModalFn();
 };
 // 编辑
 const handleEdit = (record: Recordable) => {

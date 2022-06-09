@@ -1,17 +1,84 @@
 <template>
   <n-card>
-    <n-form class="record">
-      <n-form-item>
-        <n-image
-          class="img"
-          width="100"
+    <div class="content">
+      <n-form
+        label-placement="left"
+        :label-width="80"
+        class="record"
+        style="display: flex; flex-wrap: wrap; width: 900px"
+      >
+        <n-avatar
+          round
+          style="width: 100px; height: 100px"
+          size="large"
           src="https://07akioni.oss-cn-beijing.aliyuncs.com/07akioni.jpeg"
-        ></n-image>
-      </n-form-item>
-      <n-form-item label="姓名:">
-        <n-button text>张三</n-button>
-      </n-form-item>
-      <!-- <n-form-item label="性别:">
+        />
+        <n-form-item label="姓名:">
+          <!-- <n-input>张三</n-input> -->
+          <span>张三</span>
+          <!-- <n-button text>张三</n-button> -->
+        </n-form-item>
+        <n-form-item label="姓名:">
+          <!-- <n-input>张三</n-input> -->
+          <span>张三</span>
+          <!-- <n-button text>张三</n-button> -->
+        </n-form-item>
+        <n-form-item label="姓名:">
+          <!-- <n-input>张三</n-input> -->
+          <span>张三</span>
+          <!-- <n-button text>张三</n-button> -->
+        </n-form-item>
+        <n-form-item label="姓名:">
+          <!-- <n-input>张三</n-input> -->
+          <span>张三</span>
+          <!-- <n-button text>张三</n-button> -->
+        </n-form-item>
+        <n-form-item label="姓名:">
+          <!-- <n-input>张三</n-input> -->
+          <span>张三</span>
+          <!-- <n-button text>张三</n-button> -->
+        </n-form-item>
+        <n-form-item label="姓名:">
+          <!-- <n-input>张三</n-input> -->
+          <span>张三</span>
+          <!-- <n-button text>张三</n-button> -->
+        </n-form-item>
+        <n-form-item label="姓名:">
+          <!-- <n-input>张三</n-input> -->
+          <span>张三</span>
+          <!-- <n-button text>张三</n-button> -->
+        </n-form-item>
+        <n-form-item label="姓名:">
+          <!-- <n-input>张三</n-input> -->
+          <span>张三</span>
+          <!-- <n-button text>张三</n-button> -->
+        </n-form-item>
+        <n-form-item label="姓名:">
+          <!-- <n-input>张三</n-input> -->
+          <span>张三</span>
+          <!-- <n-button text>张三</n-button> -->
+        </n-form-item>
+        <n-form-item label="姓名:">
+          <!-- <n-input>张三</n-input> -->
+          <span>张三</span>
+          <!-- <n-button text>张三</n-button> -->
+        </n-form-item>
+        <n-form-item label="姓名:">
+          <!-- <n-input>张三</n-input> -->
+          <span>张三</span>
+          <!-- <n-button text>张三</n-button> -->
+        </n-form-item>
+        <n-form-item label="姓名:">
+          <!-- <n-input>张三</n-input> -->
+          <span>张三</span>
+          <!-- <n-button text>张三</n-button> -->
+        </n-form-item>
+        <n-form-item label="姓名:">
+          <!-- <n-input>张三</n-input> -->
+          <span>张三</span>
+          <!-- <n-button text>张三</n-button> -->
+        </n-form-item>
+        <!-- <n-form-item label="性别:">
         <n-button text>张三</n-button>
       </n-form-item>
       <n-form-item label="学号:">
@@ -38,34 +105,37 @@
       <n-form-item label="地址:">
         <n-button text>张三</n-button>
       </n-form-item> -->
-    </n-form>
-    <div class="tab" style="width: 900px">
-      <n-tabs type="segment">
-        <n-tab-pane name="chap1" tab="参加课程">
-          <FormPro @register="register" @submit="handleSubmit" @reset="reloadTable">
-            <template #courseCategorySlot="{ model, field }">
-              <n-select
-                v-model:value="model[field]"
-                placeholder="请选择课程类别"
-                clearable
-                :options="courseCategoryOptions"
-              />
-            </template>
-          </FormPro>
-          <TablePro
-            ref="actionRef"
-            :columns="columns"
-            :request="loadDataTable"
-            :row-key="(row) => row.id"
-            :scroll-x="900"
-            :action-column="actionColumn"
-          >
-          </TablePro>
-        </n-tab-pane>
-        <n-tab-pane name="chap2" tab="考试成绩"> </n-tab-pane>
-        <n-tab-pane name="chap3" tab="课程笔记">3</n-tab-pane>
-        <n-tab-pane name="chap4" tab="课程互动">4</n-tab-pane>
-      </n-tabs>
+      </n-form>
+      <div class="tab" style="width: 900px">
+        <n-tabs type="segment">
+          <n-tab-pane name="chap1" tab="参加课程">
+            <FormPro @register="register" @submit="handleSubmit" @reset="reloadTable">
+              <template #courseCategorySlot="{ model, field }">
+                <n-select
+                  v-model:value="model[field]"
+                  placeholder="请选择课程类别"
+                  clearable
+                  :options="courseCategoryOptions"
+                />
+              </template>
+            </FormPro>
+            <TablePro
+              ref="actionRef"
+              :columns="columns"
+              :request="loadDataTable"
+              :row-key="(row) => row.id"
+              :scroll-x="1000"
+              :action-column="actionColumn"
+            >
+            </TablePro>
+          </n-tab-pane>
+          <n-tab-pane name="chap2" tab="考试成绩">
+            <examManager></examManager>
+          </n-tab-pane>
+          <n-tab-pane name="chap3" tab="课程笔记">3</n-tab-pane>
+          <n-tab-pane name="chap4" tab="课程互动">4</n-tab-pane>
+        </n-tabs>
+      </div>
     </div>
   </n-card>
 </template>
@@ -79,6 +149,7 @@ import { schemas } from "./schemas";
 import { TablePro, TableAction } from "@/components/TablePro";
 import { getCourseCategoryOptions } from "./getOptions";
 import { columns } from "./columns";
+import examManager from "./component/examManager/exam.vue";
 const actionRef = ref(); // 表格
 const formData = ref({});
 const [register] = useForm({
@@ -167,6 +238,18 @@ const reportSee = () => {
 </script>
 
 <style lang="scss" scoped>
+.img {
+  ::v-deep(.n-form-item) {
+    width: 280px;
+    height: 30px;
+    ::v-deep(.n-form-item-label) {
+      width: 80px;
+      height: 67px;
+      line-height: 67px;
+    }
+  }
+}
+
 // .record {
 //   display: flex;
 // }

@@ -253,4 +253,8 @@ const handleConfig = (record: Recordable) => {
   routerPush({ name: "course_courseInfo" });
 };
 </script>
-<style scoped></style>
+<style scoped>
+::v-deep(.n-form-item) {
+  width: 360px;
+}
+</style>

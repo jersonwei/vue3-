@@ -19,6 +19,11 @@ export function addStudent(params) {
   return res;
 }
 // 编辑学生
+
+export function putStudent(params){
+	const res=request.put(`/student/updateStudent`,params)
+	return res
+}
 // 删除学生
 export function deleteStudent(params) {
   // const query = paramsToQuery(params);
