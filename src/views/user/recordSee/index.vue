@@ -1,3 +1,11 @@
+<!--
+ * @Author: ZHENG
+ * @Date: 2022-06-08 18:31:50
+ * @LastEditors: ZHENG
+ * @LastEditTime: 2022-06-09 10:00:02
+ * @FilePath: \work\src\views\user\recordSee\index.vue
+ * @Description:
+-->
 <template>
   <n-card>
     <n-form class="record" :label-width="160">
@@ -53,11 +61,7 @@
 </template>
 
 <script setup lang="ts">
-import course from "./component/course/index.vue"
-export default {
-  components: {
-    course
-  }
+import course from "./component/course/index.vue";
 </script>
 
 <style lang="scss" scoped>

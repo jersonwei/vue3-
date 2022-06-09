@@ -1,3 +1,11 @@
+/*
+ * @Author: ZHENG
+ * @Date: 2022-05-16 15:06:21
+ * @LastEditors: ZHENG
+ * @LastEditTime: 2022-06-09 09:45:09
+ * @FilePath: \work\src\router\helpers\scroll.ts
+ * @Description:
+ */
 import type { RouterScrollBehavior } from 'vue-router';
 import { useTabStore } from '@/store';
 
@@ -6,12 +14,14 @@ export const scrollBehavior: RouterScrollBehavior = (to, from) => {
     const tab = useTabStore();
 
     if (to.hash) {
-      resolve({
-        el: to.hash,
-        behavior: 'smooth'
-      });
+			const el = document.querySelector(to.hash);
+      if (el) {
+        resolve({
+          el,
+          behavior: 'smooth'
+        });
+      }
     }
-
     const { left, top } = tab.getTabScrollPosition(to.path);
     const scrollPosition = {
       left,

@@ -1,3 +1,11 @@
+/*
+ * @Author: ZHENG
+ * @Date: 2022-05-16 15:06:21
+ * @LastEditors: ZHENG
+ * @LastEditTime: 2022-06-09 09:44:00
+ * @FilePath: \work\src\router\guard\dynamic.ts
+ * @Description:
+ */
 import type { Router, RouteLocationNormalized, NavigationGuardNext } from 'vue-router';
 import { routeName } from '@/router';
 import { useRouteStore } from '@/store';
@@ -32,7 +40,10 @@ export async function createDynamicRouteGuard(
 
     if (to.name === routeName('not-found-page')) {
       // 动态路由没有加载导致被not-found-page路由捕获，等待权限路由加载好了，回到之前的路由
-      next({ path: to.fullPath, replace: true, query: to.query });
+      // next({ path: to.fullPath, replace: true, query: to.query });
+			const ROOT_ROUTE_NAME: AuthRoute.RouteKey = 'root';
+			const path = to.redirectedFrom?.name === ROOT_ROUTE_NAME ? '/' : to.fullPath;
+      next({ path, replace: true, query: to.query, hash: to.hash });
       return false;
     }
   }

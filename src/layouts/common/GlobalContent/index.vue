@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-05-16 15:06:21
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-06-09 09:29:50
+ * @LastEditTime: 2022-06-09 09:40:52
  * @FilePath: \work\src\layouts\common\GlobalContent\index.vue
  * @Description:
 -->
@@ -20,7 +20,7 @@
         @after-enter="handleAfterEnter"
       >
         <keep-alive :include="routeStore.cacheRoutes">
-          <component :is="Component" v-if="app.reloadFlag" :key="route.path" />
+          <component :is="Component" v-if="app.reloadFlag" :key="route.fullPath" />
         </keep-alive>
       </transition>
     </router-view>

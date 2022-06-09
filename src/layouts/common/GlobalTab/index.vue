@@ -1,7 +1,21 @@
+<!--
+ * @Author: ZHENG
+ * @Date: 2022-05-16 15:06:21
+ * @LastEditors: ZHENG
+ * @LastEditTime: 2022-06-09 09:42:23
+ * @FilePath: \work\src\layouts\common\GlobalTab\index.vue
+ * @Description:
+-->
 <template>
-  <dark-mode-container class="global-tab flex-y-center w-full pl-16px" :style="{ height: theme.tab.height + 'px' }">
+  <dark-mode-container
+    class="global-tab flex-y-center w-full pl-16px"
+    :style="{ height: theme.tab.height + 'px' }"
+  >
     <div ref="bsWrapper" class="flex-1-hidden h-full">
-      <better-scroll ref="bsScroll" :options="{ scrollX: true, scrollY: false, click: canClick }">
+      <better-scroll
+        ref="bsScroll"
+        :options="{ scrollX: true, scrollY: false, click: canClick }"
+      >
         <tab-detail @scroll="handleScroll" />
       </better-scroll>
     </div>
@@ -10,12 +24,12 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue';
-import { useRoute } from 'vue-router';
-import { useElementBounding } from '@vueuse/core';
-import { useThemeStore, useTabStore } from '@/store';
-import { useDeviceInfo } from '@/composables';
-import { TabDetail, ReloadButton } from './components';
+import { ref, watch } from "vue";
+import { useRoute } from "vue-router";
+import { useElementBounding } from "@vueuse/core";
+import { useThemeStore, useTabStore } from "@/store";
+import { useDeviceInfo } from "@/composables";
+import { TabDetail, ReloadButton } from "./components";
 
 const route = useRoute();
 const theme = useThemeStore();
@@ -45,10 +59,10 @@ function init() {
 }
 
 watch(
-  () => route.path,
+  () => route.fullPath,
   () => {
     tab.addTab(route);
-    tab.setActiveTab(route.path);
+    tab.setActiveTab(route.fullPath);
   }
 );
 

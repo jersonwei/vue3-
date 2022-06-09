@@ -1,5 +1,9 @@
 <template>
-  <dark-mode-container class="flex h-full" :inverted="theme.sider.inverted" @mouseleave="resetFirstDegreeMenus">
+  <dark-mode-container
+    class="flex h-full"
+    :inverted="theme.sider.inverted"
+    @mouseleave="resetFirstDegreeMenus"
+  >
     <div class="flex-1 flex-col-stretch h-full">
       <global-logo :show-title="false" :style="{ height: theme.header.height + 'px' }" />
       <n-scrollbar class="flex-1-hidden">
@@ -21,13 +25,13 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue';
-import { useRoute } from 'vue-router';
-import { useAppStore, useThemeStore, useRouteStore } from '@/store';
-import { useRouterPush } from '@/composables';
-import { useBoolean } from '@/hooks';
-import { GlobalLogo } from '@/layouts/common';
-import { MixMenuDetail, MixMenuDrawer, MixMenuCollapse } from './components';
+import { computed, ref, watch } from "vue";
+import { useRoute } from "vue-router";
+import { useAppStore, useThemeStore, useRouteStore } from "@/store";
+import { useRouterPush } from "@/composables";
+import { useBoolean } from "@/hooks";
+import { GlobalLogo } from "@/layouts/common";
+import { MixMenuDetail, MixMenuDrawer, MixMenuCollapse } from "./components";
 
 const route = useRoute();
 const app = useAppStore();
@@ -36,13 +40,13 @@ const routeStore = useRouteStore();
 const { routerPush } = useRouterPush();
 const { bool: drawerVisible, setTrue: openDrawer, setFalse: hideDrawer } = useBoolean();
 
-const activeParentRouteName = ref('');
+const activeParentRouteName = ref("");
 function setActiveParentRouteName(routeName: string) {
   activeParentRouteName.value = routeName;
 }
 
 const firstDegreeMenus = computed(() =>
-  routeStore.menus.map(item => {
+  routeStore.menus.map((item) => {
     const { routeName, label } = item;
     const icon = item?.icon;
     const hasChildren = Boolean(item.children && item.children.length);
@@ -51,14 +55,17 @@ const firstDegreeMenus = computed(() =>
       routeName,
       label,
       icon,
-      hasChildren
+      hasChildren,
     };
   })
 );
 
 function getActiveParentRouteName() {
-  firstDegreeMenus.value.some(item => {
-    const routeName = route.name as string;
+  firstDegreeMenus.value.some((item) => {
+    // const routeName = route.name as string;
+    const routeName = (route.meta?.activeMenu
+      ? route.meta.activeMenu
+      : route.name) as string;
     const flag = routeName?.includes(item.routeName);
     if (flag) {
       setActiveParentRouteName(item.routeName);
@@ -83,8 +90,9 @@ function resetFirstDegreeMenus() {
 
 const activeChildMenus = computed(() => {
   const menus: GlobalMenuOption[] = [];
-  routeStore.menus.some(item => {
-    const flag = item.routeName === activeParentRouteName.value && Boolean(item.children?.length);
+  routeStore.menus.some((item) => {
+    const flag =
+      item.routeName === activeParentRouteName.value && Boolean(item.children?.length);
     if (flag) {
       menus.push(...(item.children || []));
     }
