@@ -824,25 +824,23 @@ export const routeModel: Record<Auth.RoleType, AuthRoute.Route[]> = {
         {
           name: 'learnAnalysis_questAnalysis',
           path: '/learnAnalysis/questAnalysis',
-          component: 'multi',
-          children: [
-            {
-              name: 'learnAnalysis_questAnalysis_personalTest',
-              path: '/learnAnalysis/questAnalysis/personalTest',
-              component: 'self',
-              meta: {
-                title: '个人习题分析',
-                requiresAuth: true,
-                icon: 'ic:outline-menu'
-              }
-            }
-          ],
+          component: 'self',
           meta: {
             title: '习题分析',
             requiresAuth: true,
             icon: 'icon-park-outline:analysis'
           }
         },
+				{
+					name: 'learnAnalysis_questAnalysis_personalTest',
+					path: '/learnAnalysis/questAnalysis/personalTest',
+					component: 'self',
+					meta: {
+						title: '个人习题分析',
+						requiresAuth: true,
+						icon: 'ic:outline-menu'
+					}
+				},
         {
           name: 'learnAnalysis_examAnalysis',
           path: '/learnAnalysis/examAnalysis',

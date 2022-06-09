@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-04-30 08:41:04
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-06-07 16:45:32
+ * @LastEditTime: 2022-06-09 08:58:54
  * @FilePath: \work\src\service\api\index.ts
  * @Description:
  */
@@ -25,6 +25,6 @@ export * from './unitPracticeAnswers/unitPracticeAnswers';
 
 
 export * from './question/index';
-
-export * from './learnAnalysis/learnAnalysis'
+// 习题分析模块
+export * from './learnAnalysis/index'
 export * from './user/index'

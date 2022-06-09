@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-06-01 16:21:58
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-06-01 16:36:20
+ * @LastEditTime: 2022-06-09 09:22:23
  * @FilePath: \work\src\views\test\examManager\components\showExamModal.vue
  * @Description:
 -->
@@ -29,8 +29,11 @@
       >
         {{ paper.paperName }}
       </p>
-
-      <p
+      <n-form-item label="考试说明">
+        <p>{{ paper.paperDescribe }}</p>
+      </n-form-item>
+      <p v-if="examTimeRef">考试时长{{ examTimeRef }}</p>
+      <!-- <p
         style="
           display: flex;
           justify-content: center;
@@ -43,8 +46,8 @@
         本试卷满分{{ paper.paperScores }}分,考试时间为{{ paper.paperBeginTime }}至{{
           paper.paperEndTime
         }}。
-      </p>
-      <p
+      </p> -->
+      <!-- <p
         style="
           display: flex;
           justify-content: center;
@@ -55,7 +58,7 @@
         "
       >
         {{ paper.paperDescribe }}
-      </p>
+      </p> -->
       <!-- 我们在田野上面找猪<br />
       想象中已找到了三只<br />
       小鸟在白云上面追逐<br />
@@ -80,9 +83,11 @@
 import { ref } from "vue";
 import { useMessage } from "naive-ui";
 import { delPaper, getPaperDetail } from "@/service";
+import { differenceInMinutes, format } from "date-fns";
 
 const showExamModal = ref(false);
 const paper = ref();
+const examTimeRef = ref(0);
 // const emits = defineEmits(['reloadTable']);
 const showModal = async (record) => {
   const param = {
@@ -92,6 +97,12 @@ const showModal = async (record) => {
   paper.value = result.paper;
   console.log(result);
   showExamModal.value = true;
+  const paperBeginTime = new Date(paper.value.paperBeginTime);
+  const paperEndTime = new Date(paper.value.paperEndTime);
+  const examTime = differenceInMinutes(paperEndTime, paperBeginTime);
+  console.log(examTime, paperBeginTime, paperEndTime);
+  examTimeRef.value = examTime;
+  console.log(examTime);
 };
 
 defineExpose({ showModal });

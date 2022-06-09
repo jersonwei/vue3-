@@ -2,8 +2,8 @@
  * @Author: ZHENG
  * @Date: 2022-06-06 08:53:26
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-06-09 08:50:33
- * @FilePath: \work\src\views\learnAnalysis\testAnalysis\index.vue
+ * @LastEditTime: 2022-06-09 08:54:52
+ * @FilePath: \work\src\views\learnAnalysis\questAnalysis\index.vue
  * @Description:
 -->
 <template>
@@ -126,11 +126,11 @@
           </n-form-item>
           <n-grid style="margin-top: 10px" x-gap="12" :cols="2" :x-gap="20">
             <n-gi>
-              <n-card title="实验报告成绩分析">
+              <n-card title="习题报告成绩分析">
                 <template v-if="analysis.avg != null">
                   <div class="w-full h-180px">
                     <n-space vertical class="flex" style="padding-top: 30px">
-                      <p class="flex-center" style="font-size: 20px">实验报告平均分</p>
+                      <p class="flex-center" style="font-size: 20px">习题报告平均分</p>
                       <p class="flex-center font-600" style="font-size: 20px">
                         {{ analysis.avg }} 分
                       </p>
@@ -151,7 +151,7 @@
                 ></template> </n-card
             ></n-gi>
             <n-gi
-              ><n-card title="实验报告时长分析">
+              ><n-card title="试题错误率分析">
                 <template v-if="analysis.durationAnalysis.length">
                   <n-scrollbar style="max-height: 180px" class="w-full h-180px">
                     <div v-for="(item, index) in analysis.durationAnalysis">
@@ -185,7 +185,7 @@
           <n-card
             class="border"
             style="margin-top: 10px"
-            title="报告成绩分布（班级）"
+            title="习题成绩分布（班级）"
             :bordered="false"
           >
             <template v-if="analysis.durationAnalysis.length">
@@ -205,7 +205,7 @@
 import { reactive, ref } from "vue";
 import { CaretUpOutlined, CaretDownFilled } from "@vicons/antd";
 import { getCollegeLegistOptions, getChildren, getChapter } from "./getOptions";
-import { getCourseGradeVo, getTestReportGrade, getUnitList } from "@/service";
+import { getCourseGradeVo, getProblemAnalysis, getUnitList } from "@/service";
 import { numberfilter } from "@/utils";
 import { CascaderOption, useMessage } from "naive-ui";
 import { getDay } from "date-fns";
@@ -339,7 +339,11 @@ const getTestReportGradeData = async (id: string) => {
   const i = id.indexOf("-");
   const subUnitId = id.substring(i + 1);
   const classId = courseList.value[courseIndex.value].classId;
-  const { data: result } = await getTestReportGrade(subUnitId, classId);
+  const params = {
+    classId: classId,
+    unitId: subUnitId,
+  };
+  const { data: result } = await getProblemAnalysis(params);
   if (!result) {
     const param = {
       avg: null,
