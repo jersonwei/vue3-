@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-04-30 14:33:21
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-06-04 15:23:14
+ * @LastEditTime: 2022-06-08 13:43:35
  * @FilePath: \work\src\views\test\addQuest\index.vue
  * @Description:
 -->
@@ -19,7 +19,12 @@
       >
         <!-- 所属题库 -->
         <n-form-item label="所属题库" path="dataBaseName">
-          <n-input v-model:value="fromModel.dataBaseName" :style="{ width: '50%' }" disabled placeholder="请选择题库" />
+          <n-input
+            v-model:value="fromModel.dataBaseName"
+            :style="{ width: '50%' }"
+            disabled
+            placeholder="请选择题库"
+          />
           <n-button @click="chooseDataBase">选择题库</n-button>
         </n-form-item>
         <!-- 题目类型 默认选择单选 0 单选 1 多选 7判断 3 填空题 4 简答题 5 编辑题 6 其他-->
@@ -28,7 +33,7 @@
             <n-button
               :style="{
                 color: fromModel.questionType === 0 ? '#1890ff' : '',
-                border: fromModel.questionType === 0 ? '2px solid #1890ff' : ''
+                border: fromModel.questionType === 0 ? '2px solid #1890ff' : '',
               }"
               size="large"
               @click="changeQuestionType(0)"
@@ -37,7 +42,7 @@
             <n-button
               :style="{
                 color: fromModel.questionType === 1 ? 'blue' : '',
-                border: fromModel.questionType === 1 ? '2px solid #1890ff' : ''
+                border: fromModel.questionType === 1 ? '2px solid #1890ff' : '',
               }"
               size="large"
               @click="changeQuestionType(1)"
@@ -46,7 +51,7 @@
             <n-button
               :style="{
                 color: fromModel.questionType === 7 ? '#1890ff' : '',
-                border: fromModel.questionType === 7 ? '2px solid #1890ff' : ''
+                border: fromModel.questionType === 7 ? '2px solid #1890ff' : '',
               }"
               size="large"
               @click="changeQuestionType(7)"
@@ -55,7 +60,7 @@
             <n-button
               :style="{
                 color: fromModel.questionType === 3 ? 'blue' : '',
-                border: fromModel.questionType === 3 ? '2px solid #1890ff' : ''
+                border: fromModel.questionType === 3 ? '2px solid #1890ff' : '',
               }"
               size="large"
               @click="changeQuestionType(3)"
@@ -64,7 +69,7 @@
             <n-button
               :style="{
                 color: fromModel.questionType === 4 ? 'blue' : '',
-                border: fromModel.questionType === 4 ? '2px solid #1890ff' : ''
+                border: fromModel.questionType === 4 ? '2px solid #1890ff' : '',
               }"
               size="large"
               @click="changeQuestionType(4)"
@@ -74,7 +79,7 @@
               disabled
               :style="{
                 color: fromModel.questionType === 5 ? 'blue' : '',
-                border: fromModel.questionType === 5 ? '2px solid #1890ff' : ''
+                border: fromModel.questionType === 5 ? '2px solid #1890ff' : '',
               }"
               size="large"
               @click="changeQuestionType(5)"
@@ -83,7 +88,7 @@
             <n-button
               :style="{
                 color: fromModel.questionType === 6 ? 'blue' : '',
-                border: fromModel.questionType === 6 ? '2px solid #1890ff' : ''
+                border: fromModel.questionType === 6 ? '2px solid #1890ff' : '',
               }"
               size="large"
               @click="changeQuestionType(6)"
@@ -92,7 +97,10 @@
           </n-button-group>
         </n-form-item>
         <n-form-item label="题干" path="questionName">
-          <wangEditor ref="wangEditorStemRef" :props-value="fromModel.questionName"></wangEditor>
+          <wangEditor
+            ref="wangEditorStemRef"
+            :props-value="fromModel.questionName"
+          ></wangEditor>
         </n-form-item>
         <!-- 单选 -->
         <template v-if="fromModel.questionType === 0">
@@ -116,7 +124,10 @@
                     >
                       正确
                     </n-radio>
-                    <wangEditor :ref="el => (wangEditorRadioRef[index] = el)" :props-value="element.value"></wangEditor>
+                    <wangEditor
+                      :ref="(el) => (wangEditorRadioRef[index] = el)"
+                      :props-value="element.value"
+                    ></wangEditor>
                     <n-button quaternary circle @click="delRadio('radioList', index)">
                       <template #icon>
                         <n-icon><DeleteTwotone /></n-icon>
@@ -158,7 +169,10 @@
                 <template #item="{ element, index }">
                   <n-form-item :label="`选项${radioOption[index]}`" path="problem">
                     <n-checkbox v-model:checked="element.truemulti"> 正确 </n-checkbox>
-                    <wangEditor :ref="el => (wangEditorMultiRef[index] = el)" :props-value="element.value"></wangEditor>
+                    <wangEditor
+                      :ref="(el) => (wangEditorMultiRef[index] = el)"
+                      :props-value="element.value"
+                    ></wangEditor>
                     <n-button quaternary circle @click="delRadio('multiList', index)">
                       <template #icon>
                         <n-icon><DeleteTwotone /></n-icon>
@@ -207,7 +221,7 @@
                       正确
                     </n-radio>
                     <wangEditor
-                      :ref="el => (wangEditorDecideRef[index] = el)"
+                      :ref="(el) => (wangEditorDecideRef[index] = el)"
                       :props-value="element.value"
                     ></wangEditor>
                     <n-button quaternary circle>
@@ -235,7 +249,10 @@
               >
                 <template #item="{ element, index }">
                   <n-form-item :label="`填空${index + 1}`" path="problem">
-                    <wangEditor :ref="el => (wangEditorBlankRef[index] = el)" :props-value="element.value"></wangEditor>
+                    <wangEditor
+                      :ref="(el) => (wangEditorBlankRef[index] = el)"
+                      :props-value="element.value"
+                    ></wangEditor>
                     <n-button quaternary circle @click="delRadio('blankList', index)">
                       <template #icon>
                         <n-icon><DeleteTwotone /></n-icon>
@@ -300,7 +317,7 @@
             <n-button
               :style="{
                 color: fromModel.difficultLevel === 4 ? '#1890ff' : '',
-                border: fromModel.difficultLevel === 4 ? '2px solid #1890ff' : ''
+                border: fromModel.difficultLevel === 4 ? '2px solid #1890ff' : '',
               }"
               size="large"
               @click="changeproblemsType(4)"
@@ -309,7 +326,7 @@
             <n-button
               :style="{
                 color: fromModel.difficultLevel === 3 ? '#1890ff' : '',
-                border: fromModel.difficultLevel === 3 ? '2px solid #1890ff' : ''
+                border: fromModel.difficultLevel === 3 ? '2px solid #1890ff' : '',
               }"
               size="large"
               @click="changeproblemsType(3)"
@@ -318,7 +335,7 @@
             <n-button
               :style="{
                 color: fromModel.difficultLevel === 2 ? '#1890ff' : '',
-                border: fromModel.difficultLevel === 2 ? '2px solid #1890ff' : ''
+                border: fromModel.difficultLevel === 2 ? '2px solid #1890ff' : '',
               }"
               size="large"
               @click="changeproblemsType(2)"
@@ -327,7 +344,7 @@
             <n-button
               :style="{
                 color: fromModel.difficultLevel === 1 ? '#1890ff' : '',
-                border: fromModel.difficultLevel === 1 ? '2px solid #1890ff' : ''
+                border: fromModel.difficultLevel === 1 ? '2px solid #1890ff' : '',
               }"
               size="large"
               @click="changeproblemsType(1)"
@@ -336,7 +353,7 @@
             <n-button
               :style="{
                 color: fromModel.difficultLevel === 0 ? '#1890ff' : '',
-                border: fromModel.difficultLevel === 0 ? '2px solid #1890ff' : ''
+                border: fromModel.difficultLevel === 0 ? '2px solid #1890ff' : '',
               }"
               size="large"
               @click="changeproblemsType(0)"
@@ -345,13 +362,18 @@
           </n-button-group>
         </n-form-item>
         <n-form-item label="题目解析" path="questionAnalyse">
-          <wangEditor ref="problemsAnalysissWangEditorRef" :props-value="fromModel.questionAnalyse"></wangEditor>
+          <wangEditor
+            ref="problemsAnalysissWangEditorRef"
+            :props-value="fromModel.questionAnalyse"
+          ></wangEditor>
         </n-form-item>
 
         <n-space justify="center">
           <!-- <n-button size="large">返回</n-button> -->
           <n-button size="large" type="info" @click="saveQuestion(1)">保存</n-button>
-          <n-button size="large" type="info" @click="saveQuestion(2)">保存并继续</n-button>
+          <n-button size="large" type="info" @click="saveQuestion(2)"
+            >保存并继续</n-button
+          >
         </n-space>
       </n-form>
     </n-card>
@@ -361,7 +383,7 @@
       title="确认"
       content="确认要删除该选项吗?"
       positive-text="确认"
-      negative-text="算了"
+      negative-text="取消"
       @positive-click="submitCallback"
     />
     <dataBaseModal ref="dataBaseModalRef" @reload-table="choosedValue"></dataBaseModal>
@@ -369,58 +391,63 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, reactive } from 'vue';
-import { useRoute } from 'vue-router'; // 调用hook
-import { storeToRefs } from 'pinia';
-import { CascaderOption, useMessage } from 'naive-ui';
-import { PlusOutlined, DeleteTwotone, DragOutlined } from '@vicons/antd';
-import Draggable from 'vuedraggable';
-import { radioOption } from '@/enum';
-import { useExamStore, useTabStore } from '@/store';
-import { addPaperQuestion, editPaperQuestion, getListByPointCategoryId, getPointCategory } from '@/service';
-import wangEditor from '@/components/wangEditor.vue';
-import dataBaseModal from './components/showDataBase.vue';
+import { ref, reactive } from "vue";
+import { useRoute } from "vue-router"; // 调用hook
+import { storeToRefs } from "pinia";
+import { CascaderOption, useMessage } from "naive-ui";
+import { PlusOutlined, DeleteTwotone, DragOutlined } from "@vicons/antd";
+import Draggable from "vuedraggable";
+import { radioOption } from "@/enum";
+import { useExamStore, useTabStore } from "@/store";
+import {
+  addPaperQuestion,
+  editPaperQuestion,
+  getListByPointCategoryId,
+  getPointCategory,
+} from "@/service";
+import wangEditor from "@/components/wangEditor.vue";
+import dataBaseModal from "./components/showDataBase.vue";
 
 const tab = useTabStore();
 
 const router = useRoute();
 
 const fromModel = ref({
-  id: '',
-  dataBaseName: '',
-  dataBaseId: '',
+  id: "",
+  dataBaseName: "",
+  dataBaseId: "",
   questionType: 0,
-  questionName: '',
-  pointRelated: '',
+  questionName: "",
+  pointRelated: "",
   difficultLevel: 4,
-  questionAnalyse: ''
+  questionAnalyse: "",
 });
 const rules = {
   dataBaseName: {
     required: true,
-    trigger: ['blur', 'input'],
-    message: '请选择题库'
+    trigger: ["blur", "input"],
+    message: "请选择题库",
   },
   questionType: {
     required: true,
-    trigger: ['blur', 'input'],
-    message: '请选择题目类型'
+    trigger: ["blur", "input"],
+    message: "请选择题目类型",
   },
   questionName: {
     required: true,
-    trigger: ['blur', 'input'],
-    message: '请填写题干'
+    trigger: ["blur", "input"],
+    message: "请填写题干",
   },
   problems: {
     required: true,
-    trigger: ['blur', 'input'],
-    message: '请选择选项'
+    trigger: ["blur", "input"],
+    message: "请选择选项",
   },
   difficultLevel: {
     required: true,
-    trigger: ['blur', 'input'],
-    message: '请选择难易度'
-  }
+    trigger: ["blur", "input"],
+    message: "请选择难易度",
+  },
 };
 /**
  * @author: ZHENG
@@ -434,7 +461,7 @@ const decideList = ref(); // 判断题
 const blankList = ref(); // 填空题
 const answerList = ref(); // 简答题
 const otherList = ref(); // 其他题
-const checkedValue = ref('');
+const checkedValue = ref("");
 const message = useMessage();
 const examStore = useExamStore();
 // const { questionList } = storeToRefs(examStore);
@@ -444,14 +471,14 @@ const addOrEdit = ref(false); // true 新增
 
 const defaultFormValue = () => {
   fromModel.value = {
-    id: '',
-    dataBaseName: '',
-    dataBaseId: '',
+    id: "",
+    dataBaseName: "",
+    dataBaseId: "",
     questionType: 0,
-    questionName: '',
-    pointRelated: '',
+    questionName: "",
+    pointRelated: "",
     difficultLevel: 4,
-    questionAnalyse: ''
+    questionAnalyse: "",
   };
 };
 
@@ -473,7 +500,7 @@ const getOptions = async () => {
   pointOptions.value = newList;
   for (let i = 0; i < fromModel.value.pointRelated?.length; i++) {
     for (let j = 0; j < pointOptions.value.length; j++) {
-      const index = fromModel.value.pointRelated[i].indexOf('-');
+      const index = fromModel.value.pointRelated[i].indexOf("-");
       const indexNumber = fromModel.value.pointRelated[i].substring(0, index);
       if (pointOptions.value[j].value === indexNumber) {
         console.log(pointOptions.value[j]);
@@ -488,7 +515,7 @@ const getOptions = async () => {
 };
 getOptions();
 const handleLoad = (option: CascaderOption) => {
-  return new Promise<void>(resolve => {
+  return new Promise<void>((resolve) => {
     getChildren(option);
     resolve();
   });
@@ -499,25 +526,30 @@ const getAddOrEdit = async () => {
     const { questionType } = fromModel.value;
     if (questionType === 0) {
       // 单选题
-      radioList.value = [{ id: 0, value: '' }, { id: 1, value: '' }, { id: 2 }, { id: 3 }];
+      radioList.value = [
+        { id: 0, value: "" },
+        { id: 1, value: "" },
+        { id: 2 },
+        { id: 3 },
+      ];
     } else if (questionType === 1) {
       // 多选题
       multiList.value = [
-        { id: 0, value: '', truemulti: false },
-        { id: 1, value: '', truemulti: false }
+        { id: 0, value: "", truemulti: false },
+        { id: 1, value: "", truemulti: false },
       ];
     } else if (questionType === 7) {
       decideList.value = [
-        { id: 0, value: '' },
-        { id: 1, value: '' }
+        { id: 0, value: "" },
+        { id: 1, value: "" },
       ];
     } else if (questionType === 3) {
       // 填空题
-      blankList.value = [{ id: 0, value: '' }];
+      blankList.value = [{ id: 0, value: "" }];
     } else if (questionType === 4) {
-      answerList.value = '';
+      answerList.value = "";
     } else if (questionType === 6) {
-      otherList.value = '';
+      otherList.value = "";
     }
   } else {
     addOrEdit.value = false;
@@ -531,8 +563,8 @@ const getAddOrEdit = async () => {
       questionOption,
       difficultLevel,
       questionAnalyse,
-      pointRelated,
-      questionAnswer
+      pointRelationDto,
+      questionAnswer,
     } = questionData.value;
     const params = {
       id,
@@ -542,7 +574,7 @@ const getAddOrEdit = async () => {
       questionName,
       difficultLevel,
       questionAnalyse,
-      pointRelated: JSON.parse(pointRelated)
+      pointRelated: pointRelationDto,
     };
     if (questionType === 0) {
       // 单选题
@@ -597,11 +629,11 @@ getAddOrEdit();
  */
 const changeQuestionType = (type: number) => {
   if (!addOrEdit.value) {
-    return message.warning('修改题目不允许修改题目类型');
+    return message.warning("修改题目不允许修改题目类型");
   }
   defaultFormValue();
   fromModel.value.questionType = type;
-  checkedValue.value = '';
+  checkedValue.value = "";
   getAddOrEdit();
 };
 /**
@@ -641,13 +673,13 @@ const showDelModal = ref(false);
  */
 const addList = (type: string) => {
   const param = {};
-  if (type === 'radioList') {
+  if (type === "radioList") {
     param.id = radioList.value.length;
     radioList.value.push(param);
-  } else if (type === 'multiList') {
+  } else if (type === "multiList") {
     param.id = multiList.value.length;
     multiList.value.push(param);
-  } else if (type === 'blankList') {
+  } else if (type === "blankList") {
     param.id = blankList.value.length;
     blankList.value.push(param);
   }
@@ -661,15 +693,15 @@ const delType = ref();
  * @param {*} index
  */
 const delRadio = (type, index) => {
-  if (type === 'radioList') {
+  if (type === "radioList") {
     if (radioList.value.length < 3) {
       return;
     }
-  } else if (type === 'multiList') {
+  } else if (type === "multiList") {
     if (multiList.value.length < 3) {
       return;
     }
-  } else if (type === 'blankList') {
+  } else if (type === "blankList") {
     if (blankList.value.length < 2) {
       return;
     }
@@ -684,11 +716,11 @@ const delRadio = (type, index) => {
  * @return {*}
  */
 const submitCallback = () => {
-  if (delType.value === 'radioList') {
+  if (delType.value === "radioList") {
     radioList.value.splice(delData.value, 1);
-  } else if (delType.value === 'multiList') {
+  } else if (delType.value === "multiList") {
     multiList.value.splice(delData.value, 1);
-  } else if (delType.value === 'blankList') {
+  } else if (delType.value === "blankList") {
     blankList.value.splice(delData.value, 1);
   }
 };
@@ -715,11 +747,11 @@ const saveRadioQuestion = async (
   questionAnalyse,
   pointRelated
 ) => {
-  if (checkedValue?.value === '') {
-    return message.warning('未选择正确答案');
+  if (checkedValue?.value === "") {
+    return message.warning("未选择正确答案");
   }
   let questionOption = [];
-  let questionAnswer = '';
+  let questionAnswer = "";
   for (let i = 0; i < wangEditorRadioRef.value.length; i++) {
     if (wangEditorRadioRef.value[i]?.valueHtml) {
       const param = {};
@@ -741,11 +773,11 @@ const saveRadioQuestion = async (
       questionAnswer,
       difficultLevel,
       status: 0,
-      note: ''
+      note: "",
     };
     const result = await addPaperQuestion(param);
     if (!result.error) {
-      message.success('新增完成');
+      message.success("新增完成");
     }
   } else {
     const { id } = fromModel.value;
@@ -761,11 +793,11 @@ const saveRadioQuestion = async (
       questionAnswer,
       difficultLevel,
       status: 0,
-      note: ''
+      note: "",
     };
     const result = await editPaperQuestion(param);
     if (!result.error) {
-      message.success('修改完成');
+      message.success("修改完成");
     }
   }
 };
@@ -816,11 +848,11 @@ const saveMultQuestion = async (
       questionAnswer,
       difficultLevel,
       status: 0,
-      note: ''
+      note: "",
     };
     const result = await addPaperQuestion(param);
     if (!result.error) {
-      message.success('新增完成');
+      message.success("新增完成");
     }
   } else {
     const { id } = fromModel.value;
@@ -836,11 +868,11 @@ const saveMultQuestion = async (
       questionAnswer,
       difficultLevel,
       status: 0,
-      note: ''
+      note: "",
     };
     const result = await editPaperQuestion(param);
     if (!result.error) {
-      message.success('修改完成');
+      message.success("修改完成");
     }
   }
 };
@@ -853,7 +885,7 @@ const saveDecideQuestion = async (
   pointRelated
 ) => {
   let questionOption = [];
-  let questionAnswer = '';
+  let questionAnswer = "";
   for (let i = 0; i < wangEditorDecideRef.value.length; i++) {
     if (wangEditorDecideRef.value[i]?.valueHtml) {
       const param = {};
@@ -875,11 +907,11 @@ const saveDecideQuestion = async (
       questionAnswer,
       difficultLevel,
       status: 0,
-      note: ''
+      note: "",
     };
     const result = await addPaperQuestion(param);
     if (!result.error) {
-      message.success('新增完成');
+      message.success("新增完成");
     }
   } else {
     const { id } = fromModel.value;
@@ -895,11 +927,11 @@ const saveDecideQuestion = async (
       questionAnswer,
       difficultLevel,
       status: 0,
-      note: ''
+      note: "",
     };
     const result = await editPaperQuestion(param);
     if (!result.error) {
-      message.success('修改完成');
+      message.success("修改完成");
     }
   }
 };
@@ -926,17 +958,17 @@ const saveBlankQuestion = async (
       mediaSource: 0,
       questionType,
       questionAnalyse,
-      questionOption: '',
+      questionOption: "",
       pointRelated,
       bankRelated: dataBaseId,
       questionAnswer,
       difficultLevel,
       status: 0,
-      note: ''
+      note: "",
     };
     const result = await addPaperQuestion(param);
     if (!result.error) {
-      message.success('新增完成');
+      message.success("新增完成");
     }
   } else {
     const { id } = fromModel.value;
@@ -946,17 +978,17 @@ const saveBlankQuestion = async (
       mediaSource: 0,
       questionType,
       questionAnalyse,
-      questionOption: '',
+      questionOption: "",
       pointRelated,
       bankRelated: dataBaseId,
       questionAnswer,
       difficultLevel,
       status: 0,
-      note: ''
+      note: "",
     };
     const result = await editPaperQuestion(param);
     if (!result.error) {
-      message.success('修改完成');
+      message.success("修改完成");
     }
   }
 };
@@ -975,17 +1007,17 @@ const saveAnswerQuestion = async (
       mediaSource: 0,
       questionType,
       questionAnalyse,
-      questionOption: '',
+      questionOption: "",
       pointRelated,
       bankRelated: dataBaseId,
       questionAnswer,
       difficultLevel,
       status: 0,
-      note: ''
+      note: "",
     };
     const result = await addPaperQuestion(param);
     if (!result.error) {
-      message.success('新增完成');
+      message.success("新增完成");
     }
   } else {
     const { id } = fromModel.value;
@@ -995,17 +1027,17 @@ const saveAnswerQuestion = async (
       mediaSource: 0,
       questionType,
       questionAnalyse,
-      questionOption: '',
+      questionOption: "",
       pointRelated,
       bankRelated: dataBaseId,
       questionAnswer,
       difficultLevel,
       status: 0,
-      note: ''
+      note: "",
     };
     const result = await editPaperQuestion(param);
     if (!result.error) {
-      message.success('修改完成');
+      message.success("修改完成");
     }
   }
 };
@@ -1024,17 +1056,17 @@ const saveOtherQuestion = async (
       mediaSource: 0,
       questionType,
       questionAnalyse,
-      questionOption: '',
+      questionOption: "",
       pointRelated,
       bankRelated: dataBaseId,
       questionAnswer,
       difficultLevel,
       status: 0,
-      note: ''
+      note: "",
     };
     const result = await addPaperQuestion(param);
     if (!result.error) {
-      message.success('新建完成');
+      message.success("新建完成");
     }
   } else {
     const { id } = fromModel.value;
@@ -1044,53 +1076,106 @@ const saveOtherQuestion = async (
       mediaSource: 0,
       questionType,
       questionAnalyse,
-      questionOption: '',
+      questionOption: "",
       pointRelated,
       bankRelated: dataBaseId,
       questionAnswer,
       difficultLevel,
       status: 0,
-      note: ''
+      note: "",
     };
     const result = await editPaperQuestion(param);
     if (!result.error) {
-      message.success('修改完成');
+      message.success("修改完成");
     }
   }
 };
-const saveQuestion = async type => {
-  const { dataBaseId, questionType, difficultLevel, pointRelated: point } = fromModel.value; // 题库ID，题库类型, 难易度
+const saveQuestion = async (type) => {
+  const {
+    dataBaseId,
+    questionType,
+    difficultLevel,
+    pointRelated: point,
+  } = fromModel.value; // 题库ID，题库类型, 难易度
   const questionName = wangEditorStemRef.value.valueHtml; // 题干的值
   const questionAnalyse = problemsAnalysissWangEditorRef.value.valueHtml; // 解析的值
   // console.log(dataBaseId, questionType, difficultLevel, questionName, questionAnalyse);
-  const pointRelated = JSON.stringify(point);
+  const pointRelatedtemp = point.map((item) => {
+    const i = item.indexOf("-");
+    const subUnitId = item.substring(i + 1);
+    return subUnitId;
+  });
+  const pointRelated = pointRelatedtemp.join();
+  // const pointRelated = JSON.stringify(point);
   if (!dataBaseId) {
-    return message.error('请选择所选题库');
+    return message.error("请选择所选题库");
   }
   if (!questionName) {
-    return message.error('请输入题干');
+    return message.error("请输入题干");
   }
 
   if (questionType === 0) {
-    saveRadioQuestion(dataBaseId, questionType, difficultLevel, questionName, questionAnalyse, pointRelated);
+    saveRadioQuestion(
+      dataBaseId,
+      questionType,
+      difficultLevel,
+      questionName,
+      questionAnalyse,
+      pointRelated
+    );
   } else if (questionType === 1) {
-    saveMultQuestion(dataBaseId, questionType, difficultLevel, questionName, questionAnalyse, pointRelated);
+    saveMultQuestion(
+      dataBaseId,
+      questionType,
+      difficultLevel,
+      questionName,
+      questionAnalyse,
+      pointRelated
+    );
   } else if (questionType === 7) {
-    saveDecideQuestion(dataBaseId, questionType, difficultLevel, questionName, questionAnalyse, pointRelated);
+    saveDecideQuestion(
+      dataBaseId,
+      questionType,
+      difficultLevel,
+      questionName,
+      questionAnalyse,
+      pointRelated
+    );
   } else if (questionType === 3) {
-    saveBlankQuestion(dataBaseId, questionType, difficultLevel, questionName, questionAnalyse, pointRelated);
+    saveBlankQuestion(
+      dataBaseId,
+      questionType,
+      difficultLevel,
+      questionName,
+      questionAnalyse,
+      pointRelated
+    );
   } else if (questionType === 4) {
-    saveAnswerQuestion(dataBaseId, questionType, difficultLevel, questionName, questionAnalyse, pointRelated);
+    saveAnswerQuestion(
+      dataBaseId,
+      questionType,
+      difficultLevel,
+      questionName,
+      questionAnalyse,
+      pointRelated
+    );
   } else if (questionType === 6) {
-    saveOtherQuestion(dataBaseId, questionType, difficultLevel, questionName, questionAnalyse, pointRelated);
+    saveOtherQuestion(
+      dataBaseId,
+      questionType,
+      difficultLevel,
+      questionName,
+      questionAnalyse,
+      pointRelated
+    );
   }
   if (type === 1) {
-    tab.removeTab('/test/addQuest');
+    tab.removeTab("/test/addQuest");
   } else if (type === 2) {
-    wangEditorStemRef.value.valueHtml = '';
-    problemsAnalysissWangEditorRef.value.valueHtml = '';
+    wangEditorStemRef.value.valueHtml = "";
+    problemsAnalysissWangEditorRef.value.valueHtml = "";
     defaultFormValue();
-    questionData.value = '';
+    questionData.value = "";
     getAddOrEdit();
   }
 };

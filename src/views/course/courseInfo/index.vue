@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-05-04 17:20:30
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-06-08 10:14:54
+ * @LastEditTime: 2022-06-08 18:12:52
  * @FilePath: \work\src\views\course\courseInfo\index.vue
  * @Description: 课程页面
 -->
@@ -20,7 +20,14 @@
       </n-space>
     </template>
     <n-space vertical :size="30">
-      <n-button type="primary" @click="addChapter"> 新建章节 </n-button>
+      <n-button type="primary" @click="addChapter"
+        ><template #icon>
+          <n-icon>
+            <PlusOutlined />
+          </n-icon>
+        </template>
+        新建章节
+      </n-button>
       <n-data-table
         :row-key="(row) => row.id"
         :columns="columns"
@@ -39,22 +46,26 @@
     <delChapterModal ref="delChapterModalRef" @reset="loadDataTable"></delChapterModal>
     <addUnitModal ref="addUnitModalRef" @reset="loadDataTable"></addUnitModal>
     <delUnitModal ref="delUnitModalRef" @reset="loadDataTable"></delUnitModal>
+    <changeSort ref="changeSortRef" @reset="loadDataTable"></changeSort>
   </n-card>
 </template>
 <script lang="ts" setup>
 import { ref, h, onMounted, watchEffect, computed } from "vue";
 import { BookOutlined, ClockCircleTwotone } from "@vicons/antd";
 import { storeToRefs } from "pinia";
+import { PlusOutlined } from "@vicons/antd";
 import { useCourseStore } from "@/store";
 import { getPreview } from "@/service";
+import { useMessage } from "naive-ui";
 import { TableAction } from "@/components/TablePro";
 import addOrEditChapterModal from "./components/addOrEditChapterModal.vue";
 import delChapterModal from "./components/delChapterModal.vue";
 import addUnitModal from "./components/addUnitModal.vue";
 import delUnitModal from "./components/delUnitModal.vue";
-
+import changeSort from "./components/changeSort.vue";
 // 刷新功能
 const courseStore = useCourseStore();
+const message = useMessage();
 // 展示Form
 const { coutesInfoId } = storeToRefs(courseStore);
 const courseName = ref();
@@ -106,8 +117,7 @@ const addOrEditChapterModalRef = ref();
  * @description: 新增章节
  */
 const addChapter = () => {
-  console.log(expandedRow.value);
-  addOrEditChapterModalRef.value.showAddModal();
+  addOrEditChapterModalRef.value.showAddModal(data.value);
 };
 /**
  * @author: ZHENG
@@ -126,6 +136,9 @@ const handleChapteEdit = (record: Recordable) => {
  */
 const delChapterModalRef = ref();
 const handleChapterDelete = (record: Recordable) => {
+  if (record.children.length) {
+    return message.warning("当前章节下含有课时内容，无法删除");
+  }
   delChapterModalRef.value.showDelModal(record);
 };
 
@@ -148,25 +161,53 @@ const handleUnitDelete = (record: Recordable) => {
 const handleQuConfig = (record: Recordable) => {
   addUnitModalRef.value.showEditUnitQuModal(record);
 };
-
+const changeSortRef = ref();
+const handleSort = (record: Recordable) => {
+  changeSortRef.value.showChangeSortModal(record);
+};
 const columns = [
-  // {
-  //   title: "序号",
-  //   key: "tableId",
-  //   width: 50,
-  //   render(row, index) {
-  //     return h("h1", index + 1);
-  //   },
-  // },
   {
-    title: "名称",
+    title: "章节名称/课时名称",
     key: "label",
-    width: 100,
+    width: 150,
+    render(row: { label: string; shortId: number; children: Object }, index) {
+      if (row.children) {
+        const sumLength = row.children?.length || 0;
+        return h("span", [
+          h("span", `第${row.shortId}章节 ${row.label}`),
+          h(
+            "span",
+            {
+              style: {
+                fontSize: "12px",
+                color: "rgb(204, 204, 204)",
+                marginLeft: "5px",
+              },
+            },
+            { default: () => `(含${sumLength}个课时)` }
+          ),
+        ]);
+      } else {
+        return h("span", [h("span", `第${row.shortId}课时 ${row.label}`)]);
+      }
+    },
   },
   {
     title: "描述",
     key: "note",
     width: 120,
+  },
+  {
+    title: "序号",
+    key: "tableId",
+    width: 50,
+    render(row, index) {
+      if (row.children) {
+        return h("h1", `章节序号：${row.shortId}`);
+      } else {
+        return h("h1", `课时序号：${row.shortId}`);
+      }
+    },
   },
   {
     title: "操作",
@@ -189,6 +230,10 @@ const columns = [
               onClick: handleUnitEdit.bind(null, record),
             },
             {
+              label: "课时排序",
+              onClick: handleSort.bind(null, record),
+            },
+            {
               label: "配置习题",
               // eslint-disable-next-line @typescript-eslint/no-use-before-define
               onClick: handleQuConfig.bind(null, record),
@@ -208,6 +253,10 @@ const columns = [
           {
             label: "编辑章节",
             onClick: handleChapteEdit.bind(null, record),
+          },
+          {
+            label: "章节排序",
+            onClick: handleSort.bind(null, record),
           },
           {
             label: "新建课时",

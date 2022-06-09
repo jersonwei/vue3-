@@ -25,7 +25,7 @@
             <n-icon size="12"> <ClockCircleTwotone /> </n-icon>{{ sumUnit }} 课时
           </p>
         </n-space>
-        <div style="display: flex">
+        <div style="display: flex; padding-top: 10px">
           <div style="width: 80%">
             课程介绍: <span style="font-size: 15px">{{ courseDetail.note || "" }}</span>
           </div>

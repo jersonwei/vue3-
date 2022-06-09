@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-05-21 09:09:42
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-23 22:14:22
+ * @LastEditTime: 2022-06-08 18:07:59
  * @FilePath: \work\src\views\course\courseInfo\components\addOrEditChapterModal.vue
  * @Description:
 -->
@@ -10,33 +10,55 @@
   <n-modal
     v-model:show="showModal"
     preset="dialog"
+    :show-icon="false"
     :title="`${addOrEdit ? '新增' : '修改'}章节`"
   >
     <n-form
       ref="formRef"
       label-placement="left"
       :rules="rules"
-      :label-width="120"
+      :model="formParams"
+      :label-width="80"
       class="py-4"
     >
       <n-form-item label="章节标题" path="label">
-        <n-input v-model:value="formParams.label" placeholder="请输入标题" />
+        <n-input-group>
+          <n-input-group-label :style="{ width: '30%' }"
+            ><n-space
+              >第{{ numberfilter(tableDataLength) }}章</n-space
+            ></n-input-group-label
+          >
+          <n-input
+            v-model:value="formParams.label"
+            :style="{ width: '70%' }"
+            maxlength="25"
+            show-count
+            placeholder="请输入标题"
+          />
+        </n-input-group>
+        <!-- <n-input
+          v-model:value="formParams.label"
+          maxlength="25"
+          show-count
+          placeholder="请输入标题"
+        /> -->
       </n-form-item>
       <n-form-item label="描述" path="note">
         <n-input
           v-model:value="formParams.note"
           type="textarea"
+          maxlength="255"
+          show-count
           placeholder="请输入描述"
         />
       </n-form-item>
-      <n-form-item path="auth" style="margin-left: 100px">
-        <n-space>
-          <n-button type="primary" :loading="subLoading" @click="formSubmit"
-            >保存</n-button
-          >
-        </n-space>
-      </n-form-item>
     </n-form>
+    <template #action>
+      <n-space>
+        <n-button @click="() => (showModal = false)">取消</n-button>
+        <n-button type="primary" :loading="subLoading" @click="formSubmit">保存</n-button>
+      </n-space>
+    </template>
   </n-modal>
 </template>
 <script lang="ts" setup>
@@ -45,7 +67,7 @@ import { storeToRefs } from "pinia";
 import { useMessage } from "naive-ui";
 import { useCourseStore } from "@/store";
 import { addChapter, editChapter } from "@/service";
-import { deafultFormParams } from "@/utils";
+import { deafultFormParams, numberfilter } from "@/utils";
 
 const addOrEdit = ref(false);
 const showModal = ref(false);
@@ -71,14 +93,18 @@ const emit = defineEmits(["reset"]);
  * @author: ZHENG
  * @description: 新增章节
  */
-const showAddModal = () => {
+const tableDataLength = ref();
+const showAddModal = (data) => {
   deafultFormParams(formParams);
   addOrEdit.value = true;
   showModal.value = true;
+  tableDataLength.value = data.length + 1;
 };
 
 const showEditModal = (form) => {
+  console.log(form);
   Object.assign(formParams, form);
+  tableDataLength.value = form.shortId;
   addOrEdit.value = false;
   showModal.value = true;
 };
@@ -115,12 +141,12 @@ const formSubmit = async () => {
         }
       }
       showModal.value = false;
+      emit("reset");
     } else {
       message.error("请填写完整信息");
     }
   });
   subLoading.value = false;
-  emit("reset");
 };
 
 defineExpose({ showAddModal, showEditModal });

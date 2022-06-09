@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-04-30 15:51:30
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-06-07 11:33:47
+ * @LastEditTime: 2022-06-08 17:31:46
  * @FilePath: \work\src\views\course\courseMgt\columns.ts
  * @Description:
  */
@@ -16,16 +16,17 @@ export const columns = [
     title: '序号',
     key: 'tableId',
     width: 50,
+		fixed: "left",
     render(row, index) {
       return h('h1', index + 1);
     }
   },
   {
     title: '课程名称',
+		fixed: "left",
     key: 'courseName',
     width: 120
   },
-
   {
     title: '课程类别',
     key: 'courseCategoryName',
@@ -96,14 +97,35 @@ export const columns = [
       return h(NSwitch, {
         value: row.status === 1,
         onUpdateValue: async value => {
-          row.status = row.status === 1 ? 0 : 1;
-          const params = {
-            CourseId: row.id,
-            status: row.status
-          };
-          const result = await updateCourse(params);
-					if(!result){
+					console.log(value)
+					if(value){
 						row.status = row.status === 1 ? 0 : 1;
+						const params = {
+							CourseId: row.id,
+							status: row.status
+						};
+						const result = await updateCourse(params);
+						if(!result){
+							row.status = row.status === 1 ? 0 : 1;
+						}
+					}else{
+						window.$dialog?.info({
+							title: "提示",
+							content: "下架后，学员端将不再展示该课程,确定要下架吗？",
+							positiveText: "确定",
+							negativeText: "取消",
+							onPositiveClick: async () => {
+								row.status = row.status === 1 ? 0 : 1;
+								const params = {
+									CourseId: row.id,
+									status: row.status
+								};
+								const result = await updateCourse(params);
+								if(!result){
+									row.status = row.status === 1 ? 0 : 1;
+								}
+							},
+						});
 					}
         }
       });
@@ -141,7 +163,6 @@ export const columns = [
 		render(row: { status: number,launchTime: string }) {
 			const toDate = format(new Date(), 'yyyy-MM-dd HH:mm:ss')
 			const date = format(new Date(row.launchTime), 'yyyy-MM-dd HH:mm:ss')
-			console.log(toDate,date)
       if(row.status === 1){
         return '';
       }

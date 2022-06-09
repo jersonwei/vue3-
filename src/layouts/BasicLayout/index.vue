@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-05-16 15:06:20
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-06-07 09:26:59
+ * @LastEditTime: 2022-06-09 09:29:02
  * @FilePath: \work\src\layouts\BasicLayout\index.vue
  * @Description:
 -->
@@ -18,6 +18,7 @@
     :sider-width="siderWidth"
     :sider-collapsed-width="siderCollapsedWidth"
     :sider-collapse="app.siderCollapse"
+    :add-main-overflow-hidden="addMainOverflowHidden"
     :fixed-footer="theme.footer.fixed"
   >
     <template #header>

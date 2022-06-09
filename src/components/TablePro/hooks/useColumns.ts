@@ -4,7 +4,7 @@
  * @Author: ZHENG
  * @Date: 2022-05-02 21:49:42
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-06-07 10:51:21
+ * @LastEditTime: 2022-06-08 16:14:02
  * @FilePath: \work\src\components\TablePro\hooks\useColumns.ts
  * @Description:
  */
@@ -95,7 +95,6 @@ export function useColumns(propsRef: ComputedRef<BasicTableProps>) {
               };
             }
           }
-					console.log(column)
           return column;
         })
     );

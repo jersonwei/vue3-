@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-05-17 10:16:38
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-21 17:35:35
+ * @LastEditTime: 2022-06-08 16:32:17
  * @FilePath: \work\src\views\course\courseLabel\components\delModal.vue
  * @Description:
 -->
@@ -15,14 +15,14 @@
     title="确认"
     :content="`确认删除课程标签${delText}`"
     positive-text="确认"
-    negative-text="算了"
+    negative-text="取消"
     @positive-click="onPositiveClick"
   />
 </template>
 <script lang="ts" setup>
-import { ref } from 'vue';
-import { useMessage } from 'naive-ui';
-import { deleteLabel } from '@/service';
+import { ref } from "vue";
+import { useMessage } from "naive-ui";
+import { deleteLabel } from "@/service";
 
 const message = useMessage();
 const showDelModal = ref(false);
@@ -32,9 +32,9 @@ interface Props {
 }
 const props = withDefaults(defineProps<Props>(), {
   delData: 0,
-  delText: ''
+  delText: "",
 });
-const emits = defineEmits(['reloadTable']);
+const emits = defineEmits(["reloadTable"]);
 
 defineExpose({ showDelModal });
 
@@ -42,13 +42,13 @@ defineExpose({ showDelModal });
 // eslint-disable-next-line consistent-return
 const onPositiveClick = async () => {
   if (!props.delData) {
-    return message.error('删除数据异常');
+    return message.error("删除数据异常");
   }
   const result = await deleteLabel(props.delData);
   console.log(result);
   if (result.data) {
-    message.success('删除数据成功');
+    message.success("删除数据成功");
   }
-  emits('reloadTable');
+  emits("reloadTable");
 };
 </script>

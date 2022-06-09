@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-05-12 17:34:13
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-06-01 17:52:24
+ * @LastEditTime: 2022-06-08 16:32:44
  * @FilePath: \work\src\views\test\pointManager\components\delModal.vue
  * @Description:
 -->
@@ -15,7 +15,7 @@
     title="确认"
     :content="`确认删除${delType ? '知识点分类' : '知识点'}${delType ? delData?.categoryName : delData?.pointName}`"
     positive-text="确认"
-    negative-text="算了"
+    negative-text="取消"
     @positive-click="onPositiveClick"
   />
 </template>

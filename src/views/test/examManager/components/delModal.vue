@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-05-12 17:34:13
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-06-01 16:22:05
+ * @LastEditTime: 2022-06-08 16:32:40
  * @FilePath: \work\src\views\test\examManager\components\delModal.vue
  * @Description:
 -->
@@ -15,7 +15,7 @@
     title="确认"
     :content="`确认删除试卷${delText}`"
     positive-text="确认"
-    negative-text="算了"
+    negative-text="取消"
     @positive-click="onPositiveClick"
   />
 </template>

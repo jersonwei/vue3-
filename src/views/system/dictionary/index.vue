@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-05-05 15:20:22
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-17 19:09:50
+ * @LastEditTime: 2022-06-08 16:32:27
  * @FilePath: \work\src\views\system\dictionary\index.vue
  * @Description:
 -->
@@ -101,7 +101,7 @@
       title="确认"
       :content="`确认删除${delType === 0 ? '字典配置' : '字典'}${delText}`"
       positive-text="确认"
-      negative-text="算了"
+      negative-text="取消"
       @positive-click="onPositiveClick"
     />
     <!-- 新建Table弹窗 -->

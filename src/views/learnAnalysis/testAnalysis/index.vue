@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-06-06 08:53:26
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-06-07 17:17:43
+ * @LastEditTime: 2022-06-09 08:50:33
  * @FilePath: \work\src\views\learnAnalysis\testAnalysis\index.vue
  * @Description:
 -->
@@ -10,7 +10,7 @@
   <div class="h-full">
     <n-card class="h-full shadow-sm rounded-16px">
       <n-grid class="mt-4" cols="12" responsive="screen" :x-gap="12">
-        <n-gi span="4">
+        <n-gi span="3">
           <n-card
             title="实验分析-课程列表"
             :bordered="false"
@@ -105,7 +105,7 @@
             </div>
           </n-card>
         </n-gi>
-        <n-gi span="8">
+        <n-gi span="9">
           <n-form-item
             class="border"
             style="padding: 10px"
@@ -126,27 +126,32 @@
           </n-form-item>
           <n-grid style="margin-top: 10px" x-gap="12" :cols="2" :x-gap="20">
             <n-gi>
-              <n-card title="实验报告成绩分析" embedded>
-                <div class="w-full h-180px">
-                  <n-space vertical class="flex" style="padding-top: 30px">
-                    <p class="flex-center" style="font-size: 20px">实验报告平均分</p>
-                    <p class="flex-center font-600" style="font-size: 20px">
-                      {{ analysis.avg }} 分
-                    </p>
-                    <p class="flex-center" style="font-size: 20px">
-                      最高分：{{ analysis.max }}分
-                      <n-icon color="green">
-                        <CaretUpOutlined />
-                      </n-icon>
-                      | 最低分：{{ analysis.min }}分<n-icon color="red">
-                        <CaretDownFilled />
-                      </n-icon>
-                    </p>
-                  </n-space>
-                </div> </n-card
+              <n-card title="实验报告成绩分析">
+                <template v-if="analysis.avg != null">
+                  <div class="w-full h-180px">
+                    <n-space vertical class="flex" style="padding-top: 30px">
+                      <p class="flex-center" style="font-size: 20px">实验报告平均分</p>
+                      <p class="flex-center font-600" style="font-size: 20px">
+                        {{ analysis.avg }} 分
+                      </p>
+                      <p class="flex-center" style="font-size: 20px">
+                        最高分：{{ analysis.max }}分
+                        <n-icon color="green">
+                          <CaretUpOutlined />
+                        </n-icon>
+                        | 最低分：{{ analysis.min }}分<n-icon color="red">
+                          <CaretDownFilled />
+                        </n-icon>
+                      </p>
+                    </n-space>
+                  </div>
+                </template>
+                <template v-else>
+                  <n-empty style="height: 180px" description="暂无数据"></n-empty
+                ></template> </n-card
             ></n-gi>
             <n-gi
-              ><n-card title="实验报告时长分析" embedded>
+              ><n-card title="实验报告时长分析">
                 <template v-if="analysis.durationAnalysis.length">
                   <n-scrollbar style="max-height: 180px" class="w-full h-180px">
                     <div v-for="(item, index) in analysis.durationAnalysis">
@@ -171,7 +176,7 @@
                   </n-scrollbar>
                 </template>
                 <template v-else>
-                  <n-empty style="height: 160px" description="暂无数据"></n-empty
+                  <n-empty style="height: 180px" description="暂无数据"></n-empty
                 ></template>
               </n-card>
             </n-gi>
@@ -182,7 +187,6 @@
             style="margin-top: 10px"
             title="报告成绩分布（班级）"
             :bordered="false"
-            embedded
           >
             <template v-if="analysis.durationAnalysis.length">
               <div ref="pieRef" class="w-full h-260px" id="pieEcharts"></div>
@@ -247,9 +251,9 @@ const pagination = ref({
   pages: 1,
 });
 const analysis = reactive({
-  avg: 0,
-  max: 0,
-  min: 0,
+  avg: null,
+  max: null,
+  min: null,
   durationAnalysis: [],
 });
 const loadDataTable = async () => {
@@ -264,12 +268,11 @@ const loadDataTable = async () => {
   };
   const { data: result } = await getCourseGradeVo({ ...Param });
   courseList.value = result.records;
-  console.log(result.records);
   pagination.value.pages = result.pages;
   form.classId = null;
-  analysis.avg = 0;
-  analysis.max = 0;
-  analysis.min = 0;
+  analysis.avg = null;
+  analysis.max = null;
+  analysis.min = analysis.max = null;
   analysis.durationAnalysis = [];
   loading.value = false;
   if (result?.records) {
@@ -308,9 +311,9 @@ const getChapterFn = async (courseId: number) => {
     courseId,
   };
   form.classId = null;
-  analysis.avg = 0;
-  analysis.max = 0;
-  analysis.min = 0;
+  analysis.avg = null;
+  analysis.max = null;
+  analysis.min = null;
   analysis.durationAnalysis = [];
   classOptions.value = await getChapter(params);
   if (!classOptions.value.length) {
@@ -335,13 +338,13 @@ const handleUnitLoad = async (option) => {
 const getTestReportGradeData = async (id: string) => {
   const i = id.indexOf("-");
   const subUnitId = id.substring(i + 1);
-  // const { data: result } = await getTestReportGrade(subUnitId);
-  const { data: result } = await getTestReportGrade(11);
+  const classId = courseList.value[courseIndex.value].classId;
+  const { data: result } = await getTestReportGrade(subUnitId, classId);
   if (!result) {
     const param = {
-      avg: 0,
-      max: 0,
-      min: 0,
+      avg: null,
+      max: null,
+      min: null,
       durationAnalysis: [],
     };
     Object.assign(analysis, param);
