@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-06-06 08:53:26
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-06-09 15:13:17
+ * @LastEditTime: 2022-06-09 18:48:52
  * @FilePath: \work\src\views\learnAnalysis\questAnalysis\personalTest\index.vue
  * @Description:
 -->
@@ -118,7 +118,7 @@
                       <n-progress
                         type="circle"
                         stroke-width="10"
-                        :percentage="gradeData.schedule"
+                        :percentage="gradeData.proportion"
                       />
                     </div>
                   </template>
@@ -130,12 +130,16 @@
             </n-grid>
 
             <n-card title="学生章节分析" :bordered="false">
-              <FormPro @register="register" @submit="handleSubmit" @reset="reloadTable">
+              <FormPro
+                @register="register"
+                @submit="handleSubmit"
+                @reset="reloadDataTable"
+              >
               </FormPro>
               <TablePro
                 ref="actionRef"
                 :columns="columns"
-                :request="loadDataTable"
+                :request="loadPersonalInfoTable"
                 :row-key="(row) => row.id"
                 key-field="id"
                 label-field="label"
@@ -158,24 +162,63 @@ import { useMessage } from "naive-ui";
 import { schemas } from "./schemas";
 import { columns } from "./columns";
 import { useRoute } from "vue-router";
-import { getStudentList, getTestStudentReportGrade } from "@/service";
+import {
+  getPersonalInfo,
+  getPersonalInfoDetailed,
+  getStudentList,
+  getTestStudentReportGrade,
+} from "@/service";
 const route = useRoute();
 const message = useMessage();
 const Form = reactive({
-  stuName: "",
+  name: "",
 });
 const gradeData = reactive({
   avg: 0,
   max: 0,
   min: 0,
-  schedule: 0,
+  proportion: 0,
 });
 const pagination = ref({
   current: 1,
   pages: 1,
 });
+const handleSubmit = (values: Recordable) => {
+  Form.name = values.name;
+  // formData.value = {
+  //   courseName: values.courseName,
+  // };
+  // // console.log(formData);
+  reloadDataTable();
+};
 const stuIndex = ref(0);
 const studentList = ref();
+const loadPersonalInfoTable = async (res) => {
+  console.log(studentList.value);
+  if (!studentList.value) {
+    return {
+      current: 1,
+      optimizeCountSql: true,
+      orders: [],
+      pages: 0,
+      records: [],
+      searchCount: true,
+      size: 20,
+      total: 0,
+    };
+  }
+  const { courseId } = route.query;
+  const stuId = studentList.value[stuIndex.value].id;
+  const param = {
+    pageSize: res.size,
+    current: res.current,
+    courseId,
+    studentId: stuId,
+  };
+  console.log(Form);
+  const { data: result } = await getPersonalInfo({ ...Form, ...param });
+  return result;
+};
 const loadDataTable = async () => {
   const { classId, className, collegeName } = route.query;
   const param = {
@@ -194,6 +237,11 @@ const loadDataTable = async () => {
     loadReportData(stuId);
   }
 };
+const actionRef = ref();
+const reloadDataTable = () => {
+  actionRef.value.reload();
+};
+loadDataTable();
 /**
  * @author: ZHENG
  * @description: 学生名称查询
@@ -211,10 +259,23 @@ const updatePage = (page: number) => {
 };
 const loadReportData = async (stuId) => {
   const { courseId } = route.query;
-  const { data: result } = await getTestStudentReportGrade(courseId, stuId);
+  const param = {
+    studentId: stuId,
+    courseId,
+  };
+  const { data: result } = await getPersonalInfoDetailed(param);
   Object.assign(gradeData, result);
+  if (result) {
+    gradeData.proportion = parseInt(gradeData.proportion * 100, 10);
+  } else {
+    gradeData.avg = null;
+  }
+
+  reloadDataTable();
+  // const PeronInfo = await getPersonalInfo();
 };
 const clickStuName = (item, index) => {
+  console.log(item);
   loadReportData(item.id);
   stuIndex.value = index;
 };

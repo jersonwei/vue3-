@@ -2,14 +2,15 @@
  * @Author: ZHENG
  * @Date: 2022-04-30 15:51:30
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-06-09 11:34:25
+ * @LastEditTime: 2022-06-09 16:41:43
  * @FilePath: \work\src\views\test\questManager\columns.ts
  * @Description:
  */
 import { h,Slots, renderSlot } from 'vue';
-import { NAvatar, NTag, NSwitch, useMessage, NPopover, NButton, NPopconfirm } from 'naive-ui';
+import { NAvatar, NTag, NSwitch, useMessage, NPopover, NButton, NPopconfirm, NCard } from 'naive-ui';
 import { editStatusPaperQuestion } from '@/service';
 import { getServiceEnv } from '@/utils';
+import { radioOption } from "@/enum";
 
 const message = useMessage();
 const result = getServiceEnv();
@@ -19,31 +20,94 @@ export const columns = [
     key: 'questionName',
     width: 100,
 		ellipsis:false,
-    render(row) {
-			return h(
+    render(row:{questionTypeName:string}) {
+			console.log(row)
+			if(row.questionTypeName === '单选题' || row.questionTypeName === '多选题' || row.questionTypeName === '不定项选择题'){
+				return h(
 				NPopover,
 				{
-					placement:"bottom",
+					placement:"right-end",
 					trigger:"hover"
 				},
 			 {
 				 trigger: () =>									//trigger插槽的内容
-					 h(
-						 NButton,
-						 {},											//被render的元素的属性啥的,可以自定义
-						 [
-							 h('span', {}, `${row.questionName.replace(/(<([^>]+)>)/gi, '').replace(/[\r\n]/g, '')}`)
-						 ]
-					 ),
+						h('div', {}, `${row.questionName.replace(/(<([^>]+)>)/gi, '').replace(/[\r\n]/g, '')}`)
+					 ,
 				 default: () =>									//默认内容
 						h(
-						 'span',
-						 {},
-						'popconfirm的默认提示词'
+						 NCard,
+						 {
+							 title:'题目信息',
+							 size:'small'
+						 },
+							[h('span',	row.questionName.replace(/(<([^>]+)>)/gi, '').replace(/[\r\n]/g, '')),
+							JSON.parse(row.questionOption).map((item,index)=>{
+								return h('p',	`${radioOption[index]}、${item.replace(/(<([^>]+)>)/gi, '').replace(/[\r\n]/g, '')}`)
+							}),
+							h('p',`正确答案${row.questionAnswer}`)
+							]
+
 						 )
-						}
+				}
 			)
+			}else
+				if(row.questionTypeName === '填空题'){
+					return h(
+					NPopover,
+					{
+						placement:"right-end",
+						trigger:"hover"
+					},
+				 {
+					 trigger: () =>									//trigger插槽的内容
+					 h('div', {}, `${row.questionName.replace(/(<([^>]+)>)/gi, '').replace(/[\r\n]/g, '')}`),
+					 default: () =>									//默认内容
+							h(
+							 NCard,
+							 {
+								 title:'题目信息',
+								 size:'small'
+							 },
+								[h('span',	row.questionName.replace(/(<([^>]+)>)/gi, '').replace(/[\r\n]/g, '')),
+								JSON.parse(row.questionAnswer).map((item,index)=>{
+									return h('p',	item.replace(/(<([^>]+)>)/gi, '').replace(/[\r\n]/g, ''))
+								}),
+								// h('p',`正确答案${row.questionAnswer}`)
+								]
+
+							 )
 					}
+				)
+				}	else{
+				return h(
+					NPopover,
+					{
+						placement:"right-end",
+						trigger:"hover"
+					},
+				 {
+					 trigger: () =>									//trigger插槽的内容
+					 h('div', {}, `${row.questionName.replace(/(<([^>]+)>)/gi, '').replace(/[\r\n]/g, '')}`),
+					 default: () =>									//默认内容
+							h(
+							 NCard,
+							 {
+								 title:'题目信息',
+								 size:'small'
+							 },
+								[h('span',	row.questionName.replace(/(<([^>]+)>)/gi, '').replace(/[\r\n]/g, '')),
+								h('p',	row.questionAnswer.replace(/(<([^>]+)>)/gi, '').replace(/[\r\n]/g, ''))
+								// JSON.parse(row.questionAnswer).map((item,index)=>{
+								// 	return h('p',	item.replace(/(<([^>]+)>)/gi, '').replace(/[\r\n]/g, ''))
+								// }),
+								// h('p',`正确答案${row.questionAnswer}`)
+								]
+
+							 )
+					}
+				)
+			}
+		}
   },
   {
     title: '题目类型',

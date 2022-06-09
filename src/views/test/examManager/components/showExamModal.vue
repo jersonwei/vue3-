@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-06-01 16:21:58
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-06-09 09:22:23
+ * @LastEditTime: 2022-06-09 17:09:48
  * @FilePath: \work\src\views\test\examManager\components\showExamModal.vue
  * @Description:
 -->
@@ -29,53 +29,45 @@
       >
         {{ paper.paperName }}
       </p>
-      <n-form-item label="考试说明">
-        <p>{{ paper.paperDescribe }}</p>
-      </n-form-item>
-      <p v-if="examTimeRef">考试时长{{ examTimeRef }}</p>
-      <!-- <p
-        style="
-          display: flex;
-          justify-content: center;
-          font-size: 16px;
-          line-height: 15px;
-          font-weight: 600;
-          margin-bottom: 19px;
-        "
-      >
-        本试卷满分{{ paper.paperScores }}分,考试时间为{{ paper.paperBeginTime }}至{{
-          paper.paperEndTime
-        }}。
-      </p> -->
-      <!-- <p
-        style="
-          display: flex;
-          justify-content: center;
-          font-size: 16px;
-          line-height: 15px;
-          font-weight: 600;
-          margin-bottom: 19px;
-        "
-      >
+      <p style="font-weight: bold">考试说明:</p>
+      <p>
         {{ paper.paperDescribe }}
-      </p> -->
-      <!-- 我们在田野上面找猪<br />
-      想象中已找到了三只<br />
-      小鸟在白云上面追逐<br />
-      它们在树底下跳舞<br />
-      啦啦啦啦啦啦啦啦咧<br />
-      啦啦啦啦咧<br />
-      我们在想象中度过了许多年<br />
-      想象中我们是如此的疯狂<br />
-      我们在城市里面找猪<br />
-      想象中已找到了几百万只<br />
-      小鸟在公园里面唱歌<br />
-      它们独自在想象里跳舞<br />
-      啦啦啦啦啦啦啦啦咧<br />
-      啦啦啦啦咧<br />
-      我们在想象中度过了许多年<br />
-      许多年之后我们又开始想象<br />
-      啦啦啦啦啦啦啦啦咧 -->
+      </p>
+      <div style="display: grid; grid-template-columns: repeat(3, 1fr)">
+        <div>考试时长: {{ examTimeRef }}分钟</div>
+        <div>考试时间为: {{ paper.paperBeginTime }}至{{ paper.paperEndTime }}</div>
+        <div>试卷满分: {{ paper.paperScores }}分</div>
+      </div>
+
+      <div v-for="(item, index) in paperList">
+        <p style="font-weight: bold">
+          第{{ index + 1 }}部分：{{ item[0].partName }}
+          {{ item[0].partDescribe }}
+        </p>
+        <div v-for="(question, questionIndex) in item">
+          <div style="margin: 20px">
+            {{ question }}
+            <template v-if="question.questionType === 1">
+              <p>
+                {{
+                  questionIndex + 1
+                }}、甲公司2018年度发生的有关交易和事项如下：持有的交易性金融资产公允价值上升100万元。正常处置固定资产产生净收益20万元，因存货市价持续下跌计提存货跌价准备30万元，管理部门使用的机器设备发生日常维护支出40万元。假设不考虑其他因素，上述交易或事项对甲公司2018年营业利润的影响额是（
+                ）万元。
+              </p>
+              <p>
+                A. 销售材料取得的收入 B. 销售材料取得的收入 C. 接受捐赠收到的现金 C.
+                接受捐赠收到的现金
+              </p>
+            </template>
+            <template v-if="question.questionType === 2">
+              <p>
+                {{ questionIndex + 1 }}、甲公司2018年度发生的有关交易和事项如下：
+                资产公允价值上升100万元。正常处置固定资产产生净收益20万元，因存货市价持续下跌计提存货跌价准备30万元，管理部门使用的机器设备发生日常维护支出40万元。
+              </p>
+            </template>
+          </div>
+        </div>
+      </div>
     </n-scrollbar>
   </n-modal>
 </template>
@@ -88,6 +80,7 @@ import { differenceInMinutes, format } from "date-fns";
 const showExamModal = ref(false);
 const paper = ref();
 const examTimeRef = ref(0);
+const paperList = ref();
 // const emits = defineEmits(['reloadTable']);
 const showModal = async (record) => {
   const param = {
@@ -100,9 +93,25 @@ const showModal = async (record) => {
   const paperBeginTime = new Date(paper.value.paperBeginTime);
   const paperEndTime = new Date(paper.value.paperEndTime);
   const examTime = differenceInMinutes(paperEndTime, paperBeginTime);
-  console.log(examTime, paperBeginTime, paperEndTime);
   examTimeRef.value = examTime;
-  console.log(examTime);
+  paperList.value = paperListFn(result.listPaperDetaile);
+  console.log("paperList", paperList.value);
+};
+const paperListFn = (paperList) => {
+  const map = new Map();
+  paperList.forEach((eachCase) => {
+    const { partSort } = eachCase;
+    if (map.has(partSort)) {
+      map.get(partSort).push(eachCase);
+    } else {
+      map.set(partSort, [eachCase]);
+    }
+  });
+  const sameIdCaseArrays = [];
+  for (const [, value] of map) {
+    sameIdCaseArrays.push(value);
+  }
+  return sameIdCaseArrays;
 };
 
 defineExpose({ showModal });

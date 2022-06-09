@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-04-30 14:33:21
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-06-08 16:32:29
+ * @LastEditTime: 2022-06-09 16:56:54
  * @FilePath: \work\src\views\test\addExam\index.vue
  * @Description:
 -->
@@ -161,9 +161,9 @@
                     </n-form-item-gi>
 
                     <n-grid :cols="24" :x-gap="24">
-                      <n-form-item-gi :span="24" label="答题说明" path="type">
+                      <n-form-item-gi :span="24" label="答题说明" path="partDescribe">
                         <n-input
-                          v-model:value="paperList.detail[index].note"
+                          v-model:value="paperList.detail[index].partDescribe"
                           type="textarea"
                           placeholder="请输入答题说明"
                         />
@@ -447,7 +447,7 @@ const getPaperDetailData = (listPaperDetaile) => {
       // 不存在部分
       detail[partSort] = {
         name: partName,
-        note: partDescribe,
+        partDescribe: partDescribe,
         questType: questionType,
         data: [],
         checkRowKeys: [],
@@ -502,6 +502,10 @@ const detailRule = {
   questType: {
     required: true,
     message: "请选择题目类型",
+  },
+  partDescribe: {
+    required: true,
+    message: "请录入大题描述",
   },
 };
 const paperList = ref({
@@ -658,7 +662,7 @@ const saveDetail = async () => {
     };
     for (let i = 0; i < paperList.value.detail.length; i++) {
       for (let y = 0; y < paperList.value.detail[i]?.data.length; y++) {
-        const { questType, detailNote, name } = paperList.value.detail[i];
+        const { questType, partDescribe, name } = paperList.value.detail[i];
         const { rowID, id: questionId, questionScore } = paperList.value.detail[i]?.data[
           y
         ];
@@ -670,7 +674,7 @@ const saveDetail = async () => {
           partSort: i,
           questionScore,
           extraScore: 0,
-          partDescribe: detailNote,
+          partDescribe: partDescribe,
           partName: name,
         };
         params.listPaperDetaile.push(param);
@@ -700,7 +704,7 @@ const saveDetail = async () => {
     };
     for (let i = 0; i < paperList.value.detail.length; i++) {
       for (let y = 0; y < paperList.value.detail[i]?.data.length; y++) {
-        const { questType, detailNote, name } = paperList.value.detail[i];
+        const { questType, partDescribe, name } = paperList.value.detail[i];
         const { rowID, id: questionId, questionScore } = paperList.value.detail[i]?.data[
           y
         ];
@@ -715,7 +719,7 @@ const saveDetail = async () => {
           partSort: i,
           questionScore,
           extraScore: 0,
-          partDescribe: detailNote,
+          partDescribe: partDescribe,
           partName: name,
         };
         params.listPaperDetaile.push(param);

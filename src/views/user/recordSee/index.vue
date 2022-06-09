@@ -2,13 +2,12 @@
  * @Author: ZHENG
  * @Date: 2022-06-08 18:31:50
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-06-09 10:00:02
+ * @LastEditTime: 2022-06-09 15:53:30
  * @FilePath: \work\src\views\user\recordSee\index.vue
  * @Description:
 -->
 <template>
   <n-card>
-<<<<<<< HEAD
     <div class="content">
       <n-form
         label-placement="left"
@@ -146,62 +145,10 @@
         </n-tabs>
       </div>
     </div>
-=======
-    <n-form class="record" :label-width="160">
-      <n-form-item>
-        <n-image
-          class="img"
-          width="100"
-          src="https://07akioni.oss-cn-beijing.aliyuncs.com/07akioni.jpeg"
-        ></n-image>
-      </n-form-item>
-      <div class="info">
-        <n-form-item label="姓名:">
-          <n-button text>张三</n-button>
-        </n-form-item>
-        <n-form-item label="性别:">
-          <n-button text>张三</n-button>
-        </n-form-item>
-        <n-form-item label="学号:">
-          <n-button text>张三</n-button>
-        </n-form-item>
-        <n-form-item label="院系:">
-          <n-button text>张三</n-button>
-        </n-form-item>
-        <n-form-item label="专业:">
-          <n-button text>张三</n-button>
-        </n-form-item>
-        <n-form-item label="班级:">
-          <n-button text>张三</n-button>
-        </n-form-item>
-        <n-form-item label="手机号:">
-          <n-button text>张三</n-button>
-        </n-form-item>
-        <n-form-item label="邮箱:">
-          <n-button text>张三</n-button>
-        </n-form-item>
-        <n-form-item label="身份证号:">
-          <n-button text>张三</n-button>
-        </n-form-item>
-        <n-form-item label="地址:">
-          <n-button text>张三</n-button>
-        </n-form-item>
-      </div>
-    </n-form>
-    <n-tabs type="segment">
-      <n-tab-pane name="chap1" tab="参加课程">
-        <course></course>
-      </n-tab-pane>
-      <n-tab-pane name="chap2" tab="考试成绩">2</n-tab-pane>
-      <n-tab-pane name="chap3" tab="课程笔记">3</n-tab-pane>
-      <n-tab-pane name="chap4" tab="课程互动">4</n-tab-pane>
-    </n-tabs>
->>>>>>> 7ffa2a0a7c3ff5a974abd270d493a6d99b97969c
   </n-card>
 </template>
 
 <script setup lang="ts">
-<<<<<<< HEAD
 import { useRouterPush } from "@/composables";
 import { searchCouserInfo } from "@/service";
 import { h, reactive, ref } from "vue";
@@ -317,18 +264,6 @@ const reportSee = () => {
 // .info {
 //   display: flex;
 // }
-=======
-import course from "./component/course/index.vue";
-</script>
-
-<style lang="scss" scoped>
-.record {
-  display: flex;
-}
-.info {
-  display: flex;
-}
->>>>>>> 7ffa2a0a7c3ff5a974abd270d493a6d99b97969c
 .img {
   border-radius: 50%;
 }
