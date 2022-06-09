@@ -2,8 +2,8 @@
  * @Author: ZHENG
  * @Date: 2022-04-30 08:41:04
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-10 13:52:33
- * @FilePath: \e-class-admin\src\enum\common.ts
+ * @LastEditTime: 2022-06-09 09:40:30
+ * @FilePath: \work\src\enum\common.ts
  * @Description:
  */
 /** http请求头的content-type类型 */
@@ -24,7 +24,8 @@ export enum EnumStorageKey {
   /** 用户信息 */
   'user-info' = '__USER_INFO__',
   /** 多页签路由信息 */
-  'tab-routes' = '__TAB_ROUTES__'
+  // 'tab-routes' = '__TAB_ROUTES__'
+	'multi-tab-routes' = '__MULTI_TAB_ROUTES__'
 }
 
 /** 数据类型 */
