@@ -9,6 +9,8 @@
     "build:dev": "npm run typecheck && cross-env VITE_ENV_TYPE=dev vite build",
     "build:test": "npm run typecheck && cross-env VITE_ENV_TYPE=test vite build",
     "build:vercel": "cross-env VITE_HASH_ROUTE=true vite build",
+		"clean:cache": "rimraf node_modules/.cache/ && rimraf node_modules/.vite",
+    "clean:lib": "rimraf node_modules",
     "preview": "vite preview --port 5050",
     "typecheck": "vue-tsc --noEmit",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix",
