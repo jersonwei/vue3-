@@ -102,7 +102,7 @@ import { h, reactive, ref } from "vue";
 // import { useRouter } from 'vue-router';
 import { PlusOutlined } from "@vicons/antd";
 import { useRouterPush } from "@/composables";
-import { getStudentTableInfo } from "@/service";
+import { getStudentTableInfo, resetPassword } from "@/service";
 import { getUserInfo } from "@/utils";
 import { TablePro, TableAction } from "@/components/TablePro";
 import { FormPro, useForm } from "@/components/FormPro";
@@ -153,7 +153,7 @@ const actionColumn = reactive({
           {
             label: "密码重置",
             // eslint-disable-next-line @typescript-eslint/no-use-before-define
-            // onClick: handleConfig.bind(null, record)
+            onClick: handleConfig.bind(null, record),
           },
         ],
       });
@@ -180,7 +180,7 @@ const actionColumn = reactive({
         {
           label: "密码重置",
           // eslint-disable-next-line @typescript-eslint/no-use-before-define
-          // onClick: handleConfig.bind(null, record)
+          onClick: handleConfig.bind(null, record),
         },
       ],
     });
@@ -274,6 +274,15 @@ const recordSee = () => {
   routerPush({ name: "user_recordSee" });
   // courseStore.setCourseInfo(record.id);
   // routerPush({ name: 'course_courseInfo' });
+};
+// 重置密码
+const handleConfig = (record: Recordable) => {
+  console.log(record);
+
+  console.log(formData);
+
+  const retpass = resetPassword(record.id);
+  retpass;
 };
 </script>
 

@@ -28,7 +28,7 @@ export function deleteStudent(params) {
 
 // 重置密码
 export function resetPassword(params) {
-  const res = request.put(`/student/resetPassword`, params);
+  const res = request.put(`/student/resetPassword/${params.id}`, );
   return res;
 }
 // 学生导入

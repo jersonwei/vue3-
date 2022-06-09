@@ -204,9 +204,6 @@ const getList = async () => {
   form.classId = await getClassListOptions();
   form.collegeId = await getCollegeLegistOptions();
   form.majorId = await getMajorListOptions();
-  // form.courseCategory = await getCourseCategoryOptions();
-  // form.majorId = await getClassListOptions();
-  // form.label = await getLabelsOptions();
 };
 getList();
 // eslint-disable-next-line @typescript-eslint/no-unused-vars

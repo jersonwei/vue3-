@@ -9,10 +9,11 @@
 /** 请求环境配置 */
 type ServiceEnv = Record<EnvType, EnvConfig>;
 
+// url: 'http://192.168.3.78:8081',
 /** 环境配置 */
 const serviceEnvConfig: ServiceEnv = {
-  dev: {
-    url: 'http://120.79.129.174:8081',
+	dev: {
+		url: 'http://120.79.129.174:8081',
     proxy: '/api'
   },
   test: {
@@ -24,7 +25,6 @@ const serviceEnvConfig: ServiceEnv = {
     proxy: '/api'
   }
 };
-// 192.168.3.7
 
 /**
  * 获取环境配置
