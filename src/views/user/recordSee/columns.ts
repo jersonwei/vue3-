@@ -15,28 +15,28 @@ export const columns = [
   {
     title: '课程名称',
     key: 'courseName',
-    width: 120
+    width: 20
   },
 
   {
     title: '课程类别',
     key: 'courseCategoryName',
-    width: 100
+    width: 10
   },
   {
     title: '章节数',
     key: 'chapterNum',
-    width: 80
+    width: 10
   },
   {
     title: '课时数',
     key: 'unitNum',
-    width: 80
+    width: 10
   },
   {
     title: '主讲老师',
     key: 'lecturerName',
-    width: 80
+    width: 10
   },
   // {
   //   title: '课程描述',
