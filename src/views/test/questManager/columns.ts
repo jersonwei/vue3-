@@ -2,12 +2,12 @@
  * @Author: ZHENG
  * @Date: 2022-04-30 15:51:30
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-06-04 15:16:09
+ * @LastEditTime: 2022-06-09 11:34:25
  * @FilePath: \work\src\views\test\questManager\columns.ts
  * @Description:
  */
-import { h } from 'vue';
-import { NAvatar, NTag, NSwitch, useMessage } from 'naive-ui';
+import { h,Slots, renderSlot } from 'vue';
+import { NAvatar, NTag, NSwitch, useMessage, NPopover, NButton, NPopconfirm } from 'naive-ui';
 import { editStatusPaperQuestion } from '@/service';
 import { getServiceEnv } from '@/utils';
 
@@ -18,22 +18,33 @@ export const columns = [
     title: '题目名称',
     key: 'questionName',
     width: 100,
+		ellipsis:false,
     render(row) {
-      return row.questionName.replace(/(<([^>]+)>)/gi, '').replace(/[\r\n]/g, '');
-    }
+			return h(
+				NPopover,
+				{
+					placement:"bottom",
+					trigger:"hover"
+				},
+			 {
+				 trigger: () =>									//trigger插槽的内容
+					 h(
+						 NButton,
+						 {},											//被render的元素的属性啥的,可以自定义
+						 [
+							 h('span', {}, `${row.questionName.replace(/(<([^>]+)>)/gi, '').replace(/[\r\n]/g, '')}`)
+						 ]
+					 ),
+				 default: () =>									//默认内容
+						h(
+						 'span',
+						 {},
+						'popconfirm的默认提示词'
+						 )
+						}
+			)
+					}
   },
-  // {
-  //   title: '题目分类',
-  //   key: 'listBankRelatedName',
-  //   width: 100,
-  //   render(row: { listBankRelatedName: any[] }) {
-  //     if (row.listBankRelatedName?.length) {
-  //       const tags = row.listBankRelatedName?.join(',');
-  //       return tags;
-  //     }
-  //     return [];
-  //   }
-  // },
   {
     title: '题目类型',
     key: 'questionTypeName',
@@ -119,3 +130,5 @@ const updateQuest = async params => {
     window.$message?.success(`${params.status === 1 ? '启用' : '禁用'}操作成功`);
   }
 };
+
+

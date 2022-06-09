@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-04-30 15:51:30
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-06-08 17:31:46
+ * @LastEditTime: 2022-06-09 10:40:36
  * @FilePath: \work\src\views\course\courseMgt\columns.ts
  * @Description:
  */
@@ -109,7 +109,7 @@ export const columns = [
 							row.status = row.status === 1 ? 0 : 1;
 						}
 					}else{
-						window.$dialog?.info({
+						window.$dialog?.error({
 							title: "提示",
 							content: "下架后，学员端将不再展示该课程,确定要下架吗？",
 							positiveText: "确定",

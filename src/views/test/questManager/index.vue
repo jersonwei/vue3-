@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-04-30 14:33:21
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-06-04 14:59:12
+ * @LastEditTime: 2022-06-09 10:52:17
  * @FilePath: \work\src\views\test\questManager\index.vue
  * @Description:
 -->
@@ -178,7 +178,7 @@ const formData = ref({});
 const treeData = ref([]);
 const loading = ref(true);
 const propsFrom = reactive({
-  bankType: "",
+  bankType: null,
   bankName: "",
 });
 const bankTypeOptions = ref();

@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-05-20 16:40:06
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-05-30 11:03:43
+ * @LastEditTime: 2022-06-09 10:39:52
  * @FilePath: \work\src\views\course\courseMgt\components\updateCourse.vue
  * @Description:
 -->
@@ -11,6 +11,7 @@
     v-model:show="showUpdateModal"
     :mask-closable="false"
     preset="dialog"
+    :show-icon="false"
     title="确认上架时间"
   >
     <n-form
