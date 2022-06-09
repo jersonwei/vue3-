@@ -69,22 +69,35 @@
           ></n-input>
         </n-form-item>
         <n-form-item label="入学时间" path="startTime">
-          <n-date-picker v-model="formParams.startTime" type="date" clearable />
-        </n-form-item>
-        <n-form-item label="地址" path="address">
-          <CitySelector
-            data-type="pcas"
-            check-strategy="child"
-            @update:value="onSelectItem"
+          <n-date-picker
+            style="width: 100%"
+            v-model:value="formParams.startTime"
+            type="date"
+            clearable
           />
-          <!-- <div><VDistpicker></VDistpicker></div> -->
-          <!-- <n-select v-model:value="formParams.address"></n-select> -->
+          <!-- <n-input v-model:value="formParams.startTime"></n-input> -->
         </n-form-item>
+        <div class="address" style="flex: 1">
+          <n-form-item label="地址" path="address">
+            <CitySelector
+              data-type="pcas"
+              check-strategy="child"
+              @update:value="onSelectItem"
+            />
+            <n-input
+              v-model:value="formParams.address"
+              placeholder="请输入地址详情"
+            ></n-input>
+            <!-- <div><VDistpicker></VDistpicker></div> -->
+            <!-- <n-select v-model:value="formParams.address"></n-select> -->
+          </n-form-item>
+        </div>
       </n-form>
     </n-scrollbar>
     <template #action>
       <n-space>
-        <n-button @click="() => ((showModal = false), (showForm = null))">取消</n-button>
+        <!-- <n-button @click="() => ((showModal = false), (showForm = null))">取消</n-button> -->
+        <n-button @click="() => (showModal = false)">取消</n-button>
         <n-button type="info" :loading="formBtnLoading" @click="confirmForm"
           >确定</n-button
         >
@@ -97,7 +110,7 @@ import { reactive, ref } from "vue";
 import { useMessage } from "naive-ui";
 // import { useDebounceFn } from "@vueuse/core";
 // import { useAuthStore } from "@/store";
-import { addStudent } from "@/service";
+import { addStudent, putStudent } from "@/service";
 import { deafultFormParams } from "@/utils";
 import {
   getClassListOptions,
@@ -105,10 +118,10 @@ import {
   getMajorListOptions,
 } from "../getOptions";
 // 选择省市区
-const currentItem = ref("");
+const currentItem = ref({});
 function onSelectItem(item: any) {
   currentItem.value = item;
-  formParams.address = JSON.stringify(currentItem);
+  // formParams.address = JSON.stringify(currentItem);
 }
 const showModal = ref(false);
 const addOrEdit = ref(false); // true 新增，false修改
@@ -118,6 +131,7 @@ const message = useMessage(); // 轻提示
 
 let Form = new FormData();
 const emits = defineEmits(["reloadTable"]);
+const checkTime = new Date();
 const formParams = reactive({
   userName: "",
   stunu: "",
@@ -128,7 +142,7 @@ const formParams = reactive({
   phone: "",
   email: "",
   idCard: "",
-  startTime: "",
+  startTime: ref<Date>(checkTime),
   address: "",
 });
 
@@ -152,6 +166,46 @@ const showModalFn = () => {
   deafultFormParams(formParams);
   Form = new FormData();
   addOrEdit.value = true;
+  showModal.value = true;
+};
+const editID = ref();
+const editModalFn = (record) => {
+  Form = new FormData();
+  editID.value = record.id;
+  // formParams.userName = [];
+  // formParams.stunu = [];
+  // formParams.sex = [];
+  // formParams.classId = [];
+  // formParams.majorId = [];
+  // formParams.collegeId = [];
+  // formParams.phone = [];
+  // formParams.email = [];
+  // formParams.idCard = [];
+  // formParams.startTime = [];
+  // formParams.address = [];
+  // formParams.labelList = [];
+  // formParams.classList = [];
+  const formData = {
+    userName: record.userName,
+    stunu: record.stunu,
+    sex: record.sex,
+    classId: record.classId, // 班级
+    // majorId: record.majorId, // 专业
+    // collegeId: record.collegeId, // 学院
+    phone: record.phone,
+    email: record.email,
+    idCard: record.idCard,
+    startTime: record.startTime,
+    address: record.address,
+    // local: []
+    // localName: []
+    // robot: ""
+    // virtualNumber: 0
+    // virtualRobot: ""
+  };
+  // eslint-disable-next-line @typescript-eslint/no-use-before-define
+  Object.assign(formParams, formData);
+  addOrEdit.value = false;
   showModal.value = true;
 };
 // 新增修改的Form
@@ -216,33 +270,43 @@ const confirmForm = (e: { preventDefault: () => void }) => {
     if (!errors) {
       setTimeout(async () => {
         if (addOrEdit.value === true) {
-          const {
-            userName,
-            stunu,
-            sex,
-            classId,
-            majorId,
-            collegeId,
-            phone,
-            email,
-            idCard,
-            address,
-            startTime,
-          } = formParams;
-          const params = {
-            userName,
-            stunu,
-            sex,
-            classId,
-            majorId,
-            collegeId,
-            phone,
-            email,
-            idCard,
-            address,
-            startTime,
-          };
-          const result = await addStudent(params);
+          // const {
+          //   userName,
+          //   stunu,
+          //   sex,
+          //   classId,
+          //   majorId,
+          //   collegeId,
+          //   phone,
+          //   email,
+          //   idCard,
+          //   address,
+          //   startTime,
+          // } = formParams;
+          // const params = {
+          //   userName,
+          //   stunu,
+          //   sex,
+          //   classId,
+          //   majorId,
+          //   collegeId,
+          //   phone,
+          //   email,
+          //   idCard,
+          //   address,
+          //   startTime,
+          // };
+          Form.append("userName", formParams.userName);
+          Form.append("stunu", formParams.stunu);
+          Form.append("sex", formParams.sex);
+          Form.append("classId", formParams.classId);
+          Form.append("collegeId", formParams.collegeId);
+          Form.append("phone", formParams.phone);
+          Form.append("email", formParams.email);
+          Form.append("address", formParams.address);
+          Form.append("idCard", formParams.idCard);
+          Form.append("startTime", formParams.startTime);
+          const result = await addStudent(Form);
           if (!result.error) {
             message.success("新建成功");
           }
@@ -253,20 +317,30 @@ const confirmForm = (e: { preventDefault: () => void }) => {
           //   message.success(`新建成功`);
           // }
         }
-        // if (addOrEdit.value === false) {
-        //   Form.append('id', editID.value);
-        //   Form.append('courseName', formParams.courseName);
-        //   Form.append('courseCategory', formParams.courseCategory);
-        //   Form.append('eclassId', formParams.classList);
-        //   Form.append('note', formParams.note);
-        //   // const { userId } = auth.userInfo;
-        //   // Form.append('lecturer', userId);
-        //   const result = await updateCourseInfo(Form);
-        //   console.log(result);
-        //   if (!result.error) {
-        //     message.success(`修改成功`);
-        //   }
-        // }
+        if (addOrEdit.value === false) {
+          Form.append("userName", formParams.userName);
+          Form.append("stunu", formParams.stunu);
+          Form.append("sex", formParams.sex);
+          Form.append("classId", formParams.classId);
+          Form.append("collegeId", formParams.collegeId);
+          Form.append("phone", formParams.phone);
+          Form.append("email", formParams.email);
+          Form.append("address", formParams.address);
+          Form.append("idCard", formParams.idCard);
+          Form.append("startTime", formParams.startTime);
+          //   Form.append('id', editID.value);
+          //   Form.append('courseName', formParams.courseName);
+          //   Form.append('courseCategory', formParams.courseCategory);
+          //   Form.append('eclassId', formParams.classList);
+          //   Form.append('note', formParams.note);
+          //   // const { userId } = auth.userInfo;
+          //   // Form.append('lecturer', userId);
+          const result = await putStudent(Form);
+          console.log(result);
+          if (!result.error) {
+            message.success(`修改成功`);
+          }
+        }
         emits("reloadTable");
         showModal.value = false;
       });
@@ -277,21 +351,24 @@ const confirmForm = (e: { preventDefault: () => void }) => {
     formBtnLoading.value = false;
   });
 };
-// defineExpose({ showModalFn, editModalFn });
-defineExpose({ showModalFn });
+defineExpose({ showModalFn, editModalFn });
+// defineExpose({ showModalFn });
 </script>
 
 <style scoped>
 ::v-deep(.n-form-item) {
   width: 360px;
 }
-::v-deep(.n-form-item-blank) {
-  width: 230px;
-}
+/* ::v-deep(.n-date-picker) {
+  width: 280px;
+} */
+/* ::v-deep(.n-form-item-blank:last-child) {
+  width: 600px;
+} */
 ::v-deep(.n-form-item:last-child) {
   width: 600px !important;
 }
-::v-deep(.n-date-picker) {
+/* ::v-deep(.n-date-picker) {
   width: 230px;
-}
+} */
 </style>
