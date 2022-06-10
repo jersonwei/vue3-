@@ -16,69 +16,74 @@
         label-placement="left"
         :label-width="80"
         class="m-2 py-4"
-        style="display: flex; flex-wrap: wrap"
       >
-        <n-form-item label="姓名" path="userName">
-          <n-input v-model:value="formParams.userName" placeholder="请输入姓名"></n-input>
-        </n-form-item>
-        <n-form-item label="学号" path="stunu">
-          <n-input v-model:value="formParams.stunu" placeholder="请输入学号"></n-input>
-        </n-form-item>
-        <n-form-item label="性别" path="sexList">
-          <n-select
-            v-model:value="formParams.sex"
-            clearable
-            placeholder="请选择性别"
-            :options="sex"
-          ></n-select>
-        </n-form-item>
-        <n-form-item label="院系" path="collegeList">
-          <n-select
-            v-model:value="formParams.collegeId"
-            :options="form.collegeId"
-            clearable
-            placeholder="请选择院系"
-          ></n-select>
-        </n-form-item>
-        <n-form-item label="专业" path="majorList">
-          <n-select
-            v-model:value="formParams.majorId"
-            :options="form.majorId"
-            clearable
-            placeholder="请选择专业"
-          ></n-select>
-        </n-form-item>
-        <n-form-item label="班级" path="classList">
-          <n-select
-            v-model:value="formParams.classId"
-            :options="form.classId"
-            clearable
-            placeholder="请选择班级"
-          ></n-select>
-        </n-form-item>
-        <n-form-item label="手机号" path="phone">
-          <n-input v-model:value="formParams.phone" placeholder="请输入手机号"></n-input>
-        </n-form-item>
-        <n-form-item label="邮箱" path="email">
-          <n-input v-model:value="formParams.email" placeholder="请输入邮箱"></n-input>
-        </n-form-item>
-        <n-form-item label="身份证号" path="idCard">
-          <n-input
-            v-model:value="formParams.idCard"
-            placeholder="请输入身份证号"
-          ></n-input>
-        </n-form-item>
-        <n-form-item label="入学时间" path="startTime">
-          <!-- <n-date-picker
+        <n-grid :cols="2" :x-gap="24">
+          <n-form-item-gi label="姓名" path="userName">
+            <n-input
+              v-model:value="formParams.userName"
+              placeholder="请输入姓名"
+            ></n-input>
+          </n-form-item-gi>
+          <n-form-item-gi label="学号" path="stunu">
+            <n-input v-model:value="formParams.stunu" placeholder="请输入学号"></n-input>
+          </n-form-item-gi>
+          <n-form-item-gi label="性别" path="sexList">
+            <n-select
+              v-model:value="formParams.sex"
+              clearable
+              placeholder="请选择性别"
+              :options="sex"
+            ></n-select>
+          </n-form-item-gi>
+          <n-form-item-gi label="院系" path="collegeList">
+            <n-select
+              v-model:value="formParams.collegeId"
+              :options="form.collegeId"
+              clearable
+              placeholder="请选择院系"
+            ></n-select>
+          </n-form-item-gi>
+          <n-form-item-gi label="专业" path="majorList">
+            <n-select
+              v-model:value="formParams.majorId"
+              :options="form.majorId"
+              clearable
+              placeholder="请选择专业"
+            ></n-select>
+          </n-form-item-gi>
+          <n-form-item-gi label="班级" path="classList">
+            <n-select
+              v-model:value="formParams.classId"
+              :options="form.classId"
+              clearable
+              placeholder="请选择班级"
+            ></n-select>
+          </n-form-item-gi>
+          <n-form-item-gi label="手机号" path="phone">
+            <n-input
+              v-model:value="formParams.phone"
+              placeholder="请输入手机号"
+            ></n-input>
+          </n-form-item-gi>
+          <n-form-item-gi label="邮箱" path="email">
+            <n-input v-model:value="formParams.email" placeholder="请输入邮箱"></n-input>
+          </n-form-item-gi>
+          <n-form-item-gi label="身份证号" path="idCard">
+            <n-input
+              v-model:value="formParams.idCard"
+              placeholder="请输入身份证号"
+            ></n-input>
+          </n-form-item-gi>
+          <n-form-item-gi label="入学时间" path="startTime">
+            <!-- <n-date-picker
             style="width: 100%"
             v-model:value="formParams.startTime"
             type="date"
             clearable
           /> -->
-          <n-input v-model:value="formParams.startTime"></n-input>
-        </n-form-item>
-        <div class="address" style="flex: 1">
-          <n-form-item label="地址" path="address">
+            <n-input v-model:value="formParams.startTime"></n-input>
+          </n-form-item-gi>
+          <n-form-item-gi label="地址" path="address" :span="24">
             <CitySelector
               data-type="pcas"
               check-strategy="child"
@@ -90,8 +95,8 @@
             ></n-input>
             <!-- <div><VDistpicker></VDistpicker></div> -->
             <!-- <n-select v-model:value="formParams.address"></n-select> -->
-          </n-form-item>
-        </div>
+          </n-form-item-gi>
+        </n-grid>
       </n-form>
     </n-scrollbar>
     <template #action>
@@ -355,20 +360,4 @@ defineExpose({ showModalFn, editModalFn });
 // defineExpose({ showModalFn });
 </script>
 
-<style scoped>
-::v-deep(.n-form-item) {
-  width: 360px;
-}
-/* ::v-deep(.n-date-picker) {
-  width: 280px;
-} */
-/* ::v-deep(.n-form-item-blank:last-child) {
-  width: 600px;
-} */
-::v-deep(.n-form-item:last-child) {
-  width: 600px !important;
-}
-/* ::v-deep(.n-date-picker) {
-  width: 230px;
-} */
-</style>
+<style></style>
