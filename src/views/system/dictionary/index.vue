@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-05-05 15:20:22
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-06-08 16:32:27
+ * @LastEditTime: 2022-06-10 11:03:19
  * @FilePath: \work\src\views\system\dictionary\index.vue
  * @Description:
 -->
@@ -16,8 +16,12 @@
           <template #header>
             <n-space>
               <n-button type="info" @click="addType(0)"> 新增 </n-button>
-              <n-button type="info" :disabled="isEdit" @click="addType(1)"> 编辑 </n-button>
-              <n-button type="error" :disabled="isEdit" @click="delDic(0)"> 删除 </n-button>
+              <n-button type="info" :disabled="isEdit" @click="addType(1)">
+                编辑
+              </n-button>
+              <n-button type="error" :disabled="isEdit" @click="delDic(0)">
+                删除
+              </n-button>
               <n-input v-model:value="pattern" placeholder="输入字典名称搜索">
                 <template #suffix>
                   <n-icon size="18" class="cursor-pointer">
@@ -55,14 +59,16 @@
         <n-card :bordered="false" size="small">
           <template #header>
             <n-space>
-              <n-button :disabled="isEdit" type="info" @click="editTableDict(null, 0)"> 新增 </n-button>
+              <n-button :disabled="isEdit" type="info" @click="editTableDict(null, 0)">
+                新增
+              </n-button>
             </n-space>
           </template>
           <TablePro
             ref="actionRef"
             :columns="columns"
             :request="loadDataTable"
-            :row-key="row => row.id"
+            :row-key="(row) => row.id"
             :action-column="actionColumn"
             :scroll-x="1090"
           >
@@ -77,7 +83,14 @@
       preset="dialog"
       :title="`${changType === 0 ? '新建' : '编辑'}字典配置`"
     >
-      <n-form ref="formRef" :model="formParams" :rules="rules" label-placement="left" :label-width="80" class="py-4">
+      <n-form
+        ref="formRef"
+        :model="formParams"
+        :rules="rules"
+        label-placement="left"
+        :label-width="80"
+        class="py-4"
+      >
         <n-form-item label="字典名称" path="value">
           <n-input v-model:value="formParams.value" placeholder="请输入字典名称" />
         </n-form-item>
@@ -88,7 +101,9 @@
       <template #action>
         <n-space>
           <n-button @click="() => (showModal = false)">取消</n-button>
-          <n-button type="info" :loading="formBtnLoading" @click="confirmForm">确定</n-button>
+          <n-button type="info" :loading="formBtnLoading" @click="confirmForm"
+            >确定</n-button
+          >
         </n-space>
       </template>
     </n-modal>
@@ -151,20 +166,29 @@
       <template #action>
         <n-space>
           <n-button @click="() => (showTableModal = false)">取消</n-button>
-          <n-button type="info" :loading="TableFormBtnLoading" @click="confirmTableForm">确定</n-button>
+          <n-button type="info" :loading="TableFormBtnLoading" @click="confirmTableForm"
+            >确定</n-button
+          >
         </n-space>
       </template>
     </n-modal>
   </div>
 </template>
 <script lang="ts" setup>
-import { ref, unref, reactive, onMounted, h, computed } from 'vue';
-import { useMessage } from 'naive-ui';
-import { SearchOutlined } from '@vicons/antd';
-import { addDict, addDictType, editDict, editDictType, getDictList, getDictType } from '@/service';
-import { getTreeItem, isValidKey } from '@/utils';
-import { TablePro, TableAction } from '@/components/TablePro';
-import { columns } from './column';
+import { ref, unref, reactive, onMounted, h, computed } from "vue";
+import { useMessage } from "naive-ui";
+import { SearchOutlined } from "@vicons/antd";
+import {
+  addDict,
+  addDictType,
+  editDict,
+  editDictType,
+  getDictList,
+  getDictType,
+} from "@/service";
+import { getTreeItem, isValidKey } from "@/utils";
+import { TablePro, TableAction } from "@/components/TablePro";
+import { columns } from "./column";
 
 // table
 const actionRef = ref();
@@ -173,11 +197,11 @@ const message = useMessage();
 // tree
 const treeData = ref([]);
 const loading = ref(true);
-const pattern = ref('');
+const pattern = ref("");
 // modal
 const showModal = ref(false);
 const showDelModal = ref(false);
-const delText = ref('');
+const delText = ref("");
 const delType = ref(0);
 const changType = ref(0);
 const formBtnLoading = ref(false);
@@ -188,40 +212,40 @@ const selectKeys = ref(1);
 // 操作列
 const actionColumn = reactive({
   width: 120,
-  title: '操作',
-  key: 'action',
-  fixed: 'right',
+  title: "操作",
+  key: "action",
+  fixed: "right",
   render(record: any) {
     return h(TableAction as any, {
-      style: 'button',
+      style: "button",
       actions: [
         {
-          label: '删除',
-          icon: 'ic:outline-delete-outline',
+          label: "删除",
+          icon: "ic:outline-delete-outline",
           // eslint-disable-next-line @typescript-eslint/no-use-before-define
           onClick: deleteTableDict.bind(null, record),
           // 根据业务控制是否显示 isShow 和 auth 是并且关系
-          ifShow: () => {
-            return true;
-          },
-          // 根据权限控制是否显示: 有权限，会显示，支持多个
-          auth: ['basic_list']
+          // ifShow: () => {
+          //   return true;
+          // },
+          // // 根据权限控制是否显示: 有权限，会显示，支持多个
+          // auth: ["admin"],
         },
         {
-          label: '编辑',
+          label: "编辑",
           // eslint-disable-next-line @typescript-eslint/no-use-before-define
           onClick: editTableDict.bind(null, record, 1),
-          ifShow: () => {
-            return true;
-          },
-          auth: ['basic_list']
-        }
+          // ifShow: () => {
+          //   return true;
+          // },
+          // auth: ["basic_list"],
+        },
       ],
       select: (key: any) => {
         message.info(`您点击了，${key} 按钮`);
-      }
+      },
     });
-  }
+  },
 });
 // 是否有点击值，用来判断是否显示数据
 const isEdit = computed(() => {
@@ -233,11 +257,11 @@ const isEdit = computed(() => {
 const reloadTable = () => {
   actionRef.value.reload();
 };
-const loadDataTable = async res => {
+const loadDataTable = async (res) => {
   const Param = {
     type: selectKeys.value || 1,
     pageSize: res.size,
-    current: res.current
+    current: res.current,
   };
   // eslint-disable-next-line @typescript-eslint/no-shadow
   const result = await getDictList(Param);
@@ -255,9 +279,9 @@ const getDictTypeList = async () => {
 const rules = {
   value: {
     required: true,
-    trigger: ['blur', 'input'],
-    message: '请输入字典配置名称'
-  }
+    trigger: ["blur", "input"],
+    message: "请输入字典配置名称",
+  },
 };
 // 表单格式
 interface formParamsType {
@@ -265,8 +289,8 @@ interface formParamsType {
   note: string;
 }
 const formParams: formParamsType = reactive({
-  value: '',
-  note: ''
+  value: "",
+  note: "",
 });
 // 点击Tree更新Table数据
 const selectedTree = (keys: number) => {
@@ -283,7 +307,7 @@ const addType = (type: number) => {
   } else {
     Object.keys(formParams).forEach((key: string) => {
       if (isValidKey(key, formParams)) {
-        formParams[key] = '' as string;
+        formParams[key] = "" as string;
       }
     });
   }
@@ -311,13 +335,13 @@ const confirmForm = (e: { preventDefault: () => void }) => {
       }
 
       getDictTypeList();
-      message.success(`${changType.value === 0 ? '新建' : '编辑'}成功'`);
+      message.success(`${changType.value === 0 ? "新建" : "编辑"}成功'`);
       setTimeout(() => {
         showModal.value = false;
         reloadTable();
       });
     } else {
-      message.error('请填写完整信息');
+      message.error("请填写完整信息");
     }
     formBtnLoading.value = false;
   });
@@ -335,19 +359,19 @@ const onPositiveClick = async () => {
     const treeItem = getTreeItem(unref(treeData), selectKeys.value);
     const Param = {
       id: treeItem.id,
-      deleted: 1
+      deleted: 1,
     };
     await editDictType(Param);
   } else {
     const Param = {
       // eslint-disable-next-line @typescript-eslint/no-use-before-define
       id: delTableKeys.value,
-      deleted: 1
+      deleted: 1,
     };
     await editDict(Param);
   }
 
-  message.success(`${delType.value === 0 ? '字典配置' : '字典'}成功'`);
+  message.success(`${delType.value === 0 ? "字典配置" : "字典"}成功'`);
   setTimeout(() => {
     getDictTypeList();
     reloadTable();
@@ -364,17 +388,17 @@ interface TableFormParamsType {
 }
 const TableFormParams: TableFormParamsType = reactive({
   type: undefined,
-  typeName: '',
-  label: '',
+  typeName: "",
+  label: "",
   value: undefined,
-  note: ''
+  note: "",
 });
 const tableRules = {
   label: {
     required: true,
-    trigger: ['blur', 'input'],
-    message: '请输入字典名称'
-  }
+    trigger: ["blur", "input"],
+    message: "请输入字典名称",
+  },
 };
 const showTableModal = ref(false);
 const changTableType = ref(0);
@@ -387,7 +411,7 @@ const editTableDict = (record: Recordable, type: number) => {
     // 新增
     Object.keys(TableFormParams).forEach((key: string) => {
       if (isValidKey(key, TableFormParams)) {
-        TableFormParams[key] = '' as string;
+        TableFormParams[key] = "" as string;
       }
     });
   } else {
@@ -411,7 +435,7 @@ const confirmTableForm = (e: { preventDefault: () => void }) => {
           type: TableFormParams.type,
           label: TableFormParams.label,
           value: TableFormParams.value,
-          note: TableFormParams.note
+          note: TableFormParams.note,
         };
         await addDict(Params);
       } else {
@@ -420,17 +444,17 @@ const confirmTableForm = (e: { preventDefault: () => void }) => {
           type: TableFormParams.type,
           label: TableFormParams.label,
           value: TableFormParams.value,
-          note: TableFormParams.note
+          note: TableFormParams.note,
         };
         await editDict(Params);
       }
-      message.success(`${changTableType.value === 0 ? '新建' : '编辑'}成功'`);
+      message.success(`${changTableType.value === 0 ? "新建" : "编辑"}成功`);
       setTimeout(() => {
         showTableModal.value = false;
         reloadTable();
       });
     } else {
-      message.error('请填写完整信息');
+      message.error("请填写完整信息");
     }
     TableFormBtnLoading.value = false;
   });

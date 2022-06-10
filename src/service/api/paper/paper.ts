@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-05-13 16:33:03
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-06-04 11:06:18
+ * @LastEditTime: 2022-06-10 09:30:39
  * @FilePath: \work\src\service\api\paper\paper.ts
  * @Description:
  */
@@ -82,3 +82,10 @@ export function getListByPointCategoryId(param) {
   const res = request.get(`/knowledgePoint/getListByPointCategoryId/${param}`); //
   return res;
 }
+
+export function getListInfoByPaperId(param){
+	const query = paramsToQuery(param);
+	const res = request.get(`/paperDetaile/listInfoByPaperId/${query}`); //
+  return res;
+}
+

@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-05-12 14:54:50
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-06-08 11:40:13
+ * @LastEditTime: 2022-06-10 08:58:40
  * @FilePath: \work\src\views\course\courseDetail\index.vue
  * @Description:
 -->

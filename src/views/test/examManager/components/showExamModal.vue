@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-06-01 16:21:58
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-06-09 17:09:48
+ * @LastEditTime: 2022-06-10 16:11:52
  * @FilePath: \work\src\views\test\examManager\components\showExamModal.vue
  * @Description:
 -->
@@ -46,24 +46,15 @@
         </p>
         <div v-for="(question, questionIndex) in item">
           <div style="margin: 20px">
-            {{ question }}
-            <template v-if="question.questionType === 1">
-              <p>
-                {{
-                  questionIndex + 1
-                }}、甲公司2018年度发生的有关交易和事项如下：持有的交易性金融资产公允价值上升100万元。正常处置固定资产产生净收益20万元，因存货市价持续下跌计提存货跌价准备30万元，管理部门使用的机器设备发生日常维护支出40万元。假设不考虑其他因素，上述交易或事项对甲公司2018年营业利润的影响额是（
-                ）万元。
-              </p>
-              <p>
-                A. 销售材料取得的收入 B. 销售材料取得的收入 C. 接受捐赠收到的现金 C.
-                接受捐赠收到的现金
+            <template v-if="question.questionType === 0 || question.questionType === 1">
+              <p>{{ questionIndex + 1 }}、{{ question.questionVo.questionName }}</p>
+              <p v-for="item in JSON.parse(question.questionVo.questionOption)">
+                {{ item }}
               </p>
             </template>
-            <template v-if="question.questionType === 2">
-              <p>
-                {{ questionIndex + 1 }}、甲公司2018年度发生的有关交易和事项如下：
-                资产公允价值上升100万元。正常处置固定资产产生净收益20万元，因存货市价持续下跌计提存货跌价准备30万元，管理部门使用的机器设备发生日常维护支出40万元。
-              </p>
+            <template v-else>
+              <p>{{ questionIndex + 1 }}、{{ question.questionVo.questionName }}</p>
+              <p>{{ question.questionVo.questionOption }}</p>
             </template>
           </div>
         </div>
@@ -74,7 +65,7 @@
 <script lang="ts" setup>
 import { ref } from "vue";
 import { useMessage } from "naive-ui";
-import { delPaper, getPaperDetail } from "@/service";
+import { delPaper, getListInfoByPaperId, getPaperDetail } from "@/service";
 import { differenceInMinutes, format } from "date-fns";
 
 const showExamModal = ref(false);
@@ -88,13 +79,16 @@ const showModal = async (record) => {
   };
   const { data: result } = await getPaperDetail(param);
   paper.value = result.paper;
-  console.log(result);
   showExamModal.value = true;
   const paperBeginTime = new Date(paper.value.paperBeginTime);
   const paperEndTime = new Date(paper.value.paperEndTime);
   const examTime = differenceInMinutes(paperEndTime, paperBeginTime);
   examTimeRef.value = examTime;
-  paperList.value = paperListFn(result.listPaperDetaile);
+  const paperParam = {
+    id: result.paper.id,
+  };
+  const { data: paperResult } = await getListInfoByPaperId(paperParam);
+  paperList.value = paperListFn(paperResult);
   console.log("paperList", paperList.value);
 };
 const paperListFn = (paperList) => {

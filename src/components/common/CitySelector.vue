@@ -1,6 +1,14 @@
+<!--
+ * @Author: ZHENG
+ * @Date: 2022-06-08 18:31:50
+ * @LastEditors: ZHENG
+ * @LastEditTime: 2022-06-10 15:36:12
+ * @FilePath: \work\src\components\common\CitySelector.vue
+ * @Description:
+-->
 <template>
   <n-cascader
-    :default-value="defaultValue"
+    :default-value="props.defaultValue"
     value-field="code"
     label-field="name"
     :options="dataOptions"
@@ -25,7 +33,7 @@ import type { CascaderOption } from "naive-ui";
 const emits = defineEmits(["update:value"]);
 const props = defineProps({
   defaultValue: {
-    type: [Number, String, Array],
+    type: [null, Number, String, Array],
     default: null,
   },
   dataType: {
