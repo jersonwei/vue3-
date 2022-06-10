@@ -1,24 +1,20 @@
+<!--
+ * @Author: ZHENG
+ * @Date: 2022-04-30 14:33:21
+ * @LastEditors: ZHENG
+ * @LastEditTime: 2022-05-30 11:02:08
+ * @FilePath: \work\src\views\course\courseMgt\index.vue
+ * @Description:
+-->
 <template>
-  <n-card class="relative" :bordered="false">
+  <n-card class="h-full shadow-sm rounded-16px" :bordered="false">
     <FormPro @register="register" @submit="handleSubmit" @reset="reloadTable">
       <template #courseCategorySlot="{ model, field }">
         <n-select
           v-model:value="model[field]"
-          placeholder="试卷分类"
+          placeholder="请选择课程类别"
           clearable
-          :options="examTypeOptions"
-        />
-      </template>
-      <template #majorIdSlot="{ model, field }">
-        <n-cascader
-          v-model:value="model[field]"
-          clearable
-          placeholder="请选择所属专业"
-          :options="cascaderOptions"
-          :check-strategy="'all'"
-          :show-path="true"
-          remote
-          :on-load="handleLoad"
+          :options="courseCategoryOptions"
         />
       </template>
     </FormPro>
@@ -37,26 +33,20 @@
 <script lang="ts" setup>
 import { h, reactive, ref } from "vue";
 // import { CascaderOption, useMessage } from "naive-ui";
-import { CascaderOption } from "naive-ui";
-// import { PlusOutlined } from "@vicons/antd";
-// import { differenceInDays, format } from "date-fns";
-// import { useExamStore } from "@/store";
 import { useRouterPush } from "@/composables";
-import { getPaperManagerList } from "@/service";
+import { searchCouserInfo } from "@/service";
 // import { getUserInfo } from "@/utils";
 import { TablePro, TableAction } from "@/components/TablePro";
 import { FormPro, useForm } from "@/components/FormPro";
 import { columns } from "./columns";
 import { schemas } from "./schemas";
 import {
-  getPaperClassOptions,
+  getCourseCategoryOptions,
   getCollegeLegistOptions,
   getStatusOptions,
-  getChildren,
 } from "./getOptions";
-// import delModal from "./components/delModal.vue";
-// import showExamModal from "./components/showExamModal.vue";
 const actionRef = ref(); // 表格
+const formData = ref({});
 const actionColumn = reactive({
   // Table操作列
   width: 100,
@@ -70,7 +60,7 @@ const actionColumn = reactive({
         actions: [
           {
             label: "查看成绩",
-            onClick: handleDetail.bind(null, record),
+            onClick: handleConfig.bind(null, record),
             // 根据业务控制是否显示 isShow 和 auth 是并且关系
             ifShow: () => {
               return true;
@@ -86,7 +76,7 @@ const actionColumn = reactive({
       actions: [
         {
           label: "查看成绩",
-          onClick: handleDetail.bind(null, record),
+          onClick: handleConfig.bind(null, record),
           // 根据业务控制是否显示 isShow 和 auth 是并且关系
           ifShow: () => {
             return true;
@@ -98,36 +88,22 @@ const actionColumn = reactive({
     });
   },
 });
-// 获取用户信息
-// const examStore = useExamStore();
-// const message = useMessage();
-const formData = ref({});
-
 // 院系和所属类别的下拉查询逻辑
-const examTypeOptions = ref([]);
+const courseCategoryOptions = ref([]);
 const cascaderOptions = ref([]);
 const courseStatusOptions = ref([]);
 
 const getOption = async () => {
-  examTypeOptions.value = await getPaperClassOptions();
+  courseCategoryOptions.value = await getCourseCategoryOptions();
   cascaderOptions.value = await getCollegeLegistOptions();
   courseStatusOptions.value = await getStatusOptions();
 };
 getOption();
-const handleLoad = (option: CascaderOption) => {
-  return new Promise<void>((resolve) => {
-    window.setTimeout(() => {
-      cascaderOptions.value.children = getChildren(option);
-      resolve();
-    }, 1000);
-  });
-};
-
-// , {}
 const [register] = useForm({
   // 查询FORM
   gridProps: { cols: "1 s:1 m:2 l:3 xl:4 2xl:4" },
   labelWidth: 80,
+  showAdvancedButton: false,
   schemas,
 });
 // table查询
@@ -136,13 +112,10 @@ const loadDataTable = async (res: any) => {
     pageSize: res.size,
     current: res.current,
   };
-  const result = await getPaperManagerList({ ...formData.value, ...Param });
-  console.log(result);
-  return result.data;
+  const { data: result } = await searchCouserInfo({ ...formData.value, ...Param });
+  return result;
 };
-
 const reloadTable = () => {
-  // eslint-disable-next-line @typescript-eslint/no-use-before-define
   actionRef.value.reload();
 };
 // 查询
@@ -151,8 +124,10 @@ const handleSubmit = (values: Recordable) => {
   reloadTable();
 };
 const { routerPush } = useRouterPush();
-const handleDetail = (record: Recordable) => {
-  routerPush({ name: "test_addExam" });
+
+const handleConfig = (record: Recordable) => {
+  // courseStore.setCourseInfo(record.id);
+  routerPush({ name: "course_courseMark" });
 };
 </script>
 <style scoped></style>

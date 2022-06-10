@@ -3,11 +3,12 @@
     <div style="display: flex">
       <div class="left">
         <div class="title" style="font-size: 14px; margin-top: 60px">
-          <span style="margin-left: 20px">下载模板:</span>&nbsp;&nbsp;&nbsp;&nbsp;<a
-            href="@/static/登录相关.txt"
-            download
-            style="text-decoration: underline; color: #6266eb; margin-left: 38px"
-            >学生信息导入模板</a
+          <span style="margin-left: 20px">下载模板:</span>&nbsp;&nbsp;&nbsp;&nbsp;
+          <n-button
+            type="text"
+            @click="downloadTemp"
+            style="text-decoration: underline; color: #6266eb"
+            >学生信息导入模板</n-button
           >
         </div>
         <div class="choose" style="display: flex; margin: 20px">
@@ -54,9 +55,11 @@
 
 <script setup lang="ts">
 // 导出插件
+import { useDownload } from "@/hooks";
 import { reactive } from "vue";
 import { UploadCustomRequestOptions, UploadFileInfo, useMessage } from "naive-ui";
 import { fileTypeOfPdf } from "@/utils";
+import { downloadTemplate } from "@/service";
 const formParams = reactive({
   uploadOutline: [],
 });
@@ -74,6 +77,11 @@ const formData = {
 //     // url: `${serviceEnv}${record.courseOutline}`,
 //   },
 // ];
+// 模板下载
+const downloadTemp = () => {
+  useDownload(downloadTemplate, "学生信息导入模板");
+};
+
 const customRequestOutline = ({ file, data }: UploadCustomRequestOptions) => {
   console.log("上传的文件", file.file);
   Form.delete("outLine");
