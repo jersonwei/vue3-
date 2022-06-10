@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-05-04 09:02:06
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-06-06 17:33:36
+ * @LastEditTime: 2022-06-10 11:32:42
  * @FilePath: \work\src\service\api\course\courseMgt\course.ts
  * @Description:
  */
@@ -87,10 +87,17 @@ export function getCouserInfo(params) {
   return res;
 }
 
+// 获取学院列表
 export function getCollegeLegistt() {
   const res = request.get(`/college/getList`);
   return res;
 }
+// 获取所有学院带专业级联(管理员用)
+export function getCollegeList(){
+	const res = request.get(`/college/list`);
+  return res;
+}
+
 
 export function getMajorList(params) {
 	const query = paramsToQuery(params);

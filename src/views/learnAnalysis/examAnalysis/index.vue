@@ -2,21 +2,15 @@
  * @Author: ZHENG
  * @Date: 2022-06-06 08:53:26
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-06-10 09:25:10
- * @FilePath: \work\src\views\learnAnalysis\testAnalysis\index.vue
+ * @LastEditTime: 2022-06-09 14:49:44
+ * @FilePath: \work\src\views\learnAnalysis\questAnalysis\index.vue
  * @Description:
 -->
 <template>
   <div class="h-full">
     <n-card class="h-full shadow-sm rounded-16px">
-      <n-grid
-        class="mt-4"
-        style="min-width: 1342px"
-        cols="12"
-        responsive="screen"
-        :x-gap="12"
-      >
-        <n-gi span="3" style="min-width: 317px">
+      <n-grid class="mt-4" cols="12" responsive="screen" :x-gap="12">
+        <n-gi span="3">
           <n-card
             title="实验分析-课程列表"
             :bordered="false"
@@ -57,7 +51,10 @@
                       <div v-for="(item, index) in courseList">
                         <n-thing style="padding: 5px">
                           <template #avatar>
-                            <n-avatar size="large" :src="`${http}${item.coverPic}`">
+                            <n-avatar
+                              size="large"
+                              src="https://img02.mockplus.cn/image/2022-06-02/f94421b0-e247-11ec-8ddc-a1881342a2a2.jpg"
+                            >
                             </n-avatar>
                           </template>
                           <template #header-extra>
@@ -128,12 +125,12 @@
             />
           </n-form-item>
           <n-grid style="margin-top: 10px" x-gap="12" :cols="2" :x-gap="20">
-            <n-gi style="min-width: 367px">
-              <n-card title="实验报告成绩分析">
+            <n-gi>
+              <n-card title="习题报告成绩分析">
                 <template v-if="analysis.avg != null">
                   <div class="w-full h-180px">
                     <n-space vertical class="flex" style="padding-top: 30px">
-                      <p class="flex-center" style="font-size: 20px">实验报告平均分</p>
+                      <p class="flex-center" style="font-size: 20px">习题报告平均分</p>
                       <p class="flex-center font-600" style="font-size: 20px">
                         {{ analysis.avg }} 分
                       </p>
@@ -153,12 +150,12 @@
                   <n-empty style="height: 180px" description="暂无数据"></n-empty
                 ></template> </n-card
             ></n-gi>
-            <n-gi style="min-width: 554px"
-              ><n-card title="实验报告时长分析">
-                <template v-if="analysis.durationAnalysis.length">
+            <n-gi
+              ><n-card title="试题错误率分析">
+                <template v-if="analysis.errorRate.length">
                   <n-scrollbar style="max-height: 180px" class="w-full h-180px">
-                    <div v-for="(item, index) in analysis.durationAnalysis">
-                      <n-space style="width: 100%; display: flex">
+                    <div v-for="(item, index) in analysis.errorRate">
+                      <n-space style="width: 100%">
                         <n-avatar
                           round
                           size="small"
@@ -167,12 +164,12 @@
                             backgroundColor: getBackGroundColor(index),
                           }"
                         >
-                          {{ item.shortId }}
+                          {{ index + 1 }}
                         </n-avatar>
-                        <div style="width: 120px">{{ item.studentName }}</div>
-                        <div style="width: 240px">提交时间：{{ item.testDate }}</div>
+                        <div style="width: 80px">{{ item.questionType }}</div>
+                        <div style="width: 220px">{{ item.questionName }}</div>
                         <div style="width: 80px; color: rgb(24, 144, 255)">
-                          周{{ numberfilter(getDay(new Date(item.testDate))) }}
+                          {{ item.rate * 100 }}%
                         </div>
                       </n-space>
                     </div>
@@ -188,10 +185,10 @@
           <n-card
             class="border"
             style="margin-top: 10px"
-            title="报告成绩分布（班级）"
+            title="习题成绩分布（班级）"
             :bordered="false"
           >
-            <template v-if="analysis.durationAnalysis.length">
+            <template v-if="analysis.errorRate.length">
               <div ref="pieRef" class="w-full h-260px" id="pieEcharts"></div>
             </template>
             <template v-else>
@@ -208,13 +205,13 @@
 import { reactive, ref } from "vue";
 import { CaretUpOutlined, CaretDownFilled } from "@vicons/antd";
 import { getCollegeLegistOptions, getChildren, getChapter } from "./getOptions";
-import { getCourseGradeVo, getTestReportGrade, getUnitList } from "@/service";
-import { getServiceEnv, numberfilter } from "@/utils";
+import { getCourseGradeVo, getProblemAnalysis, getUnitList } from "@/service";
+import { numberfilter } from "@/utils";
 import { CascaderOption, useMessage } from "naive-ui";
 import { getDay } from "date-fns";
 import * as echarts from "echarts/core";
 import { useRouterPush } from "@/composables";
-const http = getServiceEnv();
+
 const { routerPush } = useRouterPush();
 // 重写一下，咋感觉逻辑东一块西一块
 const message = useMessage();
@@ -259,7 +256,7 @@ const analysis = reactive({
   avg: null,
   max: null,
   min: null,
-  durationAnalysis: [],
+  errorRate: [],
 });
 const loadDataTable = async () => {
   loading.value = true;
@@ -278,7 +275,7 @@ const loadDataTable = async () => {
   analysis.avg = null;
   analysis.max = null;
   analysis.min = analysis.max = null;
-  analysis.durationAnalysis = [];
+  analysis.errorRate = [];
   loading.value = false;
   if (result?.records) {
     getChapterFn(result?.records[0]?.courseId);
@@ -319,7 +316,7 @@ const getChapterFn = async (courseId: number) => {
   analysis.avg = null;
   analysis.max = null;
   analysis.min = null;
-  analysis.durationAnalysis = [];
+  analysis.errorRate = [];
   classOptions.value = await getChapter(params);
   if (!classOptions.value.length) {
     return message.warning("无章节数据");
@@ -344,13 +341,17 @@ const getTestReportGradeData = async (id: string) => {
   const i = id.indexOf("-");
   const subUnitId = id.substring(i + 1);
   const classId = courseList.value[courseIndex.value].classId;
-  const { data: result } = await getTestReportGrade(subUnitId, classId);
+  const params = {
+    classId: classId,
+    unitId: subUnitId,
+  };
+  const { data: result } = await getProblemAnalysis(params);
   if (!result) {
     const param = {
       avg: null,
       max: null,
       min: null,
-      durationAnalysis: [],
+      errorRate: [],
     };
     Object.assign(analysis, param);
   } else {
@@ -358,7 +359,7 @@ const getTestReportGradeData = async (id: string) => {
       avg,
       max,
       min,
-      durationAnalysis,
+      errorRate,
       lessSix,
       sixToSeven,
       sevenToEight,
@@ -369,7 +370,7 @@ const getTestReportGradeData = async (id: string) => {
       avg,
       max,
       min,
-      durationAnalysis,
+      errorRate,
     };
     Object.assign(analysis, param);
     setTimeout(() => {
@@ -410,10 +411,9 @@ const clickCourseName = (item, index) => {
   courseIndex.value = index;
 };
 const clickStudent = (record: Recordable) => {
-  console.log(record);
   const { collegeName, classId, className, courseId } = record;
   routerPush({
-    name: "learnAnalysis_testAnalysis_personalTest",
+    name: "learnAnalysis_questAnalysis_personalTest",
     query: { collegeName, classId, className, courseId },
   });
 };

@@ -807,7 +807,7 @@ export const routeModel: Record<Auth.RoleType, AuthRoute.Route[]> = {
           meta: {
             title: '实验分析',
             requiresAuth: true,
-            icon: 'icon-park-outline:analysis'
+            icon: 'bx:bxs-analyse'
           }
         },
 				{
@@ -818,7 +818,7 @@ export const routeModel: Record<Auth.RoleType, AuthRoute.Route[]> = {
                 title: '个人实验分析',
                 requiresAuth: true,
 								hide: true,
-                icon: 'ic:outline-menu',
+                icon: 'bx:analyse',
 								activeMenu: 'learnAnalysis_testAnalysis',
               }
         },
@@ -829,7 +829,7 @@ export const routeModel: Record<Auth.RoleType, AuthRoute.Route[]> = {
           meta: {
             title: '习题分析',
             requiresAuth: true,
-            icon: 'icon-park-outline:analysis'
+            icon: 'bx:bxs-analyse'
           }
         },
 				{
@@ -840,35 +840,33 @@ export const routeModel: Record<Auth.RoleType, AuthRoute.Route[]> = {
 						title: '个人习题分析',
 						hide: true,
 						requiresAuth: true,
-						icon: 'ic:outline-menu'
+						icon: 'bx:analyse'
 					}
 				},
         {
           name: 'learnAnalysis_examAnalysis',
           path: '/learnAnalysis/examAnalysis',
-          component: 'multi',
-          children: [
-            {
-              name: 'learnAnalysis_examAnalysis_personalTest',
-              path: '/learnAnalysis/examAnalysis/personalTest',
-              component: 'self',
-              meta: {
-                title: '个人考试分析',
-                requiresAuth: true,
-                icon: 'ic:outline-menu'
-              }
-            }
-          ],
+          component: 'self',
           meta: {
             title: '考试分析',
             requiresAuth: true,
-            icon: 'icon-park-outline:analysis'
+            icon: 'bx:bxs-analyse'
           }
-        }
+        },
+				{
+					name: 'learnAnalysis_examAnalysis_personalTest',
+					path: '/learnAnalysis/examAnalysis/personalTest',
+					component: 'self',
+					meta: {
+						title: '个人考试分析',
+						requiresAuth: true,
+						icon: 'bx:analyse'
+					}
+				}
       ],
       meta: {
         title: '学情分析',
-        icon: 'carbon:dashboard',
+        icon: 'arcticons:chordanalyser',
         order: 1
       }
     },
