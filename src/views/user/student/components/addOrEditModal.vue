@@ -69,13 +69,13 @@
           ></n-input>
         </n-form-item>
         <n-form-item label="入学时间" path="startTime">
-          <n-date-picker
+          <!-- <n-date-picker
             style="width: 100%"
             v-model:value="formParams.startTime"
             type="date"
             clearable
-          />
-          <!-- <n-input v-model:value="formParams.startTime"></n-input> -->
+          /> -->
+          <n-input v-model:value="formParams.startTime"></n-input>
         </n-form-item>
         <div class="address" style="flex: 1">
           <n-form-item label="地址" path="address">
@@ -131,7 +131,7 @@ const message = useMessage(); // 轻提示
 
 let Form = new FormData();
 const emits = defineEmits(["reloadTable"]);
-const checkTime = new Date();
+// const checkTime = new Date();
 const formParams = reactive({
   userName: "",
   stunu: "",
@@ -142,7 +142,7 @@ const formParams = reactive({
   phone: "",
   email: "",
   idCard: "",
-  startTime: ref<Date>(checkTime),
+  startTime: "",
   address: "",
 });
 

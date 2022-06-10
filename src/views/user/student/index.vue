@@ -48,7 +48,7 @@
       :action-column="actionColumn"
       :scroll-x="2200"
     >
-      <template v-if="userRole === 'teacher'" #tableTitle>
+      <template v-if="userRole === 'admin'" #tableTitle>
         <n-button type="primary" @click="addStudent">
           <template #icon>
             <n-icon>
@@ -102,13 +102,14 @@ import { h, reactive, ref } from "vue";
 // import { useRouter } from 'vue-router';
 import { PlusOutlined } from "@vicons/antd";
 import { useRouterPush } from "@/composables";
-import { getStudentTableInfo, resetPassword } from "@/service";
+import { getStudentTableInfo, resetPassword, exportUserInfo } from "@/service";
 import { getUserInfo } from "@/utils";
 import { TablePro, TableAction } from "@/components/TablePro";
 import { FormPro, useForm } from "@/components/FormPro";
 import { columns } from "./columns";
 import { schemas } from "./schemas";
 import addOrEditModalVue from "./components/addOrEditModal.vue";
+import { useDownload } from "@/hooks";
 // 删除学生
 import delModal from "./components/delModal.vue";
 // 导入获取头部下拉框接口
@@ -226,8 +227,11 @@ const importStudent = () => {
 };
 // 导出
 const exportStudent = () => {
-  console.log("daochu");
+  // console.log("daochu");
+  useDownload(exportUserInfo, "1");
+  reloadTable();
 };
+// actionRef.value.searchParam
 // 导出查看
 const seeExport = () => {
   console.log("see");
@@ -268,7 +272,7 @@ const { routerPush } = useRouterPush();
 // };
 
 // 档案跳转
-const recordSee = () => {
+const recordSee = (record: Recordable) => {
   routerPush({ name: "user_recordSee" });
   // courseStore.setCourseInfo(record.id);
   // routerPush({ name: 'course_courseInfo' });
