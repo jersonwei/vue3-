@@ -5,7 +5,7 @@ import { h } from "vue";
  * @Author: ZHENG
  * @Date: 2022-06-06 10:41:27
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-06-09 18:19:52
+ * @LastEditTime: 2022-06-10 16:52:02
  * @FilePath: \work\src\views\learnAnalysis\questAnalysis\personalTest\columns.ts
  * @Description:
  */
@@ -42,7 +42,7 @@ export const columns = [
   {
     title: '完成进度',
     key: 'percentage',
-    width: 50,
+    width: 100,
 		ellipsis:false,
 		render(row:{type:number;percentage:number}){
 			if(row.type === 0){

@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-06-06 08:53:26
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-06-10 08:57:08
+ * @LastEditTime: 2022-06-10 18:25:13
  * @FilePath: \work\src\views\learnAnalysis\questAnalysis\index.vue
  * @Description:
 -->
@@ -115,7 +115,6 @@
               placeholder="请选择课时"
               :options="classOptions"
               :check-strategy="'child'"
-              :show-path="false"
               remote
               :on-load="handleUnitLoad"
               @update:value="updateClassId"
@@ -461,5 +460,9 @@ const clickStudent = (record: Recordable) => {
   border-color: rgb(232, 232, 232);
   border-style: solid;
   border-radius: 8.5px;
+}
+:deep(.n-empty) {
+  display: flex;
+  justify-content: center;
 }
 </style>

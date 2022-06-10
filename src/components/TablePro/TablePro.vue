@@ -267,7 +267,6 @@ export default defineComponent({
           paginationH += 28;
         }
       }
-      console.log(bottomIncludeBody);
       let height =
         bottomIncludeBody -
         (headerH + paginationH + marginH + (props.resizeHeightOffset || 0)) -
