@@ -1,3 +1,11 @@
+/*
+ * @Author: ZHENG
+ * @Date: 2022-05-16 15:06:20
+ * @LastEditors: ZHENG
+ * @LastEditTime: 2022-06-09 13:29:40
+ * @FilePath: \work\src\composables\router.ts
+ * @Description:
+ */
 import { useRouter } from 'vue-router';
 import type { RouteLocationRaw } from 'vue-router';
 import { router as globalRouter, routeName } from '@/router';
@@ -16,7 +24,6 @@ export function useRouterPush(inSetup = true) {
    * @param newTab - 是否在新的浏览器Tab标签打开
    */
   function routerPush(to: RouteLocationRaw, newTab = false) {
-    console.log(to);
     if (newTab) {
       const routerData = router.resolve(to);
       window.open(routerData.href, '_blank');

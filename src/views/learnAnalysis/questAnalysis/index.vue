@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-06-06 08:53:26
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-06-09 08:54:52
+ * @LastEditTime: 2022-06-09 14:49:44
  * @FilePath: \work\src\views\learnAnalysis\questAnalysis\index.vue
  * @Description:
 -->
@@ -62,7 +62,7 @@
                               size="small"
                               text
                               style="color: rgb(0, 83, 255)"
-                              @click="clickStudent"
+                              @click="clickStudent(item)"
                             >
                               学生列表
                             </n-button>
@@ -152,9 +152,9 @@
             ></n-gi>
             <n-gi
               ><n-card title="试题错误率分析">
-                <template v-if="analysis.durationAnalysis.length">
+                <template v-if="analysis.errorRate.length">
                   <n-scrollbar style="max-height: 180px" class="w-full h-180px">
-                    <div v-for="(item, index) in analysis.durationAnalysis">
+                    <div v-for="(item, index) in analysis.errorRate">
                       <n-space style="width: 100%">
                         <n-avatar
                           round
@@ -164,12 +164,12 @@
                             backgroundColor: getBackGroundColor(index),
                           }"
                         >
-                          {{ item.shortId }}
+                          {{ index + 1 }}
                         </n-avatar>
-                        <div style="width: 80px">{{ item.studentName }}</div>
-                        <div style="width: 220px">提交时间：{{ item.testDate }}</div>
-                        <div style="width: 80px">
-                          周{{ numberfilter(getDay(new Date(item.testDate))) }}
+                        <div style="width: 80px">{{ item.questionType }}</div>
+                        <div style="width: 220px">{{ item.questionName }}</div>
+                        <div style="width: 80px; color: rgb(24, 144, 255)">
+                          {{ item.rate * 100 }}%
                         </div>
                       </n-space>
                     </div>
@@ -188,7 +188,7 @@
             title="习题成绩分布（班级）"
             :bordered="false"
           >
-            <template v-if="analysis.durationAnalysis.length">
+            <template v-if="analysis.errorRate.length">
               <div ref="pieRef" class="w-full h-260px" id="pieEcharts"></div>
             </template>
             <template v-else>
@@ -210,7 +210,9 @@ import { numberfilter } from "@/utils";
 import { CascaderOption, useMessage } from "naive-ui";
 import { getDay } from "date-fns";
 import * as echarts from "echarts/core";
+import { useRouterPush } from "@/composables";
 
+const { routerPush } = useRouterPush();
 // 重写一下，咋感觉逻辑东一块西一块
 const message = useMessage();
 const getBackGroundColor = (index) => {
@@ -254,7 +256,7 @@ const analysis = reactive({
   avg: null,
   max: null,
   min: null,
-  durationAnalysis: [],
+  errorRate: [],
 });
 const loadDataTable = async () => {
   loading.value = true;
@@ -273,7 +275,7 @@ const loadDataTable = async () => {
   analysis.avg = null;
   analysis.max = null;
   analysis.min = analysis.max = null;
-  analysis.durationAnalysis = [];
+  analysis.errorRate = [];
   loading.value = false;
   if (result?.records) {
     getChapterFn(result?.records[0]?.courseId);
@@ -314,7 +316,7 @@ const getChapterFn = async (courseId: number) => {
   analysis.avg = null;
   analysis.max = null;
   analysis.min = null;
-  analysis.durationAnalysis = [];
+  analysis.errorRate = [];
   classOptions.value = await getChapter(params);
   if (!classOptions.value.length) {
     return message.warning("无章节数据");
@@ -349,7 +351,7 @@ const getTestReportGradeData = async (id: string) => {
       avg: null,
       max: null,
       min: null,
-      durationAnalysis: [],
+      errorRate: [],
     };
     Object.assign(analysis, param);
   } else {
@@ -357,7 +359,7 @@ const getTestReportGradeData = async (id: string) => {
       avg,
       max,
       min,
-      durationAnalysis,
+      errorRate,
       lessSix,
       sixToSeven,
       sevenToEight,
@@ -368,7 +370,7 @@ const getTestReportGradeData = async (id: string) => {
       avg,
       max,
       min,
-      durationAnalysis,
+      errorRate,
     };
     Object.assign(analysis, param);
     setTimeout(() => {
@@ -408,8 +410,12 @@ const clickCourseName = (item, index) => {
   getChapterFn(item.courseId);
   courseIndex.value = index;
 };
-const clickStudent = () => {
-  message.info("学生列表");
+const clickStudent = (record: Recordable) => {
+  const { collegeName, classId, className, courseId } = record;
+  routerPush({
+    name: "learnAnalysis_questAnalysis_personalTest",
+    query: { collegeName, classId, className, courseId },
+  });
 };
 </script>
 

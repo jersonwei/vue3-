@@ -725,17 +725,6 @@ export const routeModel: Record<Auth.RoleType, AuthRoute.Route[]> = {
           }
         },
         {
-          name: 'test_pointManager',
-          path: '/test/pointManager',
-          component: 'self',
-          meta: {
-            title: '知识点管理',
-            requiresAuth: true,
-            icon: 'gg:calendar-today',
-            keepAlive: true
-          }
-        },
-        {
           name: 'test_questManager',
           path: '/test/questManager',
           component: 'self',
@@ -787,6 +776,17 @@ export const routeModel: Record<Auth.RoleType, AuthRoute.Route[]> = {
             hide: true,
             icon: 'gg:calendar-today'
           }
+        },
+				{
+          name: 'test_pointManager',
+          path: '/test/pointManager',
+          component: 'self',
+          meta: {
+            title: '知识点管理',
+            requiresAuth: true,
+            icon: 'gg:calendar-today',
+            keepAlive: true
+          }
         }
       ],
       meta: {
@@ -817,6 +817,7 @@ export const routeModel: Record<Auth.RoleType, AuthRoute.Route[]> = {
               meta: {
                 title: '个人实验分析',
                 requiresAuth: true,
+								hide: true,
                 icon: 'ic:outline-menu',
 								activeMenu: 'learnAnalysis_testAnalysis',
               }
@@ -837,6 +838,7 @@ export const routeModel: Record<Auth.RoleType, AuthRoute.Route[]> = {
 					component: 'self',
 					meta: {
 						title: '个人习题分析',
+						hide: true,
 						requiresAuth: true,
 						icon: 'ic:outline-menu'
 					}

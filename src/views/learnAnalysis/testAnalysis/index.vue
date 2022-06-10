@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-06-06 08:53:26
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-06-09 08:50:33
+ * @LastEditTime: 2022-06-09 14:06:54
  * @FilePath: \work\src\views\learnAnalysis\testAnalysis\index.vue
  * @Description:
 -->
@@ -62,7 +62,7 @@
                               size="small"
                               text
                               style="color: rgb(0, 83, 255)"
-                              @click="clickStudent"
+                              @click="clickStudent(item)"
                             >
                               学生列表
                             </n-button>
@@ -210,7 +210,9 @@ import { numberfilter } from "@/utils";
 import { CascaderOption, useMessage } from "naive-ui";
 import { getDay } from "date-fns";
 import * as echarts from "echarts/core";
+import { useRouterPush } from "@/composables";
 
+const { routerPush } = useRouterPush();
 // 重写一下，咋感觉逻辑东一块西一块
 const message = useMessage();
 const getBackGroundColor = (index) => {
@@ -404,8 +406,13 @@ const clickCourseName = (item, index) => {
   getChapterFn(item.courseId);
   courseIndex.value = index;
 };
-const clickStudent = () => {
-  message.info("学生列表");
+const clickStudent = (record: Recordable) => {
+  console.log(record);
+  const { collegeName, classId, className, courseId } = record;
+  routerPush({
+    name: "learnAnalysis_testAnalysis_personalTest",
+    query: { collegeName, classId, className, courseId },
+  });
 };
 </script>
 

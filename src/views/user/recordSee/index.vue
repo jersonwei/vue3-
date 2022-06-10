@@ -1,7 +1,27 @@
+<<<<<<< HEAD
 <template>
   <n-card>
     <div class="top" style="display: flex">
       <div class="img" style="width: 140px; height: 140px; margin: 20px">
+=======
+<!--
+ * @Author: ZHENG
+ * @Date: 2022-06-08 18:31:50
+ * @LastEditors: ZHENG
+ * @LastEditTime: 2022-06-09 15:53:30
+ * @FilePath: \work\src\views\user\recordSee\index.vue
+ * @Description:
+-->
+<template>
+  <n-card>
+    <div class="content">
+      <n-form
+        label-placement="left"
+        :label-width="80"
+        class="record"
+        style="display: flex; flex-wrap: wrap; width: 900px"
+      >
+>>>>>>> 347e17cc614741d3bff56131b42155c64ef01c1a
         <n-avatar
           style="width: 100px; height: 100px"
           round
@@ -9,6 +29,7 @@
           src="https://07akioni.oss-cn-beijing.aliyuncs.com/07akioni.jpeg"
         />
       </div>
+<<<<<<< HEAD
       <div class="grid" style="width: 900px">
         <n-grid x-gap="13" :cols="3">
           <n-gi>
@@ -54,11 +75,25 @@
       <n-tab-pane name="chap3" tab="课程笔记" :request="loadDataTable"> </n-tab-pane>
       <n-tab-pane name="chap4" tab="课程互动">4</n-tab-pane>
     </n-tabs>
+=======
+    </div>
+>>>>>>> 347e17cc614741d3bff56131b42155c64ef01c1a
   </n-card>
 </template>
 
 <script setup lang="ts">
+<<<<<<< HEAD
 // import { useRouterPush } from "@/composables";
+=======
+import { useRouterPush } from "@/composables";
+import { searchCouserInfo } from "@/service";
+import { h, reactive, ref } from "vue";
+import { FormPro, useForm } from "@/components/FormPro";
+import { schemas } from "./schemas";
+import { TablePro, TableAction } from "@/components/TablePro";
+import { getCourseCategoryOptions } from "./getOptions";
+import { columns } from "./columns";
+>>>>>>> 347e17cc614741d3bff56131b42155c64ef01c1a
 import examManager from "./component/examManager/exam.vue";
 import course from "./component/course/course.vue";
 import { getNotesShowInfo } from "@/service";
@@ -92,6 +127,7 @@ const loadDataTable = async (res: any) => {
     }
   }
 }
+<<<<<<< HEAD
 .info {
   display: flex;
 }
@@ -100,5 +136,16 @@ const loadDataTable = async (res: any) => {
   div {
     line-height: 45px;
   }
+=======
+
+// .record {
+//   display: flex;
+// }
+// .info {
+//   display: flex;
+// }
+.img {
+  border-radius: 50%;
+>>>>>>> 347e17cc614741d3bff56131b42155c64ef01c1a
 }
 </style>
