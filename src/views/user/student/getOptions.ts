@@ -45,20 +45,27 @@ export async function getClassListOptions() {
 // 获取子集
 export async function getChildren(option: CascaderOption) {
 	const param={collegeId:option.value}
-  const { data: result } = await getMajorList(param);
+	const last ={majorId:option.children}
+	console.log(param);
+	console.log(last);
+
+  const { data: result } = await getClassList(param);
   const newList = result.map(item => {
-    return { value: `{option.value}-${item.id}`, label: item.majorName, isLeaf: 1 };
+    return { value: `{option.value}-${item.id}`, label: item.className, isLeaf: 1 };
   });
-	const {data :res}=await getClassList()
-	const lastList=res.map(item=>{
-		return {value:`{option.value}-${item.id}`,label:item.className,isLeaf:1}
-	})
+	// const {data :res}=await getClassList()
+	// const lastList=res.map(item=>{
+	// 	return {value:`{option.value}-${item.id}`,label:item.className,isLeaf:1}
+	// })
   for (let i = 0; i <= (option as { depth: number }).depth; ++i) {
     option.children = newList;
 
   }
   return children;
 }
+
+
+
 // export async function getLabelsOptions() {
 //   const { data: labelResult } = await getLabels();
 //   const newLabelList = labelResult.map((item: { id: any; labelName: any }) => {

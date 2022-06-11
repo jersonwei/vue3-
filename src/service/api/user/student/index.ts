@@ -45,7 +45,13 @@ export function getNotesShowInfo(params) {
   const res = request.get(`/notes/show${query}`);
   return res;
 }
+// 获取试卷列表
 
+export function getPaperListInfo(params) {
+  const query = paramsToQuery(params);
+  const res = request.get(`/student/getPaperList${query}`);
+  return res;
+}
 // 学生导入
 
 // 学生导出

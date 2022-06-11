@@ -43,6 +43,16 @@ const user: AuthRoute.Route = {
 				requiresAuth: true,
 				icon: 'ic:baseline-block'
 			}
+		},
+		{
+			name:'user_paper',
+			path:'/user/paper',
+			meta: {
+				title: '学生试卷',
+				requiresAuth: true,
+				icon: 'ic:baseline-block'
+			}
+
 		}
   ],
   meta: {

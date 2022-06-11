@@ -201,7 +201,19 @@ export const routeModel: Record<Auth.RoleType, AuthRoute.Route[]> = {
 						activeMenu:'user_student',
             icon: 'ic:baseline-block'
           }
-        }
+        },
+				{
+					name:'user_paper',
+					path:'/user/paper',
+					component: 'self',
+					meta: {
+						title: '学生试卷',
+						activeMenu:'user_student',
+						requiresAuth: true,
+						hide: true,
+            keepAlive: true,
+						icon: 'ic:baseline-block'
+					}}
       ],
       meta: {
         title: '用户管理',
@@ -508,7 +520,20 @@ export const routeModel: Record<Auth.RoleType, AuthRoute.Route[]> = {
 						activeMenu:'user_student',
             icon: 'ic:baseline-block'
           }
-        }
+        },
+				{
+					name:'user_paper',
+					path:'/user/paper',
+					component: 'self',
+					meta: {
+						title: '学生试卷',
+						activeMenu:'user_student',
+						requiresAuth: true,
+						hide: true,
+            keepAlive: true,
+						icon: 'ic:baseline-block'
+					}
+				}
       ],
       meta: {
         title: '用户管理',
@@ -987,7 +1012,20 @@ export const routeModel: Record<Auth.RoleType, AuthRoute.Route[]> = {
 						activeMenu:'user_student',
             icon: 'ic:baseline-block'
           }
-        }
+        },
+				{
+					name:'user_paper',
+					path:'/user/paper',
+					component: 'self',
+					meta: {
+						title: '学生试卷',
+						activeMenu:'user_student',
+						requiresAuth: true,
+						hide: true,
+            keepAlive: true,
+						icon: 'ic:baseline-block'
+					}
+				}
       ],
       meta: {
         title: '用户管理',

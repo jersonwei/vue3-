@@ -76,7 +76,7 @@ const actionColumn = reactive({
               return true;
             },
             // 根据权限控制是否显示: 有权限，会显示，支持多个
-            auth: ["teacher"],
+            auth: ["admin"],
           },
         ],
       });
@@ -152,7 +152,7 @@ const handleSubmit = (values: Recordable) => {
 };
 const { routerPush } = useRouterPush();
 const handleDetail = (record: Recordable) => {
-  routerPush({ name: "test_addExam" });
+  routerPush({ name: "user_paper" });
 };
 </script>
 <style scoped></style>
