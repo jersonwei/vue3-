@@ -1,5 +1,5 @@
 import { CascaderOption } from 'naive-ui';
-import { getClassList, getMajorList, getCollegeLegistt } from '@/service';
+import { getClassList, getMajorList, getCollegeLegistt,getCourseStatus } from '@/service';
 
 // //  获取分类下拉
 // export async function getCourseCategoryOptions() {
@@ -9,6 +9,15 @@ import { getClassList, getMajorList, getCollegeLegistt } from '@/service';
 //   });
 //   return courseCategory;
 // }
+
+// 获取性别
+export async function getSexOptions() {
+  const { data: sexList } = await getCourseStatus(10);
+  const newSexList = sexList.map((item: { value: number; label: string }) => {
+    return { value: item.value, label: item.label, depth: 1, isLeaf: false };
+  });
+  return newSexList;
+}
 // 获取院系下拉
 export async function getCollegeLegistOptions() {
   const { data: collegeList } = await getCollegeLegistt();
@@ -27,20 +36,26 @@ export async function getMajorListOptions() {
 }
 // 班级下拉框
 export async function getClassListOptions() {
-  const { data: majorList } = await getClassList();
-  const newMajorList = majorList.map(item => {
+  const { data: classList } = await getClassList();
+  const newClassList = classList.map(item => {
     return { value: item.id, label: item.className };
   });
-  return newMajorList;
+  return newClassList;
 }
-
+// 获取子集
 export async function getChildren(option: CascaderOption) {
-  const { data: result } = await getClassList();
+	const param={collegeId:option.value}
+  const { data: result } = await getMajorList(param);
   const newList = result.map(item => {
-    return { value: item.id, label: item.className, isLeaf: 1 };
+    return { value: `{option.value}-${item.id}`, label: item.majorName, isLeaf: 1 };
   });
+	const {data :res}=await getClassList()
+	const lastList=res.map(item=>{
+		return {value:`{option.value}-${item.id}`,label:item.className,isLeaf:1}
+	})
   for (let i = 0; i <= (option as { depth: number }).depth; ++i) {
     option.children = newList;
+
   }
   return children;
 }

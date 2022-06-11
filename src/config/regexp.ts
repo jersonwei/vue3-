@@ -29,3 +29,10 @@ export const REGEXP_CODE_FOUR = /^\d{4}$/;
 /** url链接正则 */
 export const REGEXP_URL =
   /(((^https?:(?:\/\/)?)(?:[-;:&=+$,\w]+@)?[A-Za-z0-9.-]+(?::\d+)?|(?:www.|[-;:&=+$,\w]+@)[A-Za-z0-9.-]+)((?:\/[+~%/.\w-_]*)?\??(?:[-+=&;%@.\w_]*)#?(?:[\w]*))?)$/;
+
+	// 数字正则
+export const REGEXP_NUMBER=/^\d+$/;
+	// 文字正则
+export const REGEXP_NAME=/[\u4e00-\u9fa5]/gm;
+	// 身份证号正则
+export const REGEXP_IDCARD=/^(^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$)|(^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])((\d{4})|\d{3}[Xx])$)$/;

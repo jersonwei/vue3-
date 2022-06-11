@@ -39,7 +39,7 @@ export function resetPassword(params) {
   const res = request.put(`/student/resetPassword/${params.id}`);
   return res;
 }
-// 获取
+// 获取课程笔记
 export function getNotesShowInfo(params) {
   const query = paramsToQuery(params);
   const res = request.get(`/notes/show${query}`);

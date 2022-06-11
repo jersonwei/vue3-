@@ -51,7 +51,9 @@
       <n-tab-pane name="chap2" tab="考试成绩">
         <examManager></examManager>
       </n-tab-pane>
-      <n-tab-pane name="chap3" tab="课程笔记" :request="loadDataTable"> </n-tab-pane>
+      <n-tab-pane name="chap3" tab="课程笔记" :request="loadDataTable">
+        <classNote></classNote>
+      </n-tab-pane>
       <n-tab-pane name="chap4" tab="课程互动">4</n-tab-pane>
     </n-tabs>
   </n-card>
@@ -61,6 +63,7 @@
 // import { useRouterPush } from "@/composables";
 import examManager from "./component/examManager/exam.vue";
 import course from "./component/course/course.vue";
+import classNote from "./component/classNote.vue";
 import { getNotesShowInfo } from "@/service";
 const loadDataTable = async (res: any) => {
   const Param = {

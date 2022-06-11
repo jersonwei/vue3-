@@ -8,7 +8,15 @@
  */
 import type { Ref } from 'vue';
 import type { FormItemRule } from 'naive-ui';
-import { REGEXP_PHONE, REGEXP_PWD, REGEXP_CODE_FIV, REGEXP_EMAIL } from '@/config';
+import {
+  REGEXP_PHONE,
+  REGEXP_PWD,
+  REGEXP_CODE_FIV,
+  REGEXP_EMAIL,
+  REGEXP_NAME,
+  REGEXP_NUMBER,
+  REGEXP_IDCARD
+} from '@/config';
 
 /** 表单规则 */
 interface CustomFormRules {
@@ -22,6 +30,12 @@ interface CustomFormRules {
   code: FormItemRule[];
   /** 邮箱 */
   email: FormItemRule[];
+  /** 用户名 */
+  userName: FormItemRule[];
+  /** 学号 */
+  number: FormItemRule[];
+  /** 身份证号 */
+  idCard: FormItemRule[];
 }
 
 /** 表单规则 */
@@ -39,7 +53,10 @@ export const formRules: CustomFormRules = {
     { required: true, message: '请输入验证码' },
     { pattern: REGEXP_CODE_FIV, message: '验证码格式错误', trigger: 'input' }
   ],
-  email: [{ pattern: REGEXP_EMAIL, message: '邮箱格式错误', trigger: 'blur' }]
+  email: [{ pattern: REGEXP_EMAIL, message: '邮箱格式错误', trigger: 'blur' }],
+  userName: [{ pattern: REGEXP_NAME, message: '用户名格式有误', trigger: 'blur' }],
+  number: [{ pattern: REGEXP_NUMBER, message: '学号格式错误', trigger: 'blur' }],
+  idCard: [{ pattern: REGEXP_IDCARD, message: '身份证号格式错误', trigger: 'blur' }]
 };
 
 /** 获取确认密码的表单规则 */
