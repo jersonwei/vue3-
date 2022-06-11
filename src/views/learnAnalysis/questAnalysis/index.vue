@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-06-06 08:53:26
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-06-10 08:57:08
+ * @LastEditTime: 2022-06-10 18:32:29
  * @FilePath: \work\src\views\learnAnalysis\questAnalysis\index.vue
  * @Description:
 -->
@@ -11,12 +11,7 @@
     <n-card class="h-full shadow-sm rounded-16px">
       <n-grid class="mt-4" cols="12" responsive="screen" :x-gap="12">
         <n-gi span="3">
-          <n-card
-            title="实验分析-课程列表"
-            :bordered="false"
-            class="wh-full border"
-            size="small"
-          >
+          <n-card title="实验分析-课程列表" class="wh-full border" size="small">
             <div class="wh-full">
               <n-space vertical>
                 <n-cascader
@@ -47,7 +42,7 @@
                     </div>
                   </template>
                   <template v-else>
-                    <n-scrollbar style="max-height: 440px">
+                    <n-scrollbar style="max-height: 420px">
                       <div v-for="(item, index) in courseList">
                         <n-thing style="padding: 5px">
                           <template #avatar>
@@ -115,7 +110,6 @@
               placeholder="请选择课时"
               :options="classOptions"
               :check-strategy="'child'"
-              :show-path="false"
               remote
               :on-load="handleUnitLoad"
               @update:value="updateClassId"
@@ -217,7 +211,6 @@
             class="border"
             style="margin-top: 10px"
             title="习题成绩分布（班级）"
-            :bordered="false"
             size="small"
             :segmented="{
               content: true,
@@ -461,5 +454,9 @@ const clickStudent = (record: Recordable) => {
   border-color: rgb(232, 232, 232);
   border-style: solid;
   border-radius: 8.5px;
+}
+:deep(.n-empty) {
+  display: flex;
+  justify-content: center;
 }
 </style>

@@ -812,15 +812,15 @@ export const routeModel: Record<Auth.RoleType, AuthRoute.Route[]> = {
         },
 				{
           name: 'learnAnalysis_testAnalysis_personalTest',
-              path: '/learnAnalysis/testAnalysis/personalTest',
-              component: 'self',
-              meta: {
-                title: '个人实验分析',
-                requiresAuth: true,
-								hide: true,
-                icon: 'bx:analyse',
-								activeMenu: 'learnAnalysis_testAnalysis',
-              }
+					path: '/learnAnalysis/testAnalysis/personalTest',
+					component: 'self',
+					meta: {
+						title: '个人实验分析',
+						requiresAuth: true,
+						hide: true,
+						icon: 'bx:analyse',
+						activeMenu: 'learnAnalysis_testAnalysis',
+					}
         },
         {
           name: 'learnAnalysis_questAnalysis',
@@ -859,6 +859,7 @@ export const routeModel: Record<Auth.RoleType, AuthRoute.Route[]> = {
 					component: 'self',
 					meta: {
 						title: '个人考试分析',
+						hide: true,
 						requiresAuth: true,
 						icon: 'bx:analyse'
 					}

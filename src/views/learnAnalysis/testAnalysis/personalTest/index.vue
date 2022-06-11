@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-06-06 08:53:26
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-06-09 15:10:48
+ * @LastEditTime: 2022-06-11 08:58:29
  * @FilePath: \work\src\views\learnAnalysis\testAnalysis\personalTest\index.vue
  * @Description:
 -->
@@ -10,86 +10,90 @@
   <div class="h-full">
     <div class="h-full">
       <n-card class="h-full shadow-sm rounded-16px">
-        <n-grid class="mt-4" cols="12" responsive="screen" :x-gap="12">
-          <n-gi span="3">
+        <n-grid
+          class="mt-4"
+          cols="12"
+          responsive="screen"
+          style="min-width: 1342px"
+          :x-gap="12"
+        >
+          <n-gi span="3" style="h-full;min-width: 317px">
             <n-card
               title="实验分析-学生列表"
-              :bordered="false"
-              class="wh-full b-1"
               size="small"
+              :segmented="{
+                content: true,
+              }"
             >
-              <div class="wh-full">
-                <n-space vertical>
-                  <n-input-group>
-                    <n-input
-                      v-model:value="Form.stuName"
-                      placeholder="输入学生姓名搜索"
-                    />
-                    <n-button type="primary" ghost @click="searchStudent">
-                      搜索
-                    </n-button>
-                  </n-input-group>
-                </n-space>
+              <n-input-group>
+                <n-input v-model:value="Form.name" placeholder="输入学生姓名搜索" />
+                <n-button type="info" @click="searchStudent"> 搜索 </n-button>
+              </n-input-group>
 
-                <div class="py-3 menu-list">
-                  <template v-if="loading">
-                    <div class="flex items-center justify-center py-4">
-                      <n-spin size="medium" style="height: 440px; overflow: hidden" />
+              <div class="py-3 menu-list">
+                <template v-if="loading">
+                  <div class="flex items-center justify-center py-4">
+                    <n-spin size="medium" style="height: 58vh" />
+                  </div>
+                </template>
+                <template v-else>
+                  <!-- <div style="height: 56vh"></div> -->
+                  <!-- style="min-height: 540px; max-height: 540px" -->
+                  <n-scrollbar style="height: 58vh">
+                    <div v-for="(item, index) in studentList">
+                      <n-thing style="padding: 5px">
+                        <template #avatar>
+                          <n-avatar size="large" :src="`${http}${item.avatar}`">
+                          </n-avatar>
+                        </template>
+                        <template #header>
+                          <n-button
+                            size="large"
+                            text
+                            @click="clickStuName(item, index)"
+                            :style="{
+                              color: stuIndex === index ? 'rgb(0, 83, 255)' : '',
+                            }"
+                          >
+                            {{ item.userName }}</n-button
+                          >
+                        </template>
+                        <template #description>
+                          <p style="color: rgb(124, 124, 124)">
+                            {{ item.collegeName }} {{ item.className }}
+                          </p>
+                        </template>
+                      </n-thing>
                     </div>
-                  </template>
-                  <template v-else>
-                    <n-scrollbar style="max-height: 440px">
-                      <div v-for="(item, index) in studentList">
-                        <n-thing>
-                          <template #avatar>
-                            <n-avatar
-                              size="large"
-                              src="https://img02.mockplus.cn/image/2022-06-02/f94421b0-e247-11ec-8ddc-a1881342a2a2.jpg"
-                            >
-                            </n-avatar>
-                          </template>
-                          <template #header>
-                            <n-button
-                              size="large"
-                              text
-                              @click="clickStuName(item, index)"
-                              :style="{
-                                color: stuIndex === index ? 'rgb(0, 83, 255)' : '',
-                              }"
-                            >
-                              {{ item.userName }}</n-button
-                            >
-                          </template>
-                          <template #description>
-                            {{ item.collegeName }}
-                            {{ item.className }}
-                          </template>
-                        </n-thing>
-                      </div>
-                    </n-scrollbar>
-                    <n-pagination
-                      style="
-                        padding-top: 10px;
-                        display: flex;
-                        align-items: center;
-                        justify-content: flex-end;
-                      "
-                      v-model:page="pagination.current"
-                      :page-count="pagination.pages"
-                      :page-slot="5"
-                      @update:page="updatePage"
-                    />
-                  </template>
-                </div>
+                  </n-scrollbar>
+                  <n-pagination
+                    style="
+                      padding-top: 10px;
+                      display: flex;
+                      align-items: center;
+                      justify-content: flex-end;
+                    "
+                    v-model:page="pagination.current"
+                    :page-count="pagination.pages"
+                    :page-slot="5"
+                    @update:page="updatePage"
+                  />
+                </template>
               </div>
             </n-card>
           </n-gi>
           <n-gi span="9">
             <n-grid x-gap="12" :cols="2" :x-gap="20">
-              <n-gi
-                ><n-card title="实验报告成绩分析">
+              <n-gi style="min-width: 367px"
+                ><n-card
+                  title="实验报告成绩分析"
+                  size="small"
+                  :segmented="{
+                    content: true,
+                  }"
+                >
                   <template v-if="gradeData.avg != null">
-                    <div class="w-full h-160px">
+                    <div class="w-full h-140px">
                       <n-space vertical class="flex">
                         <p class="flex-center" style="font-size: 20px">实验报告平均分</p>
                         <p class="flex-center font-600" style="font-size: 20px">
@@ -108,15 +112,19 @@
                     </div>
                   </template>
                   <template v-else>
-                    <n-empty style="height: 160px" description="暂无数据"></n-empty
+                    <n-empty style="height: 140px" description="暂无数据"></n-empty
                   ></template> </n-card
               ></n-gi>
-              <n-gi
-                ><n-card title="学生课程实验报告完成进度">
+              <n-gi style="min-width: 554px"
+                ><n-card
+                  title="学生课程实验报告完成进度"
+                  size="small"
+                  :segmented="{
+                    content: true,
+                  }"
+                >
                   <template v-if="gradeData.avg != null">
-                    <!-- // gradeData.schedule -->
-
-                    <div style="display: flex; justify-content: center">
+                    <div style="height: 140px; display: flex; justify-content: center">
                       <n-progress
                         type="circle"
                         stroke-width="10"
@@ -125,23 +133,34 @@
                     </div>
                   </template>
                   <template v-else>
-                    <n-empty style="height: 160px" description="暂无数据"></n-empty
+                    <n-empty style="height: 140px" description="暂无数据"></n-empty
                   ></template>
                 </n-card>
               </n-gi>
             </n-grid>
 
-            <n-card title="学生章节分析" :bordered="false">
-              <FormPro @register="register" @submit="handleSubmit" @reset="reloadTable">
+            <n-card
+              title="学生章节分析"
+              style="margin-top: 10px"
+              size="small"
+              :segmented="{
+                content: true,
+              }"
+            >
+              <FormPro
+                @register="register"
+                @submit="handleSubmit"
+                @reset="reloadDataTable"
+              >
               </FormPro>
               <TablePro
                 ref="actionRef"
                 :columns="columns"
-                :request="loadDataTable"
+                :request="loadPersonalInfoTable"
                 :row-key="(row) => row.id"
                 key-field="id"
                 label-field="label"
-                :scroll-x="1200"
+                :scroll-x="900"
               >
               </TablePro>
             </n-card>
@@ -160,11 +179,17 @@ import { useMessage } from "naive-ui";
 import { schemas } from "./schemas";
 import { columns } from "./columns";
 import { useRoute } from "vue-router";
-import { getStudentList, getTestStudentReportGrade } from "@/service";
+import {
+  getStudentList,
+  getTestStudentReportGrade,
+  getPersonTestpersonalInfo,
+} from "@/service";
+import { getServiceEnv } from "@/utils";
+const http = getServiceEnv();
 const route = useRoute();
 const message = useMessage();
 const Form = reactive({
-  stuName: "",
+  name: "",
 });
 const gradeData = reactive({
   avg: 0,
@@ -188,10 +213,47 @@ const loadDataTable = async () => {
     collegeName,
   };
   const { data: result } = await getStudentList(param);
-  console.log(result);
   studentList.value = result.records;
   pagination.value.pages = result.pages;
+  if (result.records[0]?.id) {
+    const stuId = result.records[0].id;
+    loadReportData(stuId);
+  }
 };
+const handleSubmit = (values: Recordable) => {
+  Form.name = values.name;
+  reloadDataTable();
+};
+const loadPersonalInfoTable = async (res) => {
+  if (!studentList.value) {
+    return {
+      current: 1,
+      optimizeCountSql: true,
+      orders: [],
+      pages: 0,
+      records: [],
+      searchCount: true,
+      size: 20,
+      total: 0,
+    };
+  }
+  const { courseId } = route.query;
+  const stuId = studentList.value[stuIndex.value].id;
+  const param = {
+    pageSize: res.size,
+    current: res.current,
+    courseId,
+    studentId: stuId,
+  };
+  console.log(Form);
+  const { data: result } = await getPersonTestpersonalInfo({ ...Form, ...param });
+  return result;
+};
+const actionRef = ref();
+const reloadDataTable = () => {
+  actionRef.value.reload();
+};
+loadDataTable();
 /**
  * @author: ZHENG
  * @description: 学生名称查询
@@ -211,11 +273,17 @@ const loadReportData = async (stuId) => {
   const { courseId } = route.query;
   const { data: result } = await getTestStudentReportGrade(courseId, stuId);
   Object.assign(gradeData, result);
+  if (result) {
+    gradeData.schedule = parseInt(gradeData.schedule, 10);
+  } else {
+    gradeData.avg = null;
+  }
+  reloadDataTable();
 };
 const clickStuName = (item, index) => {
-  message.info("点击学生");
   loadReportData(item.id);
   stuIndex.value = index;
+  reloadDataTable;
 };
 
 const [register] = useForm({
@@ -231,5 +299,9 @@ const loading = ref(false);
 <style scoped>
 :deep(.table-toolbar) {
   display: none !important;
+}
+:deep(.n-empty) {
+  display: flex;
+  justify-content: center;
 }
 </style>

@@ -2,30 +2,64 @@
  * @Author: ZHENG
  * @Date: 2022-06-06 10:41:27
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-06-06 10:42:28
- * @FilePath: \work\src\views\learnAnalysis\testAnalysis\personalTest\column.ts
+ * @LastEditTime: 2022-06-10 18:23:17
+ * @FilePath: \work\src\views\learnAnalysis\testAnalysis\personalTest\columns.ts
  * @Description:
  */
+import { NProgress } from "naive-ui";
+import { h } from "vue";
+
 export const columns = [
   {
     title: '章节/课时名称',
-    key: 'Name',
+    key: 'label',
     width: 100,
+		render(row: { label: string; shortId: number; type: number }, index){
+			console.log(row)
+			if(row.type === 0) {
+				return h("span", `第${row.shortId}章节 ${row.label}`)
+			}else{
+				return h("span", `第${row.shortId}课时 ${row.label}`)
+			}
+		}
   },
 
   {
     title: '提交时间',
-    key: 'questionTypeName',
-    width: 50
+    key: 'createTime',
+    width: 50,
+		render(row: { type:number;createTime: string }, index){
+			if(row.type === 0) {
+				return h("p", ``)
+			}else{
+				if(row.createTime){
+					return h("p", `${row.createTime}`)
+				}
+
+			}
+		}
   },
   {
     title: '完成进度',
-    key: 'difficultLevelName',
-    width: 50
+    key: 'percentage',
+    width: 120,
+		ellipsis:false,
+		render(row:{type:number;percentage:number}){
+			if(row.type === 0){
+				return h('div',[
+				h(NProgress,{
+					type:"line",
+					indicatorPlacement:"inside",
+					percentage:parseInt(row.percentage * 100,10)
+			}
+				)]);
+			}
+
+		}
   },
   {
     title: '成绩',
-    key: 'quoteCount',
+    key: 'fraction',
     width: 80
   }
 ];

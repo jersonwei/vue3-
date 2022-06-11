@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-06-06 08:53:26
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-06-10 09:25:10
+ * @LastEditTime: 2022-06-10 18:29:13
  * @FilePath: \work\src\views\learnAnalysis\testAnalysis\index.vue
  * @Description:
 -->
@@ -19,9 +19,11 @@
         <n-gi span="3" style="min-width: 317px">
           <n-card
             title="实验分析-课程列表"
-            :bordered="false"
-            class="wh-full border"
+            class="wh-full"
             size="small"
+            :segmented="{
+              content: true,
+            }"
           >
             <div class="wh-full">
               <n-space vertical>
@@ -30,7 +32,7 @@
                   clearable
                   placeholder="课程院系/专业"
                   :options="majorOptions"
-                  :check-strategy="'child'"
+                  :check-strategy="'all'"
                   :show-path="true"
                   remote
                   :on-load="handleLoad"
@@ -53,7 +55,7 @@
                     </div>
                   </template>
                   <template v-else>
-                    <n-scrollbar style="max-height: 440px">
+                    <n-scrollbar style="min-height: 400px; max-height: 400px">
                       <div v-for="(item, index) in courseList">
                         <n-thing style="padding: 5px">
                           <template #avatar>
@@ -64,7 +66,7 @@
                             <n-button
                               size="small"
                               text
-                              style="color: rgb(0, 83, 255)"
+                              style="color: rgb(0, 83, 255); padding-right: 5px"
                               @click="clickStudent(item)"
                             >
                               学生列表
@@ -121,7 +123,6 @@
               placeholder="请选择课时"
               :options="classOptions"
               :check-strategy="'child'"
-              :show-path="false"
               remote
               :on-load="handleUnitLoad"
               @update:value="updateClassId"
@@ -129,7 +130,13 @@
           </n-form-item>
           <n-grid style="margin-top: 10px" x-gap="12" :cols="2" :x-gap="20">
             <n-gi style="min-width: 367px">
-              <n-card title="实验报告成绩分析">
+              <n-card
+                title="实验报告成绩分析"
+                size="small"
+                :segmented="{
+                  content: true,
+                }"
+              >
                 <template v-if="analysis.avg != null">
                   <div class="w-full h-180px">
                     <n-space vertical class="flex" style="padding-top: 30px">
@@ -154,7 +161,13 @@
                 ></template> </n-card
             ></n-gi>
             <n-gi style="min-width: 554px"
-              ><n-card title="实验报告时长分析">
+              ><n-card
+                title="实验报告时长分析"
+                size="small"
+                :segmented="{
+                  content: true,
+                }"
+              >
                 <template v-if="analysis.durationAnalysis.length">
                   <n-scrollbar style="max-height: 180px" class="w-full h-180px">
                     <div v-for="(item, index) in analysis.durationAnalysis">
@@ -189,7 +202,10 @@
             class="border"
             style="margin-top: 10px"
             title="报告成绩分布（班级）"
-            :bordered="false"
+            size="small"
+            :segmented="{
+              content: true,
+            }"
           >
             <template v-if="analysis.durationAnalysis.length">
               <div ref="pieRef" class="w-full h-260px" id="pieEcharts"></div>
@@ -372,30 +388,32 @@ const getTestReportGradeData = async (id: string) => {
       durationAnalysis,
     };
     Object.assign(analysis, param);
-    setTimeout(() => {
-      const myChart = echarts.init(document.getElementById("pieEcharts"));
-      const options = {
-        xAxis: {
-          type: "category",
-          data: ["<60", "60-69", "70-79", "80-89", "90-100"],
-        },
-        yAxis: {
-          type: "value",
-        },
-        series: [
-          {
-            data: [lessSix, sixToSeven, sevenToEight, eightToNine, nineToTen],
-            type: "bar",
-            showBackground: true,
-            color: "rgb(24, 144, 255)",
-            backgroundStyle: {
-              color: "rgba(180, 180, 180, 0.2)",
-            },
+    if (durationAnalysis.length) {
+      setTimeout(() => {
+        const myChart = echarts.init(document.getElementById("pieEcharts"));
+        const options = {
+          xAxis: {
+            type: "category",
+            data: ["<60", "60-69", "70-79", "80-89", "90-100"],
           },
-        ],
-      };
-      myChart.setOption(options);
-    }, 500);
+          yAxis: {
+            type: "value",
+          },
+          series: [
+            {
+              data: [lessSix, sixToSeven, sevenToEight, eightToNine, nineToTen],
+              type: "bar",
+              showBackground: true,
+              color: "rgb(24, 144, 255)",
+              backgroundStyle: {
+                color: "rgba(180, 180, 180, 0.2)",
+              },
+            },
+          ],
+        };
+        myChart.setOption(options);
+      }, 500);
+    }
   }
 };
 const updatePage = (page: number) => {
@@ -425,5 +443,9 @@ const clickStudent = (record: Recordable) => {
   border-color: rgb(232, 232, 232);
   border-style: solid;
   border-radius: 8.5px;
+}
+:deep(.n-empty) {
+  display: flex;
+  justify-content: center;
 }
 </style>
