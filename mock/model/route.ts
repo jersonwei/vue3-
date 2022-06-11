@@ -859,6 +859,7 @@ export const routeModel: Record<Auth.RoleType, AuthRoute.Route[]> = {
 					component: 'self',
 					meta: {
 						title: '个人考试分析',
+						hide: true,
 						requiresAuth: true,
 						icon: 'bx:analyse'
 					}

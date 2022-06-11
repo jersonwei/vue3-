@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-06-06 08:53:26
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-06-10 18:26:26
+ * @LastEditTime: 2022-06-11 08:58:38
  * @FilePath: \work\src\views\learnAnalysis\questAnalysis\personalTest\index.vue
  * @Description:
 -->
@@ -20,71 +20,64 @@
           <n-gi span="3">
             <n-card
               title="实验分析-学生列表"
-              :bordered="false"
-              class="wh-full b-1"
+              class="wh-full"
               size="small"
               :segmented="{
                 content: true,
               }"
             >
-              <div class="wh-full">
-                <n-space vertical>
-                  <n-input-group>
-                    <n-input v-model:value="Form.name" placeholder="输入学生姓名搜索" />
-                    <n-button type="primary" ghost @click="searchStudent">
-                      搜索
-                    </n-button>
-                  </n-input-group>
-                </n-space>
+              <n-input-group>
+                <n-input v-model:value="Form.name" placeholder="输入学生姓名搜索" />
+                <n-button type="info" @click="searchStudent"> 搜索 </n-button>
+              </n-input-group>
 
-                <div class="py-3 menu-list">
-                  <template v-if="loading">
-                    <div class="flex items-center justify-center py-4">
-                      <n-spin size="medium" style="height: 520px; overflow: hidden" />
+              <div class="py-3 menu-list">
+                <template v-if="loading">
+                  <div class="flex items-center justify-center py-4">
+                    <n-spin size="medium" style="height: 58vh" />
+                  </div>
+                </template>
+                <template v-else>
+                  <n-scrollbar style="height: 58vh">
+                    <div v-for="(item, index) in studentList">
+                      <n-thing style="padding: 5px">
+                        <template #avatar>
+                          <n-avatar size="large" :src="`${http}${item.avatar}`">
+                          </n-avatar>
+                        </template>
+                        <template #header>
+                          <n-button
+                            size="large"
+                            text
+                            @click="clickStuName(item, index)"
+                            :style="{
+                              color: stuIndex === index ? 'rgb(0, 83, 255)' : '',
+                            }"
+                          >
+                            {{ item.userName }}</n-button
+                          >
+                        </template>
+                        <template #description>
+                          <p style="color: rgb(124, 124, 124)">
+                            {{ item.collegeName }} {{ item.className }}
+                          </p>
+                        </template>
+                      </n-thing>
                     </div>
-                  </template>
-                  <template v-else>
-                    <n-scrollbar style="min-height: 520px; max-height: 520px">
-                      <div v-for="(item, index) in studentList">
-                        <n-thing style="padding: 5px">
-                          <template #avatar>
-                            <n-avatar size="large" :src="`${http}${item.avatar}`">
-                            </n-avatar>
-                          </template>
-                          <template #header>
-                            <n-button
-                              size="large"
-                              text
-                              @click="clickStuName(item, index)"
-                              :style="{
-                                color: stuIndex === index ? 'rgb(0, 83, 255)' : '',
-                              }"
-                            >
-                              {{ item.userName }}</n-button
-                            >
-                          </template>
-                          <template #description>
-                            <p style="color: rgb(124, 124, 124)">
-                              {{ item.collegeName }} {{ item.className }}
-                            </p>
-                          </template>
-                        </n-thing>
-                      </div>
-                    </n-scrollbar>
-                    <n-pagination
-                      style="
-                        padding-top: 10px;
-                        display: flex;
-                        align-items: center;
-                        justify-content: flex-end;
-                      "
-                      v-model:page="pagination.current"
-                      :page-count="pagination.pages"
-                      :page-slot="5"
-                      @update:page="updatePage"
-                    />
-                  </template>
-                </div>
+                  </n-scrollbar>
+                  <n-pagination
+                    style="
+                      padding-top: 10px;
+                      display: flex;
+                      align-items: center;
+                      justify-content: flex-end;
+                    "
+                    v-model:page="pagination.current"
+                    :page-count="pagination.pages"
+                    :page-slot="5"
+                    @update:page="updatePage"
+                  />
+                </template>
               </div>
             </n-card>
           </n-gi>
@@ -100,7 +93,7 @@
                   }"
                 >
                   <template v-if="gradeData.avg != null">
-                    <div class="w-full h-160px">
+                    <div class="w-full h-140px">
                       <n-space vertical class="flex">
                         <p class="flex-center" style="font-size: 20px">实验报告平均分</p>
                         <p class="flex-center font-600" style="font-size: 20px">
@@ -119,7 +112,7 @@
                     </div>
                   </template>
                   <template v-else>
-                    <n-empty style="height: 160px" description="暂无数据"></n-empty
+                    <n-empty style="height: 140px" description="暂无数据"></n-empty
                   ></template> </n-card
               ></n-gi>
               <n-gi style="min-width: 554px"
@@ -131,7 +124,7 @@
                   }"
                 >
                   <template v-if="gradeData.avg != null">
-                    <div style="height: 160px; display: flex; justify-content: center">
+                    <div style="height: 140px; display: flex; justify-content: center">
                       <n-progress
                         type="circle"
                         stroke-width="10"
@@ -140,7 +133,7 @@
                     </div>
                   </template>
                   <template v-else>
-                    <n-empty style="height: 160px" description="暂无数据"></n-empty
+                    <n-empty style="height: 140px" description="暂无数据"></n-empty
                   ></template>
                 </n-card>
               </n-gi>
@@ -148,8 +141,7 @@
 
             <n-card
               title="学生章节分析"
-              :bordered="false"
-              style="margin-top: 10px; max-height: 200px"
+              style="margin-top: 10px"
               size="small"
               :segmented="{
                 content: true,
@@ -168,7 +160,7 @@
                 :row-key="(row) => row.id"
                 key-field="id"
                 label-field="label"
-                :scroll-x="1200"
+                :scroll-x="900"
               >
               </TablePro>
             </n-card>

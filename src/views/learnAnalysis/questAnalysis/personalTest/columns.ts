@@ -5,7 +5,7 @@ import { h } from "vue";
  * @Author: ZHENG
  * @Date: 2022-06-06 10:41:27
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-06-10 16:52:02
+ * @LastEditTime: 2022-06-10 18:27:22
  * @FilePath: \work\src\views\learnAnalysis\questAnalysis\personalTest\columns.ts
  * @Description:
  */
@@ -49,6 +49,7 @@ export const columns = [
 				return h('div',[
 				h(NProgress,{
 					type:"line",
+					indicatorPlacement:"inside",
 					percentage:parseInt(row.percentage * 100,10)
 			}
 				)]);

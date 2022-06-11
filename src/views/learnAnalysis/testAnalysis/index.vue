@@ -2,7 +2,7 @@
  * @Author: ZHENG
  * @Date: 2022-06-06 08:53:26
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-06-10 18:25:00
+ * @LastEditTime: 2022-06-10 18:29:13
  * @FilePath: \work\src\views\learnAnalysis\testAnalysis\index.vue
  * @Description:
 -->
@@ -19,8 +19,7 @@
         <n-gi span="3" style="min-width: 317px">
           <n-card
             title="实验分析-课程列表"
-            :bordered="false"
-            class="wh-full border"
+            class="wh-full"
             size="small"
             :segmented="{
               content: true,

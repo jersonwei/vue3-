@@ -2,8 +2,8 @@
  * @Author: ZHENG
  * @Date: 2022-06-06 08:53:26
  * @LastEditors: ZHENG
- * @LastEditTime: 2022-06-09 14:49:44
- * @FilePath: \work\src\views\learnAnalysis\questAnalysis\index.vue
+ * @LastEditTime: 2022-06-11 09:07:07
+ * @FilePath: \work\src\views\learnAnalysis\examAnalysis\index.vue
  * @Description:
 -->
 <template>
@@ -11,26 +11,11 @@
     <n-card class="h-full shadow-sm rounded-16px">
       <n-grid class="mt-4" cols="12" responsive="screen" :x-gap="12">
         <n-gi span="3">
-          <n-card
-            title="实验分析-课程列表"
-            :bordered="false"
-            class="wh-full border"
-            size="small"
-          >
+          <n-card title="考试分析—考试列表" class="wh-full border" size="small">
             <div class="wh-full">
               <n-space vertical>
-                <n-cascader
-                  v-model:value="searchForm.majorId"
-                  clearable
-                  placeholder="课程院系/专业"
-                  :options="majorOptions"
-                  :check-strategy="'child'"
-                  :show-path="true"
-                  remote
-                  :on-load="handleLoad"
-                />
                 <n-input-group>
-                  <n-input v-model:value="searchForm.courseName" placeholder="课程名称" />
+                  <n-input v-model:value="searchForm.courseName" placeholder="试卷名称" />
                 </n-input-group>
 
                 <div style="display: flex">
@@ -47,14 +32,11 @@
                     </div>
                   </template>
                   <template v-else>
-                    <n-scrollbar style="max-height: 440px">
+                    <n-scrollbar style="max-height: 420px">
                       <div v-for="(item, index) in courseList">
                         <n-thing style="padding: 5px">
                           <template #avatar>
-                            <n-avatar
-                              size="large"
-                              src="https://img02.mockplus.cn/image/2022-06-02/f94421b0-e247-11ec-8ddc-a1881342a2a2.jpg"
-                            >
+                            <n-avatar size="large" :src="`${http}${item.coverPic}`">
                             </n-avatar>
                           </template>
                           <template #header-extra>
@@ -118,7 +100,6 @@
               placeholder="请选择课时"
               :options="classOptions"
               :check-strategy="'child'"
-              :show-path="false"
               remote
               :on-load="handleUnitLoad"
               @update:value="updateClassId"
@@ -126,7 +107,13 @@
           </n-form-item>
           <n-grid style="margin-top: 10px" x-gap="12" :cols="2" :x-gap="20">
             <n-gi>
-              <n-card title="习题报告成绩分析">
+              <n-card
+                title="习题报告成绩分析"
+                size="small"
+                :segmented="{
+                  content: true,
+                }"
+              >
                 <template v-if="analysis.avg != null">
                   <div class="w-full h-180px">
                     <n-space vertical class="flex" style="padding-top: 30px">
@@ -151,7 +138,13 @@
                 ></template> </n-card
             ></n-gi>
             <n-gi
-              ><n-card title="试题错误率分析">
+              ><n-card
+                title="试题错误率分析"
+                size="small"
+                :segmented="{
+                  content: true,
+                }"
+              >
                 <template v-if="analysis.errorRate.length">
                   <n-scrollbar style="max-height: 180px" class="w-full h-180px">
                     <div v-for="(item, index) in analysis.errorRate">
@@ -166,7 +159,29 @@
                         >
                           {{ index + 1 }}
                         </n-avatar>
-                        <div style="width: 80px">{{ item.questionType }}</div>
+                        <div
+                          style="
+                            width: 50px;
+                            height: 20px;
+                            background: rgb(82, 196, 26);
+
+                            box-sizing: border-box;
+                            z-index: auto;
+                            pointer-events: none;
+                            transition: unset;
+                            overflow: hidden;
+                          "
+                        >
+                          <p
+                            style="
+                              font-size: 10px;
+                              color: rgb(255, 255, 255);
+                              text-align: center;
+                            "
+                          >
+                            {{ item.questionTypeName }}
+                          </p>
+                        </div>
                         <div style="width: 220px">{{ item.questionName }}</div>
                         <div style="width: 80px; color: rgb(24, 144, 255)">
                           {{ item.rate * 100 }}%
@@ -186,7 +201,10 @@
             class="border"
             style="margin-top: 10px"
             title="习题成绩分布（班级）"
-            :bordered="false"
+            size="small"
+            :segmented="{
+              content: true,
+            }"
           >
             <template v-if="analysis.errorRate.length">
               <div ref="pieRef" class="w-full h-260px" id="pieEcharts"></div>
@@ -206,11 +224,12 @@ import { reactive, ref } from "vue";
 import { CaretUpOutlined, CaretDownFilled } from "@vicons/antd";
 import { getCollegeLegistOptions, getChildren, getChapter } from "./getOptions";
 import { getCourseGradeVo, getProblemAnalysis, getUnitList } from "@/service";
-import { numberfilter } from "@/utils";
+import { getServiceEnv, numberfilter } from "@/utils";
 import { CascaderOption, useMessage } from "naive-ui";
 import { getDay } from "date-fns";
 import * as echarts from "echarts/core";
 import { useRouterPush } from "@/composables";
+const http = getServiceEnv();
 
 const { routerPush } = useRouterPush();
 // 重写一下，咋感觉逻辑东一块西一块
@@ -413,7 +432,7 @@ const clickCourseName = (item, index) => {
 const clickStudent = (record: Recordable) => {
   const { collegeName, classId, className, courseId } = record;
   routerPush({
-    name: "learnAnalysis_questAnalysis_personalTest",
+    name: "learnAnalysis_examAnalysis_personalTest",
     query: { collegeName, classId, className, courseId },
   });
 };
@@ -425,5 +444,9 @@ const clickStudent = (record: Recordable) => {
   border-color: rgb(232, 232, 232);
   border-style: solid;
   border-radius: 8.5px;
+}
+:deep(.n-empty) {
+  display: flex;
+  justify-content: center;
 }
 </style>
